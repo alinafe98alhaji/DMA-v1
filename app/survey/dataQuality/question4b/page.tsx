@@ -1,0 +1,155 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+const Question4b = () => {
+  const router = useRouter();
+
+  // Seven areas of interest
+  const areas = [
+    "Urban Water Supply Coverage",
+    "Urban Sanitation Sector Coverage",
+    "Rural Water Supply Sector Coverage",
+    "Rural Sanitation Sector Coverage",
+    "Finance",
+    "Regulation",
+    "Utility Operations: Technical, Commercial, Financial, HR"
+  ];
+
+  // State to track responses for each area
+  const [responses, setResponses] = useState<Record<string, string>>({});
+
+  // State to track validation error
+  const [error, setError] = useState(false);
+
+  // Handle selection changes
+  const handleChange = (area: string, value: string) => {
+    setResponses(prev => ({
+      ...prev,
+      [area]: value
+    }));
+  };
+
+  // Simple validation to check if all areas are answered
+  const isFormValid = () => {
+    return areas.every(area => responses[area]);
+  };
+
+  // Handle submission
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isFormValid()) {
+      setError(true); // Trigger validation error if any field is unselected
+      return;
+    }
+
+    // Filter areas with Yes, Partially, or No selected
+    const selectedAreas = Object.entries(responses)
+      .filter(
+        ([_, value]) =>
+          value === "Yes" || value === "Partially" || value === "No"
+      )
+      .map(([key]) => key);
+
+    // Navigate to the follow-up question with the selected areas
+    router.push(
+      `/survey/dataQuality/question4bFollowUp?areas=${encodeURIComponent(
+        selectedAreas.join("|")
+      )}`
+    );
+  };
+
+  return (
+    <div className="p-6">
+      {/* Guidance Instructions */}
+      <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h2 className="text-lg font-bold mb-4 text-blue-800">
+          Guidance Instructions
+        </h2>
+        <ul className="list-disc pl-6 text-black">
+          <h1 className="mb-4 text-lg font-bold">
+            Data Quality Assessment National Level
+          </h1>
+          <li>
+            Look for any national or regional programs, initiatives, or projects
+            specifically designed to improve data quality.
+          </li>
+          <li>
+            Check if these programs include training, capacity building,
+            standardisation efforts, or the deployment of improved data
+            collection and management tools.
+          </li>
+        </ul>
+      </div>
+      <h1>
+        4.b: Are there clear rules, guidelines or policies in the WSS sector for
+        sharing data publicly?
+      </h1>
+      <form onSubmit={handleSubmit}>
+        {areas.map(area =>
+          <div key={area} style={{ marginBottom: "20px", marginTop: "20px" }}>
+            <h3>
+              {area}
+            </h3>
+            <label>
+              <input
+                type="radio"
+                name={area}
+                value="Yes"
+                checked={responses[area] === "Yes"}
+                onChange={() => handleChange(area, "Yes")}
+              />
+              Yes
+            </label>
+            <label style={{ marginLeft: "10px" }}>
+              <input
+                type="radio"
+                name={area}
+                value="Partially"
+                checked={responses[area] === "Partially"}
+                onChange={() => handleChange(area, "Partially")}
+              />
+              Partially
+            </label>
+            <label style={{ marginLeft: "10px" }}>
+              <input
+                type="radio"
+                name={area}
+                value="No"
+                checked={responses[area] === "No"}
+                onChange={() => handleChange(area, "No")}
+              />
+              No
+            </label>
+          </div>
+        )}
+
+        {/* Display validation error if any field is unselected */}
+        {error &&
+          <p style={{ color: "red", marginTop: "10px" }}>
+            Please answer all questions before proceeding.
+          </p>}
+
+        {/* Submit button */}
+        <button
+          type="submit"
+          style={{
+            backgroundColor: "#007BFF",
+            color: "white",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "5px",
+            fontSize: "16px",
+            cursor: "pointer"
+          }}
+        >
+          Next
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Question4b;
