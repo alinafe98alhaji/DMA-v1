@@ -25,6 +25,7 @@ const Question5dV = () => {
   // Handle radio button changes
   const handleInputChange = (area: string, value: string) => {
     setResponses(prev => ({ ...prev, [area]: value }));
+    if (error) setError(null); // Clear the error message when user selects an option
   };
 
   // Handle form submission
@@ -65,10 +66,11 @@ const Question5dV = () => {
       })
       .then(data => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
+        setIsSubmitted(true);
       })
       .catch(err => {
         console.error("Error saving responses:", err);
+        setError("An error occurred while submitting your responses.");
       });
   };
 
