@@ -67,17 +67,17 @@ const Question3aiv = () => {
       return;
     }
 
-    // Log responses with questionID
+    // Log only selected responses with questionID
     const responseObject = {
       userId: userId_ses,
       questionID: "3a.iv", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+      responses: Object.entries(selectedResponses).map(([area, response]) => ({
         area,
         response
       }))
     };
 
-    // Send data to your API
+    // Send only the selected responses to the API
     fetch("/api/saveDataOpenessAndFlow", {
       method: "POST",
       headers: {
@@ -94,7 +94,6 @@ const Question3aiv = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        // Proceed to Question 3b
         router.push("/survey/dataOpenessAndFlow/question3b");
       })
       .catch(err => {
@@ -113,7 +112,7 @@ const Question3aiv = () => {
         </h2>
         <ul className="list-disc pl-6 text-black">
           <h1 className="mb-4 text-lg font-bold">
-            Data Openess and Flow Assessment Organisational Level
+            Data Openness and Flow Assessment Organisational Level
           </h1>
           <li>
             This question asks whether your organisation has rules that help

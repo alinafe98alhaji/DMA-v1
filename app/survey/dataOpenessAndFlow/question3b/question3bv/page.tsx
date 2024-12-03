@@ -159,6 +159,12 @@ const Question3bv = () => {
         <button
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
           onClick={async () => {
+            // Check if all answers are selected before submitting
+            if (Object.values(answers).some(answer => answer === null)) {
+              alert("Please complete all selections before proceeding.");
+              return;
+            }
+
             // Retrieve user_id from sessionStorage
             const userId_ses = sessionStorage.getItem("user_id");
 
@@ -169,11 +175,11 @@ const Question3bv = () => {
               return;
             }
 
-            // Log responses with questionID
+            // Create responseObject only with the selected answers
             const responseObject = {
               userId: userId_ses,
               questionID: "3b.v", // Adding questionID
-              responses: Object.entries(responses).map(([area, response]) => ({
+              responses: Object.entries(answers).map(([area, response]) => ({
                 area,
                 response
               }))
@@ -196,16 +202,11 @@ const Question3bv = () => {
               .then(data => {
                 console.log("Responses saved successfully:", data);
                 // Proceed to next question
-                if (Object.values(answers).some(answer => answer === null)) {
-                  alert("Please complete all selections before proceeding.");
-                } else {
-                  console.log("Final answers submitted:", answers);
-                  router.push(
-                    `/survey/dataOpenessAndFlow/question3c?responses=${encodeURIComponent(
-                      JSON.stringify(answers)
-                    )}`
-                  );
-                }
+                router.push(
+                  `/survey/dataOpenessAndFlow/question3c?responses=${encodeURIComponent(
+                    JSON.stringify(answers)
+                  )}`
+                );
               })
               .catch(err => {
                 console.error("Error saving responses:", err);

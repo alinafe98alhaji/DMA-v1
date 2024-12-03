@@ -26,6 +26,7 @@ const Question2aii = () => {
 
   // Handle submission
   const handleSubmit = async () => {
+    // Ensure all required areas have responses
     if (Object.keys(responses).length !== areasFor2aii.length) {
       setErrorMessage("Please respond to all areas before proceeding.");
       return;
@@ -39,17 +40,24 @@ const Question2aii = () => {
       return;
     }
 
-    // Log responses with questionID
-    const responseObject = {
-      userId: userId_ses,
-      questionID: "2a.ii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+    // Filter only areas with valid responses
+    const filteredResponses = Object.entries(responses)
+      .filter(([_, response]) => response) // Ensure the response is not empty or undefined
+      .map(([area, response]) => ({
         area,
         response
-      }))
+      }));
+
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "2a.ii",
+      responses: filteredResponses,
+      submittedAt: new Date().toISOString() // Optional: Add a timestamp
     };
 
-    // Send data to your API
+    console.log("Filtered Response Payload:", responseObject); // Debugging
+
+    // Send filtered data to your API
     fetch("/api/saveDataOwnershipAndManagement", {
       method: "POST",
       headers: {
@@ -65,8 +73,8 @@ const Question2aii = () => {
       })
       .then(data => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
-        // Navigate to 2.a.iii with filtered areas
+
+        // Navigate to the next question
         router.push(
           `/survey/dataOwnershipAndManagement/question2a/question2aiii?pageData=${encodeURIComponent(
             JSON.stringify(areasFor2aii)

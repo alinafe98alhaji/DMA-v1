@@ -57,11 +57,17 @@ const Question3aiii = () => {
       return;
     }
 
+    // Filter only the areas that have been answered
+    const answeredResponses = Object.entries(responses).filter(
+      ([area, response]) =>
+        response !== null && response !== undefined && response !== "No"
+    );
+
     // Log responses with questionID
     const responseObject = {
       userId: userId_ses,
       questionID: "3a.iii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+      responses: answeredResponses.map(([area, response]) => ({
         area,
         response
       }))

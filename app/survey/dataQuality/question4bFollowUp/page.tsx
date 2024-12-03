@@ -48,9 +48,49 @@ const Question4bFollowUp = () => {
       return;
     }
 
-    console.log("Follow-up responses:", responses);
-    // Navigate to 3.a.ii
-    router.push(`/survey/dataQuality/question4b/question4bii`);
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
+
+    if (!userId_ses) {
+      alert("User ID is missing. Please return to the basic details page.");
+      return;
+    }
+
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "4b.i", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataQuality", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+
+        console.log("Follow-up responses:", responses);
+        // Navigate to 3.a.ii
+        router.push(`/survey/dataQuality/question4b/question4bii`);
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   return (

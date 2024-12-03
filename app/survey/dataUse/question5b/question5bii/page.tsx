@@ -113,6 +113,54 @@ const Question5bii = () => {
           <button
             type="button"
             disabled={!isFormComplete} // Disable the button if the form is not complete
+            onClick={async () => {
+              // Retrieve user_id from sessionStorage
+              const userId_ses = sessionStorage.getItem("user_id");
+
+              if (!userId_ses) {
+                alert(
+                  "User ID is missing. Please return to the basic details page."
+                );
+                return;
+              }
+
+              // Log responses with questionID
+              const responseObject = {
+                userId: userId_ses,
+                questionID: "5b.ii", // Adding questionID
+                responses: Object.entries(
+                  responses
+                ).map(([area, response]) => ({
+                  area,
+                  response
+                }))
+              };
+
+              // Send data to your API
+              fetch("/api/saveDataUse", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(responseObject)
+              })
+                .then(res => {
+                  if (!res.ok) {
+                    throw new Error("Failed to save responses");
+                  }
+                  return res.json();
+                })
+                .then(data => {
+                  console.log("Responses saved successfully:", data);
+                  // Proceed to next question
+
+                  // Navigate to the next page if valid
+                  //router.push("/survey/dataUse/question5b/question5bi");
+                })
+                .catch(err => {
+                  console.error("Error saving responses:", err);
+                });
+            }}
             className={`w-full py-2 px-4 rounded-md transition duration-300 ${isFormComplete
               ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
               : "bg-gray-400 text-gray-200 cursor-not-allowed"}`}

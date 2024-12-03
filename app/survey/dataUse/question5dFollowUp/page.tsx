@@ -54,8 +54,42 @@ const Question5dFollowUp = () => {
 
     console.log("Follow-up responses:", responses);
 
-    // Navigate to the next page
-    router.push(`/survey/dataUse/question5d/question5dii`);
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
+
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5d.i", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataUse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+        // Navigate to the next page
+        router.push(`/survey/dataUse/question5d/question5dii`);
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   return (

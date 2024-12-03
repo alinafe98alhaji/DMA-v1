@@ -67,17 +67,22 @@ const Question1CII = () => {
       return;
     }
 
-    // Log responses with questionID
+    // Create a filtered responses object with only the `noAreas`
+    const filteredResponses = noAreas.map(area => ({
+      area,
+      response: selectedResponses[area]
+    }));
+
     const responseObject = {
       userId: userId_ses,
-      questionID: "1c.ii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
-        area,
-        response
-      }))
+      questionID: "1c.ii",
+      responses: filteredResponses,
+      submittedAt: new Date().toISOString() // Add timestamp
     };
 
-    // Send data to your API
+    console.log("Filtered Response Payload:", responseObject); // Debugging
+
+    // Send filtered data to your API
     fetch("/api/saveResponses", {
       method: "POST",
       headers: {
@@ -93,8 +98,7 @@ const Question1CII = () => {
       })
       .then(data => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
-        // Proceed to Question 1D
+        // Navigate to the next question
         router.push("/survey/dataCollection/question1d");
       })
       .catch(err => {

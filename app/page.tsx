@@ -2,98 +2,66 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="h-screen bg-gradient-to-b from-teal-200 via-blue-400 to-blue-800 text-teal-900 flex flex-col items-center justify-center font-sans overflow-hidden">
+      {/* Logo */}
+      <div className="w-[240px] h-[200px] mb-10 mt-2 flex justify-center">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          src="/images/logo.svg" // Replace with your logo path
+          alt="ESAWAS logo"
+          width={240} // Fixed width
+          height={200} // Fixed height
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
+      </div>
+
+      {/* Main Content */}
+      <main className="flex mb-28 mt-18 flex-col gap-4 items-center text-center bg-blue-200 bg-opacity-85 p-6 rounded-2xl shadow-2xl max-w-2xl w-full transform hover:scale-[1.01] duration-300 mb-30 mb-10">
+        {/* Main Heading */}
+        <h1 className="text-3xl sm:text-4xl font-[Inter] font-bold tracking-tight text-blue-700 drop-shadow-md leading-tight mb-4">
+          ESAWAS Organisational Level Data Maturity Assessment Tool
+        </h1>
+
+        {/* Subheading */}
+        <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-lg font-[Lato] mb-6">
+          The trusted platform for evaluating and enhancing data maturity in the
+          water and sanitation sectors.
+        </p>
+
+        {/* Steps List */}
+        <ol className="list-decimal list-inside text-base text-gray-600 max-w-lg space-y-2 pl-6 font-[Lato] mb-6">
+          <li>Get started by completing our comprehensive assessment.</li>
+          <li>Save your progress and return whenever you need.</li>
+          <li>Review insights and contribute to better service delivery.</li>
         </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+        {/* Call to Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            className="bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-full py-2 px-6 font-[Inter] font-semibold text-lg transition-transform transform hover:scale-105 shadow-xl hover:shadow-2xl mb-4 sm:mb-0"
+            href="/basicDetails"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+            Start Assessment
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            className="bg-gray-50 border border-gray-300 text-gray-800 rounded-full py-2 px-6 font-[Inter] font-semibold text-lg transition-transform transform hover:scale-105 shadow-lg hover:bg-gray-100"
+            href="/documentation"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read our docs
+            Read Documentation
           </a>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+
+      {/* Footer */}
+      <footer className="flex items-center justify-center text-gray-800 mt-20 font-[Lato]">
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          className="flex items-center gap-2 hover:text-blue-200 transition-colors"
+          href="https://www.esawas.org/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
+          Visit ESAWAS Website →
         </a>
       </footer>
     </div>

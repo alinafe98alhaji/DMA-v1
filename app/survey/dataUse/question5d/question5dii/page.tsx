@@ -42,18 +42,52 @@ const Question5dii = () => {
     // Clear error if all areas are answered
     setError("");
 
-    // Separate areas into two groups
-    const areasFor1diii = areas.filter(
-      area => responses[area] === "Yes" || responses[area] === "Partially"
-    );
-    const areasFor1dv = areas.filter(area => responses[area] === "No");
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
 
-    // Pass data to 1.a.iii using URL query parameters
-    router.push(
-      `/survey/dataUse/question5d/question5diii?areasFor1diii=${encodeURIComponent(
-        JSON.stringify(areasFor1diii)
-      )}&areasFor1dv=${encodeURIComponent(JSON.stringify(areasFor1dv))}`
-    );
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5d.ii", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataUse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+        // Separate areas into two groups
+        const areasFor1diii = areas.filter(
+          area => responses[area] === "Yes" || responses[area] === "Partially"
+        );
+        const areasFor1dv = areas.filter(area => responses[area] === "No");
+
+        // Pass data to 1.a.iii using URL query parameters
+        router.push(
+          `/survey/dataUse/question5d/question5diii?areasFor1diii=${encodeURIComponent(
+            JSON.stringify(areasFor1diii)
+          )}&areasFor1dv=${encodeURIComponent(JSON.stringify(areasFor1dv))}`
+        );
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   return (

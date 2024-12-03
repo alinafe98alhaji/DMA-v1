@@ -41,6 +41,52 @@ const Question5ai = () => {
   // Check if all answers have been selected
   const isFormComplete = Object.keys(responses).every(area => answers[area]);
 
+  // Function to handle form submission
+  const handleSubmit = async () => {
+    // Filter out areas where the user has not selected a response
+    const selectedAnswers = Object.entries(answers)
+      .filter(([_, value]) => value !== null && value !== undefined)
+      .map(([area, value]) => ({ area, response: value }));
+
+    if (selectedAnswers.length === 0) {
+      alert("Please select at least one answer before submitting.");
+      return;
+    }
+
+    // Send selected answers to the database
+    const userId_ses = sessionStorage.getItem("user_id");
+
+    if (!userId_ses) {
+      alert("User ID is missing. Please return to the basic details page.");
+      return;
+    }
+
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5a.i", // Adding questionID
+      responses: selectedAnswers
+    };
+
+    // Send data to your API
+    try {
+      const res = await fetch("/api/saveDataUse", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(responseObject)
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to save responses");
+      }
+      const data = await res.json();
+      console.log("Responses saved successfully:", data);
+    } catch (err) {
+      console.error("Error saving responses:", err);
+    }
+  };
+
   return (
     <div className="survey-container" style={{ padding: "20px" }}>
       {/* Guidance Instructions */}
@@ -131,6 +177,7 @@ const Question5ai = () => {
             display: "inline-block",
             opacity: isFormComplete ? 1 : 0.5 // Make it less visible if form is not complete
           }}
+          onClick={handleSubmit}
         >
           Next
         </Link>

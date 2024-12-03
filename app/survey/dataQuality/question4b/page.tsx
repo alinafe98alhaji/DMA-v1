@@ -45,20 +45,59 @@ const Question4b = () => {
       return;
     }
 
-    // Filter areas with Yes, Partially, or No selected
-    const selectedAreas = Object.entries(responses)
-      .filter(
-        ([_, value]) =>
-          value === "Yes" || value === "Partially" || value === "No"
-      )
-      .map(([key]) => key);
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
 
-    // Navigate to the follow-up question with the selected areas
-    router.push(
-      `/survey/dataQuality/question4bFollowUp?areas=${encodeURIComponent(
-        selectedAreas.join("|")
-      )}`
-    );
+    if (!userId_ses) {
+      alert("User ID is missing. Please return to the basic details page.");
+      return;
+    }
+
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "4b", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataQuality", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+        // Filter areas with Yes, Partially, or No selected
+        const selectedAreas = Object.entries(responses)
+          .filter(
+            ([_, value]) =>
+              value === "Yes" || value === "Partially" || value === "No"
+          )
+          .map(([key]) => key);
+
+        // Navigate to the follow-up question with the selected areas
+        router.push(
+          `/survey/dataQuality/question4bFollowUp?areas=${encodeURIComponent(
+            selectedAreas.join("|")
+          )}`
+        );
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   return (

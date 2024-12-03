@@ -42,20 +42,59 @@ const Question5cii = () => {
     // Clear error if all areas are answered
     setError("");
 
-    // Filter areas based on "Yes", "Partially", "No" responses
-    const areasFor5civ = Object.keys(responses).filter(
-      area => responses[area] === "Yes"
-    );
-    const areasFor5ciii = Object.keys(responses).filter(
-      area => responses[area] === "Partially" || responses[area] === "No"
-    );
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
 
-    // Pass the areas to 5.c.iii via query parameters
-    router.push(
-      `/survey/dataUse/question5c/question5ciii?areasFor5civ=${encodeURIComponent(
-        JSON.stringify(areasFor5civ)
-      )}&areasFor5ciii=${encodeURIComponent(JSON.stringify(areasFor5ciii))}`
-    );
+    if (!userId_ses) {
+      alert("User ID is missing. Please return to the basic details page.");
+      return;
+    }
+
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5c.ii", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataUse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+        // Filter areas based on "Yes", "Partially", "No" responses
+        const areasFor5civ = Object.keys(responses).filter(
+          area => responses[area] === "Yes"
+        );
+        const areasFor5ciii = Object.keys(responses).filter(
+          area => responses[area] === "Partially" || responses[area] === "No"
+        );
+
+        // Pass the areas to 5.c.iii via query parameters
+        router.push(
+          `/survey/dataUse/question5c/question5ciii?areasFor5civ=${encodeURIComponent(
+            JSON.stringify(areasFor5civ)
+          )}&areasFor5ciii=${encodeURIComponent(JSON.stringify(areasFor5ciii))}`
+        );
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   return (

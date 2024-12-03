@@ -29,67 +29,72 @@ const Question1CI = () => {
 
   // Handle Next button click with validation
   const handleNextClick = async (e: React.MouseEvent) => {
-    // Prevent the default behavior to avoid navigation until validation
     e.preventDefault();
-
+  
+    // Ensure all filtered areas are answered
     const allAnswered = filteredAreas.every((area) => {
       const selectedValue = document.querySelector(`input[name="${area}"]:checked`);
       return selectedValue !== null;
     });
-
+  
     if (!allAnswered) {
       setError("Please respond to all areas before submitting.");
       return;
     }
-
-    setError(""); // Clear error message if all are answered
-
+  
+    setError(""); // Clear error if validation passes
+  
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
-
+  
     if (!userId_ses) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
-
-    // Log responses with questionID
+  
+    // Build response object with only filtered areas
+    const filteredResponses = filteredAreas.map((area) => ({
+      area,
+      response: responses[area], // Use the current state of responses
+    }));
+  
     const responseObject = {
       userId: userId_ses,
-      questionID: "1c.i", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
-        area,
-        response
-      }))
+      questionID: "1c.i",
+      responses: filteredResponses,
+      submittedAt: new Date().toISOString(), // Add a submission timestamp
     };
-
-    // Send data to your API
+  
+    console.log("Filtered Response Payload:", responseObject); // Debugging
+  
+    // Send filtered data to your API
     fetch("/api/saveResponses", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(responseObject)
+      body: JSON.stringify(responseObject),
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to save responses");
         }
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
- // Proceed to the next page if validated
- const nextPageLink = `/survey/dataCollection/question1c/question1cii?responses=${encodeURIComponent(
-  JSON.stringify(responses)
-)}`;
-window.location.href = nextPageLink; // This replaces the Link component
-})
-      .catch(err => {
+  
+        // Proceed to the next page
+        const nextPageLink = `/survey/dataCollection/question1c/question1cii?responses=${encodeURIComponent(
+          JSON.stringify(responses)
+        )}`;
+        window.location.href = nextPageLink;
+      })
+      .catch((err) => {
         console.error("Error saving responses:", err);
       });
-
-    };
+  };
+  
 
   // Handle radio button selection to clear error when selected
   const handleRadioChange = (area: string, value: string) => {

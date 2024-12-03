@@ -46,22 +46,56 @@ const Question5diii = () => {
 
     setError(""); // Clear error if all areas are answered
 
-    // Filter areas for 1.a.iv based on selected options
-    const areasFor1div = areasFor1diii.filter(
-      area =>
-        responses[area] === options[0] ||
-        responses[area] === options[1] ||
-        responses[area] === options[2] ||
-        responses[area] === options[3] ||
-        responses[area] === options[4]
-    );
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
 
-    // Navigate to 1.a.iv and pass areas for both steps
-    router.push(
-      `/survey/dataUse/question5d/question5div?areasFor1div=${encodeURIComponent(
-        JSON.stringify(areasFor1div)
-      )}&areasFor1dv=${encodeURIComponent(JSON.stringify(areasFor1dv))}`
-    );
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5d.iii", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataUse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+        // Filter areas for 1.a.iv based on selected options
+        const areasFor1div = areasFor1diii.filter(
+          area =>
+            responses[area] === options[0] ||
+            responses[area] === options[1] ||
+            responses[area] === options[2] ||
+            responses[area] === options[3] ||
+            responses[area] === options[4]
+        );
+
+        // Navigate to 1.a.iv and pass areas for both steps
+        router.push(
+          `/survey/dataUse/question5d/question5div?areasFor1div=${encodeURIComponent(
+            JSON.stringify(areasFor1div)
+          )}&areasFor1dv=${encodeURIComponent(JSON.stringify(areasFor1dv))}`
+        );
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   return (

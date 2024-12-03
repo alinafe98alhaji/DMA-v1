@@ -31,8 +31,8 @@ const Question2ai = () => {
     setResponses(prev => ({ ...prev, [area]: value }));
   };
 
-  // Handle submission
   const handleSubmit = async () => {
+    // Check if all areas have responses
     if (Object.keys(responses).length !== areas.length) {
       setErrorMessage("Please respond to all areas before proceeding.");
       return;
@@ -46,17 +46,24 @@ const Question2ai = () => {
       return;
     }
 
-    // Log responses with questionID
-    const responseObject = {
-      userId: userId_ses,
-      questionID: "2a.i", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+    // Filter to only include areas that have been responded to
+    const filteredResponses = Object.entries(responses)
+      .filter(([_, response]) => response) // Ensure response is not empty
+      .map(([area, response]) => ({
         area,
         response
-      }))
+      }));
+
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "2a.i",
+      responses: filteredResponses,
+      submittedAt: new Date().toISOString() // Optional: add a timestamp
     };
 
-    // Send data to your API
+    console.log("Filtered Response Payload:", responseObject); // Debugging
+
+    // Send filtered data to your API
     fetch("/api/saveDataOwnershipAndManagement", {
       method: "POST",
       headers: {
@@ -72,10 +79,9 @@ const Question2ai = () => {
       })
       .then(data => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
 
         // Filter areas with Yes/Partially for 2.a.ii
-        const areasFor2aii = areas.filter(
+        const areasFor2aii = Object.keys(responses).filter(
           area => responses[area] === "Yes" || responses[area] === "Partially"
         );
 

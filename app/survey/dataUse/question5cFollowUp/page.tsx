@@ -47,9 +47,49 @@ const Question5cFollowUp = () => {
     // Clear error if all areas are answered
     setError("");
 
-    // Submit responses and navigate
-    console.log("Follow-up responses:", responses);
-    router.push(`/survey/dataUse/question5c/question5cii`);
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
+
+    if (!userId_ses) {
+      alert("User ID is missing. Please return to the basic details page.");
+      return;
+    }
+
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5c.i", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataUse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+
+        // Submit responses and navigate
+        console.log("Follow-up responses:", responses);
+        router.push(`/survey/dataUse/question5c/question5cii`);
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   // Use effect to clear error message when user starts entering data

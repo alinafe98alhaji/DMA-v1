@@ -30,7 +30,7 @@ const Question2b = () => {
   };
 
   // Handle submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (Object.keys(responses).length !== areas.length) {
       setErrorMessage("Please respond to all areas before proceeding.");
       return;

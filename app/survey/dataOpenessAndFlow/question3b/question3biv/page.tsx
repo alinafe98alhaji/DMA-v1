@@ -54,11 +54,11 @@ const Question3biv = () => {
       return;
     }
 
-    // Log responses with questionID
+    // Create response object only with the selected answers
     const responseObject = {
       userId: userId_ses,
       questionID: "3b.iv", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+      responses: Object.entries(answers).map(([area, response]) => ({
         area,
         response
       }))

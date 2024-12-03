@@ -47,15 +47,23 @@ const Question2ciii = () => {
       return;
     }
 
-    // Log responses with questionID
+    // Filter responses to only include selected areas
+    const filteredResponses = Object.entries(responses)
+      .filter(([_, response]) => response) // Exclude empty responses
+      .map(([area, response]) => ({
+        area,
+        response
+      }));
+
+    // Prepare the payload
     const responseObject = {
       userId: userId_ses,
       questionID: "2c.iii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
-        area,
-        response
-      }))
+      responses: filteredResponses,
+      submittedAt: new Date().toISOString() // Optional timestamp
     };
+
+    console.log("Filtered Response Payload:", responseObject); // Debugging
 
     // Send data to your API
     fetch("/api/saveDataOwnershipAndManagement", {
@@ -73,7 +81,7 @@ const Question2ciii = () => {
       })
       .then(data => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
+
         // Filter areas for 2.c.iv based on responses
         const areasFor2civ = areasFor2ciii.filter(
           area =>

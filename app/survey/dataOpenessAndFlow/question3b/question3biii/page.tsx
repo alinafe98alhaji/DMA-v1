@@ -74,14 +74,19 @@ const question3biii = () => {
       return;
     }
 
+    // Filter the responses to include only those with selected answers
+    const filteredResponses = Object.entries(
+      selectedOptions
+    ).map(([area, response]) => ({
+      area,
+      response
+    }));
+
     // Log responses with questionID
     const responseObject = {
       userId: userId_ses,
       questionID: "3b.iii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
-        area,
-        response
-      }))
+      responses: filteredResponses
     };
 
     // Send data to your API
@@ -101,7 +106,6 @@ const question3biii = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        // If the form is valid, navigate programmatically
         const nextPage = "/survey/dataOpenessAndFlow/question3b/question3biv";
 
         // Combine responses with the selected options and create the query string

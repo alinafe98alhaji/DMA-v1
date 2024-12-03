@@ -35,13 +35,11 @@ const Question2aiii = () => {
 
   // Handle submission
   const handleSubmit = async () => {
+    // Check if all areas have a response
     if (Object.keys(responses).length !== areasFor2aiii.length) {
       setErrorMessage("Please respond to all areas before proceeding.");
       return;
     }
-
-    // Log responses or navigate to next page
-    console.log("Responses: ", responses);
 
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
@@ -51,15 +49,23 @@ const Question2aiii = () => {
       return;
     }
 
-    // Log responses with questionID
-    const responseObject = {
-      userId: userId_ses,
-      questionID: "2a.iii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+    // Filter valid responses
+    const filteredResponses = Object.entries(responses)
+      .filter(([_, response]) => response) // Ensure the response is not empty
+      .map(([area, response]) => ({
         area,
         response
-      }))
+      }));
+
+    // Prepare the payload
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "2a.iii",
+      responses: filteredResponses,
+      submittedAt: new Date().toISOString() // Optional timestamp
     };
+
+    console.log("Filtered Response Payload:", responseObject); // Debugging
 
     // Send data to your API
     fetch("/api/saveDataOwnershipAndManagement", {
@@ -77,8 +83,7 @@ const Question2aiii = () => {
       })
       .then(data => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
-        // Example of navigation (Uncomment to use it)
+        // Navigate to the next question
         router.push("/survey/dataOwnershipAndManagement/question2b");
       })
       .catch(err => {

@@ -1,7 +1,7 @@
 "use client"; // Ensure the code runs only client-side
 
 import React, { useState } from "react";
-import Link from "next/link"; // For navigation
+import { useRouter } from "next/navigation"; // For programmatic navigation
 
 // List of areas that need to be rendered for this question
 const areas = [
@@ -20,6 +20,8 @@ type Responses = {
 };
 
 const Question5b = () => {
+  const router = useRouter(); // To navigate to the next page
+
   // Initialize state to track user responses for each area
   const [responses, setResponses] = useState<Responses>({
     "Urban Water Supply Coverage": null,
@@ -40,6 +42,62 @@ const Question5b = () => {
   const isFormComplete = Object.values(responses).every(
     response => response !== null
   );
+
+  // Handler to submit responses and navigate to the next page
+  const handleSubmit = async () => {
+    // Filter out unselected areas
+    const filteredResponses = Object.entries(
+      responses
+    ).reduce((acc, [key, value]) => {
+      if (value !== null) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {} as { [key: string]: "Yes" | "Partially" | "No" });
+
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
+
+    if (!userId_ses) {
+      alert("User ID is missing. Please return to the basic details page.");
+      return;
+    }
+
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5b", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataUse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+
+        // Navigate to the next page if valid
+        router.push("/survey/dataUse/question5b/question5bi");
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
+  };
 
   return (
     <div className="survey-container p-6">
@@ -106,19 +164,18 @@ const Question5b = () => {
         )}
       </form>
 
-      {/* Next button to navigate to the next page */}
+      {/* Next button */}
       <div className="navigation-buttons mt-6">
-        <Link href="/survey/dataUse/question5b/question5bi">
-          <button
-            type="button"
-            disabled={!isFormComplete} // Disable the button if the form is not complete
-            className={`w-full py-2 px-4 rounded-md transition duration-300 ${isFormComplete
-              ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
-              : "bg-gray-400 text-gray-200 cursor-not-allowed"}`}
-          >
-            Next
-          </button>
-        </Link>
+        <button
+          type="button"
+          disabled={!isFormComplete} // Disable the button if the form is not complete
+          className={`w-full py-2 px-4 rounded-md transition duration-300 ${isFormComplete
+            ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+            : "bg-gray-400 text-gray-200 cursor-not-allowed"}`}
+          onClick={handleSubmit} // Submit responses and navigate
+        >
+          Next
+        </button>
       </div>
     </div>
   );

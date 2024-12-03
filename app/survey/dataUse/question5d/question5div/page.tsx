@@ -48,14 +48,48 @@ const Question5div = () => {
 
     setError(""); // Clear error if all areas are answered
 
-    // Redirect to 5.d.v with areas answered "No"
-    const queryParams = new URLSearchParams();
-    queryParams.set("areasFor1dv", JSON.stringify(areasFor5dv));
+    // Retrieve user_id from sessionStorage
+    const userId_ses = sessionStorage.getItem("user_id");
 
-    // Navigate to 5.d.v
-    router.push(
-      `/survey/dataUse/question5d/question5dv?${queryParams.toString()}`
-    );
+    // Log responses with questionID
+    const responseObject = {
+      userId: userId_ses,
+      questionID: "5d.iv", // Adding questionID
+      responses: Object.entries(responses).map(([area, response]) => ({
+        area,
+        response
+      }))
+    };
+
+    // Send data to your API
+    fetch("/api/saveDataUse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(responseObject)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save responses");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log("Responses saved successfully:", data);
+        // Proceed to next question
+        // Redirect to 5.d.v with areas answered "No"
+        const queryParams = new URLSearchParams();
+        queryParams.set("areasFor1dv", JSON.stringify(areasFor5dv));
+
+        // Navigate to 5.d.v
+        router.push(
+          `/survey/dataUse/question5d/question5dv?${queryParams.toString()}`
+        );
+      })
+      .catch(err => {
+        console.error("Error saving responses:", err);
+      });
   };
 
   return (
