@@ -44,8 +44,6 @@ const Question2cVII = () => {
       return;
     }
 
-    console.log("Final responses for 2.c.vii:", responses);
-
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
 
@@ -57,7 +55,7 @@ const Question2cVII = () => {
     // Log responses with questionID
     const responseObject = {
       userId: userId_ses,
-      questionID: "2c.v.ii", // Adding questionID
+      questionID: "2c.vii", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
         response
@@ -89,11 +87,31 @@ const Question2cVII = () => {
   };
 
   const options = [
-    "Cybersecurity threats have been ignored as there has been no prior incidence.",
-    "Cybersecurity threats are not considered as we have minimal exposure on existing systems.",
-    "Some minor considerations have been put in place to mitigate against possible cyberthreats though more awareness and training is required.",
-    "Medium-level mechanisms against cyberthreats are in place with funding limitation.",
-    "Cybersecurity mechanisms are fully implemented in anticipation of a broad spectrum of possible threats."
+    {
+      label:
+        "Cybersecurity threats have been ignored as there has been no prior incidence.",
+      score: "0.2"
+    },
+    {
+      label:
+        "Cybersecurity threats are not considered as we have minimal exposure on existing systems.",
+      score: "0.4"
+    },
+    {
+      label:
+        "Some minor considerations have been put in place to mitigate against possible cyberthreats though more awareness and training is required.",
+      score: "0.6"
+    },
+    {
+      label:
+        "Medium-level mechanisms against cyberthreats are in place with funding limitation.",
+      score: "0.8"
+    },
+    {
+      label:
+        "Cybersecurity mechanisms are fully implemented in anticipation of a broad spectrum of possible threats.",
+      score: "1"
+    }
   ];
 
   if (areas.length === 0) {
@@ -135,7 +153,7 @@ const Question2cVII = () => {
                   key={index}
                   className="border border-gray-300 px-4 py-2 text-left"
                 >
-                  {option}
+                  {option.label}
                 </th>
               )}
             </tr>
@@ -149,7 +167,7 @@ const Question2cVII = () => {
                 <td className="border border-gray-300 px-4 py-2">
                   {area}
                 </td>
-                {options.map((_, optIndex) =>
+                {options.map((option, optIndex) =>
                   <td
                     key={optIndex}
                     className="border border-gray-300 px-4 py-2 text-center"
@@ -157,10 +175,9 @@ const Question2cVII = () => {
                     <input
                       type="radio"
                       name={area}
-                      value={optIndex + 1}
-                      onChange={() =>
-                        handleRadioChange(area, `Option ${optIndex + 1}`)}
-                      checked={responses[area] === `Option ${optIndex + 1}`}
+                      value={option.score}
+                      onChange={() => handleRadioChange(area, option.score)}
+                      checked={responses[area] === option.score}
                     />
                   </td>
                 )}

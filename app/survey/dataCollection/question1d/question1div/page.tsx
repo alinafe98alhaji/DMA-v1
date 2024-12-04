@@ -26,18 +26,23 @@ const Question1div = () => {
     "Tools are fully optimised, covering all specific needs of our organisation, and integrate flawlessly with our systems, enhancing overall productivity and data quality."
   ];
 
+  // Define the scores for each response option
+  const scores = [0.2, 0.4, 0.6, 0.8, 1];
+
   // State to store responses
   const [responses, setResponses] = useState<Record<string, string>>({});
+  const [scoresMap, setScoresMap] = useState<Record<string, number>>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   // Handle option change for each area
-  const handleOptionChange = (area: string, value: string) => {
+  const handleOptionChange = (area: string, value: string, score: number) => {
     // Remove error message when user starts selecting an option
     if (!responses[area]) {
       setErrorMessage("");
     }
 
     setResponses(prev => ({ ...prev, [area]: value }));
+    setScoresMap(prev => ({ ...prev, [area]: score }));
   };
 
   // Validation for the Next button
@@ -62,13 +67,14 @@ const Question1div = () => {
       return;
     }
 
-    // Log responses with questionID
+    // Log responses with questionID and scores
     const responseObject = {
       userId: userId_ses,
       questionID: "1d.iv", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: scoresMap[area] // Include the score for each area
       }))
     };
 
@@ -160,7 +166,8 @@ const Question1div = () => {
                         name={area}
                         value={option}
                         checked={responses[area] === option}
-                        onChange={() => handleOptionChange(area, option)}
+                        onChange={() =>
+                          handleOptionChange(area, option, scores[index])}
                       />
                     </label>
                   </td>

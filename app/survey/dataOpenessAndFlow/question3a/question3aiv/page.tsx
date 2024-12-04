@@ -15,13 +15,15 @@ const Question3aiv = () => {
   >({});
   const [error, setError] = useState<string>("");
 
-  const options = [
-    "Misaligned Priorities: The strategy doesn't match our long-term goals and priorities.",
-    "Insufficient Funding: There isn't enough sustained funding to support ongoing data collection.",
-    "Lack of Incentives: There are not enough incentives for organisations to keep investing in data collection improvements.",
-    "Technological Gaps: The strategy doesn't adequately address the need for up-to-date technology and infrastructure.",
-    "Knowledge Gaps: Internal capacity is inadequate to sufficiently address requirements."
-  ];
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
+  // Updated options to have only Yes, Partially, No
+  const options = ["Yes", "Partially", "No"];
 
   useEffect(
     () => {
@@ -73,7 +75,8 @@ const Question3aiv = () => {
       questionID: "3a.iv", // Adding questionID
       responses: Object.entries(selectedResponses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }))
     };
 

@@ -25,8 +25,17 @@ const Question2civ = () => {
   ];
 
   // State to store responses and validation error
-  const [responses, setResponses] = useState<Record<string, string>>({});
+  const [responses, setResponses] = useState<{ [area: string]: string }>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // Define score mapping for the options
+  const scoreMapping: { [key: string]: number } = {
+    [wordOptions[0]]: 0.2,
+    [wordOptions[1]]: 0.4,
+    [wordOptions[2]]: 0.6,
+    [wordOptions[3]]: 0.8,
+    [wordOptions[4]]: 1
+  };
 
   // Handle option change
   const handleOptionChange = (area: string, value: string) => {
@@ -57,9 +66,10 @@ const Question2civ = () => {
     const responseObject = {
       userId: userId_ses,
       questionID: "2c.iv", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+      responses: Object.entries(responses).map(([area, responseText]) => ({
         area,
-        response
+        responseText,
+        score: scoreMapping[responseText] // Get the score based on the response text
       }))
     };
 

@@ -16,12 +16,20 @@ const Question2ciii = () => {
   );
 
   // State to store responses and error message
-  const [responses, setResponses] = useState<Record<string, string>>({});
+  const [responses, setResponses] = useState<Record<string, { response: string; score: number }>>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // Scoring logic
+  const scoreMap: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0,
+  };
 
   // Handle option change
   const handleOptionChange = (area: string, value: string) => {
-    setResponses(prev => ({ ...prev, [area]: value }));
+    const score = scoreMap[value];
+    setResponses(prev => ({ ...prev, [area]: { response: value, score } }));
 
     // Clear error message when a valid response is selected
     if (errorMessage) {
@@ -32,7 +40,7 @@ const Question2ciii = () => {
   // Handle "Next" button click
   const handleNext = async () => {
     // Check if all areas have a response
-    const unansweredAreas = areasFor2ciii.filter(area => !responses[area]);
+    const unansweredAreas = areasFor2ciii.filter(area => !responses[area]?.response);
 
     if (unansweredAreas.length > 0) {
       setErrorMessage("Please provide a response for all areas.");
@@ -47,20 +55,15 @@ const Question2ciii = () => {
       return;
     }
 
-    // Filter responses to only include selected areas
-    const filteredResponses = Object.entries(responses)
-      .filter(([_, response]) => response) // Exclude empty responses
-      .map(([area, response]) => ({
-        area,
-        response
-      }));
-
     // Prepare the payload
     const responseObject = {
       userId: userId_ses,
       questionID: "2c.iii", // Adding questionID
-      responses: filteredResponses,
-      submittedAt: new Date().toISOString() // Optional timestamp
+      responses: Object.entries(responses).map(([area, { response, score }]) => ({
+        area,
+        response,
+        score,
+      })),
     };
 
     console.log("Filtered Response Payload:", responseObject); // Debugging
@@ -69,9 +72,9 @@ const Question2ciii = () => {
     fetch("/api/saveDataOwnershipAndManagement", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(responseObject)
+      body: JSON.stringify(responseObject),
     })
       .then(res => {
         if (!res.ok) {
@@ -85,9 +88,9 @@ const Question2ciii = () => {
         // Filter areas for 2.c.iv based on responses
         const areasFor2civ = areasFor2ciii.filter(
           area =>
-            responses[area] === "Yes" ||
-            responses[area] === "Partially" ||
-            responses[area] === "No"
+            responses[area].response === "Yes" ||
+            responses[area].response === "Partially" ||
+            responses[area].response === "No"
         );
 
         // Navigate to 2.c.iv and pass areas as query parameters
@@ -123,18 +126,16 @@ const Question2ciii = () => {
         2.c.iii: Does your organisation apply rules for data protection and
         security?
       </h1>
-      {areasFor2ciii.map((area: string) =>
+      {areasFor2ciii.map((area: string) => (
         <div key={area} className="mb-4">
-          <label className="block font-semibold mb-2">
-            {area}
-          </label>
+          <label className="block font-semibold mb-2">{area}</label>
           <div className="flex gap-4">
             <label>
               <input
                 type="radio"
                 name={area}
                 value="Yes"
-                checked={responses[area] === "Yes"}
+                checked={responses[area]?.response === "Yes"}
                 onChange={() => handleOptionChange(area, "Yes")}
               />
               Yes
@@ -144,7 +145,7 @@ const Question2ciii = () => {
                 type="radio"
                 name={area}
                 value="Partially"
-                checked={responses[area] === "Partially"}
+                checked={responses[area]?.response === "Partially"}
                 onChange={() => handleOptionChange(area, "Partially")}
               />
               Partially
@@ -154,18 +155,15 @@ const Question2ciii = () => {
                 type="radio"
                 name={area}
                 value="No"
-                checked={responses[area] === "No"}
+                checked={responses[area]?.response === "No"}
                 onChange={() => handleOptionChange(area, "No")}
               />
               No
             </label>
           </div>
         </div>
-      )}
-      {errorMessage &&
-        <div className="text-red-500 mt-4">
-          {errorMessage}
-        </div>}
+      ))}
+      {errorMessage && <div className="text-red-500 mt-4">{errorMessage}</div>}
       <button
         onClick={handleNext}
         className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"

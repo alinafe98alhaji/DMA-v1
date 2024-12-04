@@ -16,6 +16,13 @@ const Question1bi = () => {
   const [responses, setResponses] = useState<{ [area: string]: string }>({});
   const [error, setError] = useState<string>(""); // Error state for validation
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Handle selection
   const handleSelection = (area: string, value: string) => {
     setResponses(prev => ({ ...prev, [area]: value }));
@@ -47,7 +54,8 @@ const Question1bi = () => {
       questionID: "1b.i", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }))
     };
     console.log("1b.i Responses:", responseObject); // Log for debugging

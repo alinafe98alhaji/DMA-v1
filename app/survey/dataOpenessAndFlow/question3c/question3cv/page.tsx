@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
+// Define areas and options with their respective scores
 const areas = [
   "Urban Water Supply Coverage",
   "Urban Sanitation Sector Coverage",
@@ -13,12 +14,31 @@ const areas = [
   "Utility Operations: Technical, Commercial, Financial, HR"
 ];
 
-const options = [
-  "Open data is not a priority, resulting in negligible external engagement.",
-  "Policies exist but lack consistency, leading to limited engagement.",
-  "Clearer, more consistent policies increase engagement, though some accessibility issues remain.",
-  "Well-established policies enhance accessibility, achieving high engagement with occasional support gaps.",
-  "Optimized policies maximize accessibility and engagement, continuously supported by updates and community interaction."
+const optionScores = [
+  {
+    text:
+      "Open data is not a priority, resulting in negligible external engagement.",
+    score: 0.2
+  },
+  {
+    text: "Policies exist but lack consistency, leading to limited engagement.",
+    score: 0.4
+  },
+  {
+    text:
+      "Clearer, more consistent policies increase engagement, though some accessibility issues remain.",
+    score: 0.6
+  },
+  {
+    text:
+      "Well-established policies enhance accessibility, achieving high engagement with occasional support gaps.",
+    score: 0.8
+  },
+  {
+    text:
+      "Optimized policies maximize accessibility and engagement, continuously supported by updates and community interaction.",
+    score: 1
+  }
 ];
 
 const Question3cv = () => {
@@ -27,8 +47,8 @@ const Question3cv = () => {
     Object.fromEntries(areas.map(area => [area, null]))
   );
 
-  const handleSelection = (area: string, value: number) => {
-    setResponses(prev => ({ ...prev, [area]: value }));
+  const handleSelection = (area: string, score: number) => {
+    setResponses(prev => ({ ...prev, [area]: score }));
   };
 
   const handleNext = async () => {
@@ -87,13 +107,13 @@ const Question3cv = () => {
             <th className="px-4 py-2 border-b bg-black-100 text-center">
               Area
             </th>
-            {options.map((option, index) =>
+            {optionScores.map((option, index) =>
               <th
                 key={index}
                 className="px-4 py-2 border-b bg-black-100 text-center"
               >
                 <strong>
-                  {option}
+                  {option.text}
                 </strong>
               </th>
             )}
@@ -105,14 +125,14 @@ const Question3cv = () => {
               <td className="px-4 py-2 border-b text-left">
                 {area}
               </td>
-              {options.map((_, index) =>
+              {optionScores.map((option, index) =>
                 <td key={index} className="px-4 py-2 border-b text-center">
                   <input
                     type="radio"
                     name={area}
-                    value={index + 1}
-                    checked={responses[area] === index + 1}
-                    onChange={() => handleSelection(area, index + 1)}
+                    value={option.score}
+                    checked={responses[area] === option.score}
+                    onChange={() => handleSelection(area, option.score)}
                     className="hover:bg-blue-100 rounded-md"
                   />
                 </td>

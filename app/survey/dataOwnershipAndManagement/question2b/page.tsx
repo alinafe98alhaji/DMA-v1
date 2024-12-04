@@ -21,6 +21,13 @@ const Question2b = () => {
   const [responses, setResponses] = useState<{ [area: string]: string }>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Handle selection
   const handleSelection = (area: string, value: string) => {
     if (!responses[area]) {
@@ -50,7 +57,8 @@ const Question2b = () => {
       questionID: "2b", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }))
     };
 

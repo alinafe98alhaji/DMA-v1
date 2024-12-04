@@ -3,6 +3,15 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
+// Mapping options to scores
+const optionScores: { [key: string]: number } = {
+  "Centralised KPIs are totally ineffective, making it difficult to monitor performance effectively.": 0.2,
+  "Basic KPIs are in place but lack standardisation, resulting in inconsistent performance monitoring across the organisation.": 0.4,
+  "KPIs are more standardised and centralised, improving performance monitoring, though integration across all departments is incomplete.": 0.6,
+  "Well-defined, standardised KPIs are fully established and mostly integrated, providing reliable performance monitoring, with minor gaps in some areas.": 0.8,
+  "Fully optimised, standardised, and centralised KPIs comprehensively support performance monitoring, driving continuous improvement across the organisation.": 1
+};
+
 const Question5civ = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -45,23 +54,14 @@ const Question5civ = () => {
     // Clear error if all areas are answered
     setError("");
 
-    console.log("Responses:", responses);
-
-    // Retrieve user_id from sessionStorage
-    const userId_ses = sessionStorage.getItem("user_id");
-
-    if (!userId_ses) {
-      alert("User ID is missing. Please return to the basic details page.");
-      return;
-    }
-
-    // Log responses with questionID
+    // Prepare the responses to be sent to the backend
     const responseObject = {
-      userId: userId_ses,
+      userId: sessionStorage.getItem("user_id"), // Retrieve user_id from sessionStorage
       questionID: "5c.iv", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: optionScores[response] // Add score to each response based on the selected option
       }))
     };
 
@@ -82,7 +82,6 @@ const Question5civ = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        // Route to /survey/dataUse/question5d after successful submission
         router.push("/survey/dataUse/question5d");
       })
       .catch(err => {

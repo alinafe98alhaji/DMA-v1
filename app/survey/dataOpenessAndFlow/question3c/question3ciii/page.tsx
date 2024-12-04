@@ -33,6 +33,13 @@ const Question3ciii = () => {
 
   const [error, setError] = useState<string | null>(null); // State for error message
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Handler to update responses when a user selects a radio button
   const handleSelection = (area: string, value: "Yes" | "Partially" | "No") => {
     setResponses(prev => ({
@@ -70,7 +77,8 @@ const Question3ciii = () => {
       questionID: "3c.iii", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: response ? responseScores[response] : 0 // Include the score
       }))
     };
 

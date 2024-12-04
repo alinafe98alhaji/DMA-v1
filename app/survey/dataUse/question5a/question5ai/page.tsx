@@ -12,18 +12,13 @@ const Question5ai = () => {
     : {};
 
   // State to store user inputs for the selected areas
-  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const [answers, setAnswers] = useState<{ [key: string]: { text: string, score: number } }>({});
   const [isMounted, setIsMounted] = useState(false); // State to track mounting (for client-side check)
 
   // UseEffect to set isMounted to true after mounting
   useEffect(() => {
     setIsMounted(true); // Set to true after the component is mounted
   }, []);
-
-  // Handler to update answers
-  const handleInputChange = (area: string, value: string) => {
-    setAnswers(prev => ({ ...prev, [area]: value }));
-  };
 
   // Define the options
   const options = [
@@ -34,9 +29,30 @@ const Question5ai = () => {
     "State-of-the-art platforms deliver timely, accurate, and actionable insights that consistently drive strategic decisions across the organisation."
   ];
 
+  // Define the corresponding scores for each option
+const scoreMapping: { [key: number]: number } = {
+  0: 0.2,
+  1: 0.4,
+  2: 0.6,
+  3: 0.8,
+  4: 1
+};
+
+
   if (!isMounted) {
     return null; // Prevent rendering before the component is mounted
   }
+
+  // Handler to update answers (now stores both text and score)
+  const handleInputChange = (area: string, index: number) => {
+    const selectedText = options[index];
+    const selectedScore = scoreMapping[index];
+
+    setAnswers(prev => ({
+      ...prev,
+      [area]: { text: selectedText, score: selectedScore }
+    }));
+  };
 
   // Check if all answers have been selected
   const isFormComplete = Object.keys(responses).every(area => answers[area]);
@@ -46,7 +62,13 @@ const Question5ai = () => {
     // Filter out areas where the user has not selected a response
     const selectedAnswers = Object.entries(answers)
       .filter(([_, value]) => value !== null && value !== undefined)
-      .map(([area, value]) => ({ area, response: value }));
+      .map(([area, value]) => ({
+        area,
+        response: {
+          text: value.text,
+          score: value.score
+        }
+      }));
 
     if (selectedAnswers.length === 0) {
       alert("Please select at least one answer before submitting.");
@@ -146,9 +168,9 @@ const Question5ai = () => {
                       <input
                         type="radio"
                         name={area}
-                        value={option}
-                        checked={answers[area] === option}
-                        onChange={() => handleInputChange(area, option)}
+                        value={scoreMapping[index]} // Store the score
+                        checked={answers[area]?.score === scoreMapping[index]}
+                        onChange={() => handleInputChange(area, index)}
                       />
                     </label>
                   </td>

@@ -14,6 +14,13 @@ const Question1aV = () => {
   const [responses, setResponses] = useState<Record<string, string>>({}); // Store user responses
   const [error, setError] = useState<string>(""); // Store error message
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   useEffect(
     () => {
       if (areasFor1av) {
@@ -65,7 +72,8 @@ const Question1aV = () => {
       questionID: "1.a.v", // Including the question ID here
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }))
     };
 

@@ -27,6 +27,13 @@ const Question3biv = () => {
   // State to handle error message visibility
   const [showError, setShowError] = useState(false);
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Handler for updating user selections
   const handleSelection = (area: string, value: "Yes" | "Partially" | "No") => {
     setAnswers(prev => ({ ...prev, [area]: value }));
@@ -60,7 +67,8 @@ const Question3biv = () => {
       questionID: "3b.iv", // Adding questionID
       responses: Object.entries(answers).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: response ? responseScores[response] : 0 // Include the score
       }))
     };
 

@@ -27,74 +27,105 @@ const Question1CI = () => {
     }
   }, [responsesQuery]);
 
+  // Define response options with scores
+  const options = [
+    {
+      text: "The existing resourcing is completely inadequate, and cannot support basic sustainability needs.",
+      score: 0.2
+    },
+    {
+      text: "The allocated resources address some short-term needs but lack future-focused sustainability.",
+      score: 0.4
+    },
+    {
+      text: "The available resources partially address sustainability but is not fully comprehensive",
+      score: 0.6
+    },
+    {
+      text: "A comprehensive budget is in place but not fully optimised, with some sustainability gaps remaining.",
+      score: 0.8
+    },
+    {
+      text: "Comprehensive resources are allocated and implemented that ensure long-term sustainability of data collection.",
+      score: 1.0
+    }
+  ];
+
   // Handle Next button click with validation
   const handleNextClick = async (e: React.MouseEvent) => {
     e.preventDefault();
-  
+
     // Ensure all filtered areas are answered
-    const allAnswered = filteredAreas.every((area) => {
-      const selectedValue = document.querySelector(`input[name="${area}"]:checked`);
+    const allAnswered = filteredAreas.every(area => {
+      const selectedValue = document.querySelector(
+        `input[name="${area}"]:checked`
+      );
       return selectedValue !== null;
     });
-  
+
     if (!allAnswered) {
       setError("Please respond to all areas before submitting.");
       return;
     }
-  
+
     setError(""); // Clear error if validation passes
-  
+
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
-  
+
     if (!userId_ses) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
-  
-    // Build response object with only filtered areas
-    const filteredResponses = filteredAreas.map((area) => ({
-      area,
-      response: responses[area], // Use the current state of responses
-    }));
-  
+
+    // Build response object with scores for filtered areas
+    const filteredResponses = filteredAreas.map(area => {
+      const selectedOption = options.find(
+        option => option.text === responses[area]
+      );
+      return {
+        area,
+        response: responses[area],
+        score: selectedOption?.score || 0 // Assign score or default to 0
+      };
+    });
+
     const responseObject = {
       userId: userId_ses,
       questionID: "1c.i",
       responses: filteredResponses,
-      submittedAt: new Date().toISOString(), // Add a submission timestamp
+      submittedAt: new Date().toISOString() // Add a submission timestamp
     };
-  
-    console.log("Filtered Response Payload:", responseObject); // Debugging
-  
+
+    console.log("Filtered Response Payload with Scores:", responseObject); // Debugging
+
     // Send filtered data to your API
     fetch("/api/saveResponses", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(responseObject),
+      body: JSON.stringify(responseObject)
     })
-      .then((res) => {
+      .then(res => {
         if (!res.ok) {
           throw new Error("Failed to save responses");
         }
         return res.json();
       })
-      .then((data) => {
+      .then(data => {
         console.log("Responses saved successfully:", data);
-  
+
         // Proceed to the next page
         const nextPageLink = `/survey/dataCollection/question1c/question1cii?responses=${encodeURIComponent(
           JSON.stringify(responses)
         )}`;
         window.location.href = nextPageLink;
       })
-      .catch((err) => {
+      .catch(err => {
         console.error("Error saving responses:", err);
       });
   };
-  
 
   // Handle radio button selection to clear error when selected
   const handleRadioChange = (area: string, value: string) => {
@@ -138,98 +169,44 @@ const Question1CI = () => {
           <thead>
             <tr>
               <th className="border border-gray-300 p-2 text-left">Areas</th>
-              <th className="border border-gray-300 p-2 text-center">
-                The existing resourcing is completely inadequate, and cannot
-                support basic sustainability needs.
-              </th>
-              <th className="border border-gray-300 p-2 text-center">
-                The allocated resources address some short-term needs but lack
-                future-focused sustainability.
-              </th>
-              <th className="border border-gray-300 p-2 text-center">
-                The available resources partially address sustainability but is not fully comprehensive
-              </th>
-              <th className="border border-gray-300 p-2 text-center">
-                A comprehensive budget is in place but not fully optimised, with some sustainability gaps remaining.
-              </th>
-              <th className="border border-gray-300 p-2 text-center">
-                Comprehensive resources are allocated and implemented that ensure long-term sustainability of data collection.
-              </th>
+              {options.map(option => (
+                <th
+                  key={option.text}
+                  className="border border-gray-300 p-2 text-center"
+                >
+                  {option.text}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {filteredAreas.map(area =>
+            {filteredAreas.map(area => (
               <tr key={area} className="hover:bg-gray-100">
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}
                 </td>
-                <td className="border border-gray-300 text-center">
-                  <input
-                    type="radio"
-                    name={area}
-                    value="The existing resourcing is completely inadequate, and cannot
-                    support basic sustainability needs."
-                    checked={responses[area] === "The existing resourcing is completely inadequate, and cannot support basic sustainability needs."}
-                    onChange={() =>
-                      handleRadioChange(area, "The existing resourcing is completely inadequate, and cannot support basic sustainability needs.")
-                    }
-                  />
-                </td>
-                <td className="border border-gray-300 text-center">
-                  <input
-                    type="radio"
-                    name={area}
-                    value="The allocated resources address some short-term needs but lack future-focused sustainability."
-                    checked={responses[area] === "The allocated resources address some short-term needs but lack future-focused sustainability."}
-                    onChange={() =>
-                      handleRadioChange(area, "The allocated resources address some short-term needs but lack future-focused sustainability.")
-                    }
-                  />
-                </td>
-                <td className="border border-gray-300 text-center">
-                  <input
-                    type="radio"
-                    name={area}
-                    value="The available resources partially address sustainability but is not fully comprehensive"
-                    checked={responses[area] === "The available resources partially address sustainability but is not fully comprehensive"}
-                    onChange={() =>
-                      handleRadioChange(area, "The available resources partially address sustainability but is not fully comprehensive")
-                    }
-                  />
-                </td>
-                <td className="border border-gray-300 text-center">
-                  <input
-                    type="radio"
-                    name={area}
-                    value="A comprehensive budget is in place but not fully optimised, with some sustainability gaps remaining."
-                    checked={responses[area] === "A comprehensive budget is in place but not fully optimised, with some sustainability gaps remaining."}
-                    onChange={() =>
-                      handleRadioChange(area, "A comprehensive budget is in place but not fully optimised, with some sustainability gaps remaining.")
-                    }
-                  />
-                </td>
-                <td className="border border-gray-300 text-center">
-                  <input
-                    type="radio"
-                    name={area}
-                    value="Comprehensive resources are allocated and implemented that ensure long-term sustainability of data collection."
-                    checked={responses[area] === "Comprehensive resources are allocated and implemented that ensure long-term sustainability of data collection."}
-                    onChange={() =>
-                      handleRadioChange(area, "Comprehensive resources are allocated and implemented that ensure long-term sustainability of data collection.")
-                    }
-                  />
-                </td>
+                {options.map(option => (
+                  <td
+                    key={option.text}
+                    className="border border-gray-300 text-center"
+                  >
+                    <input
+                      type="radio"
+                      name={area}
+                      value={option.text}
+                      checked={responses[area] === option.text}
+                      onChange={() => handleRadioChange(area, option.text)}
+                    />
+                  </td>
+                ))}
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>
 
       {/* Error message display */}
-      {error &&
-        <p className="text-red-500">
-          {error}
-        </p>}
+      {error && <p className="text-red-500">{error}</p>}
 
       {/* Next Button */}
       <div className="navigation-buttons mt-4">

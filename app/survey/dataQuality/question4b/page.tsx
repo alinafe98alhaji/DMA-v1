@@ -64,7 +64,7 @@ const Question4b = () => {
     };
 
     // Send data to your API
-    fetch("/api/saveDataQuality", {
+    fetch("/api/nationalLevel", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

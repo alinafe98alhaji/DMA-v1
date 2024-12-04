@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
+// Define areas and options
 const areas = [
   "Urban Water Supply Coverage",
   "Urban Sanitation Sector Coverage",
@@ -15,22 +16,36 @@ const areas = [
 
 const options = [
   "External incentives are ineffective, offering inadequate value, with no observable impact on promoting data-driven decision-making.",
-  "Some incentives exist, but not well aligned to organisational goals and their impact is limited and sporadic, leading to occasional data-driven decisions.Lack of awareness about available incentives among relevant staff.",
+  "Some incentives exist, but not well aligned to organisational goals and their impact is limited and sporadic, leading to occasional data-driven decisions. Lack of awareness about available incentives among relevant staff.",
   "Incentives are better structured and more frequent, starting to influence decision-making more consistently, though not systematically across all areas.",
-  "Strong and well-implemented incentives are in place,  promoting data-driven decision-making in many parts of the organisation, with some areas still to improve.",
+  "Strong and well-implemented incentives are in place, promoting data-driven decision-making in many parts of the organisation, with some areas still to improve.",
   "Comprehensive and highly effective incentives are established, consistently and successfully encouraging data-driven decision-making throughout the organisation."
 ];
 
+// Mapping options to scores
+const optionScores: { [key: string]: number } = {
+  "External incentives are ineffective, offering inadequate value, with no observable impact on promoting data-driven decision-making.": 0.2,
+  "Some incentives exist, but not well aligned to organisational goals and their impact is limited and sporadic, leading to occasional data-driven decisions. Lack of awareness about available incentives among relevant staff.": 0.4,
+  "Incentives are better structured and more frequent, starting to influence decision-making more consistently, though not systematically across all areas.": 0.6,
+  "Strong and well-implemented incentives are in place, promoting data-driven decision-making in many parts of the organisation, with some areas still to improve.": 0.8,
+  "Comprehensive and highly effective incentives are established, consistently and successfully encouraging data-driven decision-making throughout the organisation.": 1
+};
+
 const Question5bi = () => {
-  const router = useRouter(); // Initialize useRouter for client-side navigation
-  const [responses, setResponses] = useState<{ [key: string]: number | null }>(
+  const router = useRouter();
+  const [responses, setResponses] = useState<{ [key: string]: { text: string, score: number } | null }>(
     Object.fromEntries(areas.map(area => [area, null]))
   );
 
-  const handleSelection = (area: string, value: number) => {
-    setResponses(prev => ({ ...prev, [area]: value }));
+  // Handle selection of the option
+  const handleSelection = (area: string, option: string) => {
+    setResponses(prev => ({
+      ...prev,
+      [area]: { text: option, score: optionScores[option] }
+    }));
   };
 
+  // Handle submission of the responses
   const handleNext = async () => {
     console.log("Final answers submitted:", responses);
 
@@ -46,7 +61,7 @@ const Question5bi = () => {
       questionID: "5b.i",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response: response ? { text: response.text, score: response.score } : null
       }))
     };
 
@@ -72,7 +87,7 @@ const Question5bi = () => {
     if (!userId_ses) {
       alert("User ID is missing. Please return to the basic details page.");
     }
-  }, []); // Ensures alert is shown on first render if user ID is missing
+  }, []);
 
   return (
     <div className="survey-container p-6">
@@ -99,41 +114,35 @@ const Question5bi = () => {
       <table className="min-w-full table-auto border-collapse">
         <thead>
           <tr>
-            <th className="px-4 py-2 border-b bg-black-100 text-center">
-              Area
-            </th>
-            {options.map((option, index) =>
+            <th className="px-4 py-2 border-b bg-black-100 text-center">Area</th>
+            {options.map((option, index) => (
               <th
                 key={index}
                 className="px-4 py-2 border-b bg-black-100 text-center"
               >
-                <strong>
-                  {option}
-                </strong>
+                <strong>{option}</strong>
               </th>
-            )}
+            ))}
           </tr>
         </thead>
         <tbody>
-          {areas.map(area =>
+          {areas.map(area => (
             <tr key={area}>
-              <td className="px-4 py-2 border-b text-left">
-                {area}
-              </td>
-              {options.map((_, index) =>
+              <td className="px-4 py-2 border-b text-left">{area}</td>
+              {options.map((option, index) => (
                 <td key={index} className="px-4 py-2 border-b text-center">
                   <input
                     type="radio"
                     name={area}
-                    value={index + 1}
-                    checked={responses[area] === index + 1}
-                    onChange={() => handleSelection(area, index + 1)}
+                    value={option}
+                    checked={responses[area]?.text === option}
+                    onChange={() => handleSelection(area, option)}
                     className="hover:bg-blue-100 rounded-md"
                   />
                 </td>
-              )}
+              ))}
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
 

@@ -124,6 +124,13 @@ const Question5bii = () => {
                 return;
               }
 
+              // Map responses to scores
+              const responseScores: Record<string, number> = {
+                Yes: 1,
+                Partially: 0.5,
+                No: 0
+              };
+
               // Log responses with questionID
               const responseObject = {
                 userId: userId_ses,
@@ -132,7 +139,8 @@ const Question5bii = () => {
                   responses
                 ).map(([area, response]) => ({
                   area,
-                  response
+                  response,
+                  score: response ? responseScores[response] : 0 // Include the score
                 }))
               };
 

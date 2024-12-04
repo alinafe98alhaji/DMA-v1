@@ -16,17 +16,29 @@ const Question3bv = () => {
     .filter(([_, value]) => value === "Yes" || value === "Partially")
     .map(([area]) => area);
 
+  // Type for the optionScores to explicitly define the keys as strings and values as numbers
+  const optionScores: { [key: string]: number } = {
+    "Centralised platforms don't connect different data sources well, causing major problems in data sharing.": 0.2,
+    "Some integration features exist, but systems often have compatibility issues and support limited data formats, leading to occasional disruptions with frequent downtimes.": 0.4,
+    "Systems are improving, with better integration and support for common data formats, but still lack robustness and speed. The user interface is too complex, making it difficult for users to operate efficiently.": 0.6,
+    "Systems are well-integrated, supporting many data formats and ensuring reliable data transfer with minimal delays or errors. Staff lack adequate training to use the systems effectively, leading to underutilisation.": 0.8,
+    "Centralised systems are top-notch, connecting all data sources seamlessly with high reliability, speed, and no compatibility issues, ensuring optimal data sharing.": 1
+  };
+
   // State to track user inputs for the filtered areas
   const [answers, setAnswers] = useState(() =>
     partiallyAreas.reduce((acc, area) => {
-      acc[area] = null; // Initialize answers as null
+      acc[area] = { response: null, score: null }; // Initialize answers with null values
       return acc;
-    }, {} as { [key: string]: string | null })
+    }, {} as { [key: string]: { response: string | null, score: number | null } })
   );
 
-  // Handler to update answers
+  // Handler to update answers with selected response and score
   const handleSelection = (area: string, value: string) => {
-    setAnswers(prev => ({ ...prev, [area]: value }));
+    setAnswers(prev => ({
+      ...prev,
+      [area]: { response: value, score: optionScores[value] }
+    }));
   };
 
   // Five detailed options for the radio buttons
@@ -51,7 +63,7 @@ const Question3bv = () => {
           </h1>
           <li>
             This question evaluates the functional effectiveness of internal
-            central systems
+            central systems.
           </li>
         </ul>
       </div>
@@ -143,7 +155,7 @@ const Question3bv = () => {
                           type="radio"
                           name={area}
                           value={option}
-                          checked={answers[area] === option}
+                          checked={answers[area]?.response === option}
                           onChange={() => handleSelection(area, option)}
                         />
                       </td>
@@ -160,7 +172,7 @@ const Question3bv = () => {
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
           onClick={async () => {
             // Check if all answers are selected before submitting
-            if (Object.values(answers).some(answer => answer === null)) {
+            if (Object.values(answers).some(answer => answer.response === null)) {
               alert("Please complete all selections before proceeding.");
               return;
             }
@@ -175,13 +187,14 @@ const Question3bv = () => {
               return;
             }
 
-            // Create responseObject only with the selected answers
+            // Create responseObject with both response and score
             const responseObject = {
               userId: userId_ses,
               questionID: "3b.v", // Adding questionID
-              responses: Object.entries(answers).map(([area, response]) => ({
+              responses: Object.entries(answers).map(([area, { response, score }]) => ({
                 area,
-                response
+                response,
+                score // Include the score here
               }))
             };
 

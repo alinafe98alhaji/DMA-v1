@@ -63,7 +63,7 @@ const Question2c = () => {
     };
 
     // Send data to your API
-    fetch("/api/saveDataOwnershipAndManagement", {
+    fetch("/api/nationalLevel", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

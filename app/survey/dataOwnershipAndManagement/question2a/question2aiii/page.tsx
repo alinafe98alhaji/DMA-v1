@@ -21,6 +21,15 @@ const Question2aiii = () => {
     "Fully established and respected principles, effectively eliminating any disagreements."
   ];
 
+  // Define the scores for each option with explicit types
+  const scores: { [key: string]: number } = {
+    "No clear data ownership principles. Stakeholders are not adequately informed or trained on the importance and application of these principles.": 0.2,
+    "Basic principles outlined, but with ambiguous language, causing some confusion.": 0.4,
+    "Better definition and communication of ownership principles, with some enforcement issues.": 0.6,
+    "Strong principles recognised by most, with occasional minor disagreements.": 0.8,
+    "Fully established and respected principles, effectively eliminating any disagreements.": 1
+  };
+
   // State to track responses
   const [responses, setResponses] = useState<{ [area: string]: string }>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -49,12 +58,13 @@ const Question2aiii = () => {
       return;
     }
 
-    // Filter valid responses
+    // Filter valid responses and include the scores
     const filteredResponses = Object.entries(responses)
       .filter(([_, response]) => response) // Ensure the response is not empty
       .map(([area, response]) => ({
         area,
-        response
+        response,
+        score: scores[response] // Add the score for each response
       }));
 
     // Prepare the payload

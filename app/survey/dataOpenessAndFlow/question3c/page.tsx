@@ -58,7 +58,7 @@ const Question3c = () => {
     };
 
     // Send data to your API
-    fetch("/api/saveDataOpenessAndFlow", {
+    fetch("/api/nationalLevel", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

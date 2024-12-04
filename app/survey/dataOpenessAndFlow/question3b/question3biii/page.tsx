@@ -10,7 +10,9 @@ const question3biii = () => {
 
   const [responses, setResponses] = useState<any>(null);
   const [filteredAreas, setFilteredAreas] = useState<string[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<any>({}); // Track selected options for each area
+  const [selectedOptions, setSelectedOptions] = useState<
+    Record<string, string>
+  >({}); // Type the selectedOptions state
   const [valid, setValid] = useState<boolean>(true); // Initially valid, only become valid after all questions are answered
   const [showError, setShowError] = useState<boolean>(false); // To control the error message display
 
@@ -57,6 +59,26 @@ const question3biii = () => {
     setValid(allAnswered); // Update the validation state
   };
 
+  // Map responses to corresponding score values
+  const responseToScore = (response: string) => {
+    // Ensure response is treated as a string
+    const responseStr = response as string;
+    switch (responseStr) {
+      case "Centralised platforms don't connect different data sources well, causing major problems in data sharing.":
+        return 0.2; // Return numeric score
+      case "Some integration features exist, but systems often have compatibility issues and support limited data formats, leading to occasional disruptions with frequent downtimes.":
+        return 0.4; // Return numeric score
+      case "Systems are improving, with better integration and support for common data formats, but still lack robustness and speed. The user interface is too complex, making it difficult for users to operate efficiently.":
+        return 0.6; // Return numeric score
+      case "Systems are well-integrated, supporting many data formats and ensuring reliable data transfer with minimal delays or errors. Staff lack adequate training to use the systems effectively, leading to underutilisation.":
+        return 0.8; // Return numeric score
+      case "Centralised systems are top-notch, connecting all data sources seamlessly with high reliability, speed, and no compatibility issues, ensuring optimal data sharing.":
+        return 1.0; // Return numeric score
+      default:
+        return 0; // Return 0 if response is not matched
+    }
+  };
+
   // Handle the Next button click, preventing navigation if form is invalid
   const handleNextClick = async (e: React.MouseEvent) => {
     // If not valid, stop navigation
@@ -79,7 +101,8 @@ const question3biii = () => {
       selectedOptions
     ).map(([area, response]) => ({
       area,
-      response
+      response,
+      score: responseToScore(response) // Include the score in the response object
     }));
 
     // Log responses with questionID

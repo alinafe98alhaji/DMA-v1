@@ -21,6 +21,13 @@ const Question2ai = () => {
   const [responses, setResponses] = useState<{ [area: string]: string }>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Handle selection
   const handleSelection = (area: string, value: string) => {
     // Clear error message when user starts selecting
@@ -51,7 +58,8 @@ const Question2ai = () => {
       .filter(([_, response]) => response) // Ensure response is not empty
       .map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }));
 
     const responseObject = {

@@ -12,6 +12,13 @@ const Question5dV = () => {
   const [isSubmitted, setIsSubmitted] = useState(false); // Track submission status
   const [error, setError] = useState<string | null>(null);
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   useEffect(
     () => {
       if (areasFor1dv) {
@@ -46,7 +53,8 @@ const Question5dV = () => {
       questionID: "5d.v", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }))
     };
 
@@ -164,6 +172,7 @@ const Question5dV = () => {
       {isSubmitted &&
         <div className="mt-4 text-green-600">
           Responses submitted successfully!
+          <div>Assessment completed.</div>
         </div>}
     </div>
   );

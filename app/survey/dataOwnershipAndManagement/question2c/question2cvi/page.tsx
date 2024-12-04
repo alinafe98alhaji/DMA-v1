@@ -12,6 +12,13 @@ const Question2cVI = () => {
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Parse the areas from the URL query parameter
   useEffect(
     () => {
@@ -58,10 +65,11 @@ const Question2cVI = () => {
     // Log responses with questionID
     const responseObject = {
       userId: userId_ses,
-      questionID: "2c.v.i", // Adding questionID
+      questionID: "2c.vi", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }))
     };
 

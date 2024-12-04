@@ -21,6 +21,13 @@ const Question1aii = () => {
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, boolean>>({});
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Handle option change (update responses state)
   const handleOptionChange = (area: string, value: string) => {
     setResponses(prev => ({ ...prev, [area]: value }));
@@ -55,13 +62,14 @@ const Question1aii = () => {
       return;
     }
 
-    // Log the responses with the question ID
+    // Prepare responses with scores
     const responseObject = {
       userId, // Include user_id
       questionID: "1a.ii",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: responseScores[response] // Attach the score to the response
       }))
     };
 

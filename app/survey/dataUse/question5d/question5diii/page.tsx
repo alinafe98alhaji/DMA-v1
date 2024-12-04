@@ -28,6 +28,15 @@ const Question5diii = () => {
     "Fully optimised, standardised, and centralised programmes comprehensively support data literacy improvements, driving continuous improvement across the organisation in all data areas."
   ];
 
+  // Mapping options to scores
+  const optionScores: { [key: string]: number } = {
+    "Capacity building/training programmes are totally ineffective, making it difficult to improve data literacy.": 0.2,
+    "Basic programmes are in place but lack regularity or standardisation, resulting in inconsistent data literacy improvements across the organisation.": 0.4,
+    "Programmes are more standardised and regular, improving data literacy, though they may not cover all data areas": 0.6,
+    "Regular, standardised programmes are fully established and well integrated, though there are still gaps in some areas.": 0.8,
+    "Fully optimised, standardised, and centralised programmes comprehensively support data literacy improvements, driving continuous improvement across the organisation in all data areas.": 1
+  };
+
   // Handle option change
   const handleOptionChange = (area: string, value: string) => {
     setResponses(prev => ({ ...prev, [area]: value }));
@@ -55,7 +64,8 @@ const Question5diii = () => {
       questionID: "5d.iii", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: optionScores[response] // Send the score based on the selected response
       }))
     };
 

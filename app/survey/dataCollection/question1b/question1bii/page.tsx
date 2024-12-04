@@ -12,22 +12,37 @@ const Question1bii = () => {
     searchParams.get("pageData") || "[]"
   );
 
-  // Define 5-option radio values
+  // Define 5-option radio values and scores
   const options = [
-    "The process is ineffective and unresourced, leading to significant gaps in data collection coverage.",
-    "Initial processes are complex, partially resourced and inconsistently applied, resulting in uneven data collection.",
-    "Processes are improving, becoming more standard and slightly more inclusive, but data collection is still not universal.",
-    "Well-implemented processes ensure broad coverage, with only some small oversights.",
-    "The process is fully optimised and ensures complete, universal data collection."
+    {
+      text: "The process is ineffective and unresourced, leading to significant gaps in data collection coverage.",
+      score: 0.2
+    },
+    {
+      text: "Initial processes are complex, partially resourced and inconsistently applied, resulting in uneven data collection.",
+      score: 0.4
+    },
+    {
+      text: "Processes are improving, becoming more standard and slightly more inclusive, but data collection is still not universal.",
+      score: 0.6
+    },
+    {
+      text: "Well-implemented processes ensure broad coverage, with only some small oversights.",
+      score: 0.8
+    },
+    {
+      text: "The process is fully optimised and ensures complete, universal data collection.",
+      score: 1.0
+    }
   ];
 
   // State to track responses
-  const [responses, setResponses] = useState<{ [area: string]: string }>({});
+  const [responses, setResponses] = useState<{ [area: string]: { text: string; score: number } }>({});
   const [error, setError] = useState<string>(""); // Error state for validation
 
   // Handle selection
-  const handleSelection = (area: string, value: string) => {
-    setResponses(prev => ({ ...prev, [area]: value }));
+  const handleSelection = (area: string, option: { text: string; score: number }) => {
+    setResponses(prev => ({ ...prev, [area]: option }));
     // Clear error message if any option is selected
     if (error) {
       setError("");
@@ -54,12 +69,13 @@ const Question1bii = () => {
     const responseObject = {
       userId: userId_ses,
       questionID: "1b.ii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+      responses: Object.entries(responses).map(([area, { text, score }]) => ({
         area,
-        response
+        response: text,
+        score
       }))
     };
-    console.log("1b.ii Responses:", responseObject); // Log for debugging
+    console.log("1b.ii Responses with Scores:", responseObject); // Log for debugging
 
     // Send data to your API
     fetch("/api/saveResponses", {
@@ -78,7 +94,6 @@ const Question1bii = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        // Navigate or process responses further
         router.push("/survey/dataCollection/question1c"); // Replace "/nextPage" with the actual next route
       })
       .catch(err => {
@@ -117,10 +132,10 @@ const Question1bii = () => {
             <th className="border border-gray-300 p-2 text-left">Area</th>
             {options.map(option =>
               <th
-                key={option}
+                key={option.text}
                 className="border border-gray-300 p-2 text-center"
               >
-                {option}
+                {option.text}
               </th>
             )}
           </tr>
@@ -138,15 +153,15 @@ const Question1bii = () => {
               {/* Radio Buttons for Each Option */}
               {options.map(option =>
                 <td
-                  key={option}
+                  key={option.text}
                   className="border border-gray-300 p-2 text-center"
                 >
                   <input
                     type="radio"
                     name={area}
-                    value={option}
+                    value={option.text}
                     onChange={() => handleSelection(area, option)}
-                    checked={responses[area] === option}
+                    checked={responses[area]?.text === option.text}
                   />
                 </td>
               )}

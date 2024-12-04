@@ -34,6 +34,13 @@ const Question4a = () => {
   // State to track validation error
   const [error, setError] = useState(false);
 
+  // Map responses to scores
+  const responseScores: Record<string, number> = {
+    Yes: 1,
+    Partially: 0.5,
+    No: 0
+  };
+
   // Get router instance for navigation
   const router = useRouter();
 
@@ -70,7 +77,8 @@ const Question4a = () => {
       questionID: "4a", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: response ? responseScores[response] : 0 // Include the score
       }))
     };
 

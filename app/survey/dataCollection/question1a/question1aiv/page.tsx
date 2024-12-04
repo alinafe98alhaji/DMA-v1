@@ -23,6 +23,15 @@ const Question1aiv = () => {
     "Fully developed, universally used, enabling seamless and consistent data practices across all organisations."
   ];
 
+  // Define scoring for each option
+  const scoringMap: Record<string, number> = {
+    "Poorly defined and inconsistently used, causing fragmented data practices.": 0.2,
+    "Complexity of Standards: The standards are too complex or technical": 0.4,
+    "Partly aligned with organisational strategies, increasing use, with some inconsistencies remaining.": 0.6,
+    "Well-defined and widely used, aligned with organisation strategies, with minor discrepancies.": 0.8,
+    "Fully developed, universally used, enabling seamless and consistent data practices across all organisations.": 1
+  };
+
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [error, setError] = useState<string>("");
 
@@ -59,18 +68,17 @@ const Question1aiv = () => {
       return;
     }
 
+    // Prepare response object with scores
     const responseObject = {
       userId: userId_ses,
       questionID: "1a.iv",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response
+        response,
+        score: scoringMap[response] || 0 // Apply the scoring logic
       }))
     };
     console.log("1a.iv Follow-up responses:", responseObject);
-
-    // Log the responses (can be replaced by API call)
-    console.log("Saving responses:", responseObject);
 
     // Send data to your API
     fetch("/api/saveResponses", {

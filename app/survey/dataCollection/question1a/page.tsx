@@ -69,7 +69,7 @@ const Question1a: React.FC = () => {
 
     try {
       // Submit the data to the API
-      const res = await fetch("/api/saveResponses", {
+      const res = await fetch("/api/nationalLevel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

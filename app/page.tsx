@@ -18,13 +18,14 @@ export default function Home() {
       <main className="flex mb-28 mt-18 flex-col gap-4 items-center text-center bg-blue-200 bg-opacity-85 p-6 rounded-2xl shadow-2xl max-w-2xl w-full transform hover:scale-[1.01] duration-300 mb-30 mb-10">
         {/* Main Heading */}
         <h1 className="text-3xl sm:text-4xl font-[Inter] font-bold tracking-tight text-blue-700 drop-shadow-md leading-tight mb-4">
-          ESAWAS Organisational Level Data Maturity Assessment Tool
+          ESAWAS Data Maturity Assessment Tool
         </h1>
 
         {/* Subheading */}
         <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-lg font-[Lato] mb-6">
           The trusted platform for evaluating and enhancing data maturity in the
-          water and sanitation sectors.
+          water and sanitation sectors for both national and organisational
+          levels.
         </p>
 
         {/* Steps List */}

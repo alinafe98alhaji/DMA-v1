@@ -4,6 +4,15 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
+// Map response text to score
+const responseToScoreMap: Record<string, number> = {
+  "Very Poor: Difficult to integrate with existing systems due to technical mismatches.": 0.2,
+  "Poor: Some standards and processes work, but many data sharing issues still occur.": 0.4,
+  "Average: Poor collaboration between teams or departments in adopting and adapting these standards causing some data sharing issues.": 0.6,
+  "Good: Standards and processes work well, with only a few data sharing problems.": 0.8,
+  "Excellent: Standards and processes are very effective, ensuring smooth data sharing without problems.": 1.0
+};
+
 const Question3aiii = () => {
   const searchParams = useSearchParams();
   const responsesQuery = searchParams.get("responses");
@@ -57,20 +66,18 @@ const Question3aiii = () => {
       return;
     }
 
-    // Filter only the areas that have been answered
-    const answeredResponses = Object.entries(responses).filter(
-      ([area, response]) =>
-        response !== null && response !== undefined && response !== "No"
-    );
+    // Prepare the responses including both response text and the corresponding score
+    const answeredResponses = filteredAreas.map(area => {
+      const responseText = responses[area];
+      const score = responseToScoreMap[responseText]; // Get the numeric score based on the response
+      return { area, response: responseText, score };
+    });
 
     // Log responses with questionID
     const responseObject = {
       userId: userId_ses,
       questionID: "3a.iii", // Adding questionID
-      responses: answeredResponses.map(([area, response]) => ({
-        area,
-        response
-      }))
+      responses: answeredResponses
     };
 
     // Send data to your API
@@ -95,7 +102,6 @@ const Question3aiii = () => {
           JSON.stringify(responses)
         )}`;
         window.location.href = nextPageLink; // This replaces the Link component
-        console.log(allAnswered);
       })
       .catch(err => {
         console.error("Error saving responses:", err);
@@ -260,22 +266,21 @@ const Question3aiii = () => {
         </table>
       </div>
 
-      {/* Error message display */}
+      {/* Error Message */}
       {error &&
-        <p className="text-red-500">
-          {error}
-        </p>}
+        <div className="mt-4 text-red-500">
+          <p>
+            {error}
+          </p>
+        </div>}
 
       {/* Next Button */}
-      <div className="navigation-buttons mt-4">
-        <button
-          type="button"
-          className="px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={handleNextClick}
-        >
-          Next
-        </button>
-      </div>
+      <button
+        onClick={handleNextClick}
+        className="mt-4 bg-blue-500 text-white p-2 rounded"
+      >
+        Next
+      </button>
     </div>
   );
 };

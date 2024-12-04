@@ -16,10 +16,19 @@ const areas = [
 const options = [
   "Centralised data quality processes are ineffective, with limited scope leading to poor data quality.",
   "Basic processes are established but lack thoroughness and consistency, resulting in only slight improvements in data quality.",
-  "Processes are improving, becoming more regular and systematic, but still face challenges in full implementation and coverage due to complexity",
-  "Strong, well-integrated processes are in place, significantly improving data quality, though minor gaps in coverage or timeliness may exist due to resource availability",
+  "Processes are improving, becoming more regular and systematic, but still face challenges in full implementation and coverage due to complexity.",
+  "Strong, well-integrated processes are in place, significantly improving data quality, though minor gaps in coverage or timeliness may exist due to resource availability.",
   "Fully optimised and comprehensive centralised processes ensure top-quality data consistently, with no significant gaps."
 ];
+
+// Mapping options to scores
+const optionScores: { [key: string]: number } = {
+  "Centralised data quality processes are ineffective, with limited scope leading to poor data quality.": 0.2,
+  "Basic processes are established but lack thoroughness and consistency, resulting in only slight improvements in data quality.": 0.4,
+  "Processes are improving, becoming more regular and systematic, but still face challenges in full implementation and coverage due to complexity.": 0.6,
+  "Strong, well-integrated processes are in place, significantly improving data quality, though minor gaps in coverage or timeliness may exist due to resource availability.": 0.8,
+  "Fully optimised and comprehensive centralised processes ensure top-quality data consistently, with no significant gaps.": 1
+};
 
 const Question4aii = () => {
   const router = useRouter(); // Initialize useRouter for client-side navigation
@@ -27,8 +36,11 @@ const Question4aii = () => {
     Object.fromEntries(areas.map(area => [area, null]))
   );
 
-  const handleSelection = (area: string, value: number) => {
-    setResponses(prev => ({ ...prev, [area]: value }));
+  const handleSelection = (area: string, value: string) => {
+    setResponses(prev => ({
+      ...prev,
+      [area]: optionScores[value]
+    }));
   };
 
   const handleNext = async () => {
@@ -121,14 +133,14 @@ const Question4aii = () => {
               <td className="px-4 py-2 border-b text-left">
                 {area}
               </td>
-              {options.map((_, index) =>
+              {options.map((option, index) =>
                 <td key={index} className="px-4 py-2 border-b text-center">
                   <input
                     type="radio"
                     name={area}
-                    value={index + 1}
-                    checked={responses[area] === index + 1}
-                    onChange={() => handleSelection(area, index + 1)}
+                    value={option}
+                    checked={responses[area] === optionScores[option]}
+                    onChange={() => handleSelection(area, option)}
                     className="hover:bg-blue-100 rounded-md"
                   />
                 </td>

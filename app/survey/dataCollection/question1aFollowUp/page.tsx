@@ -12,26 +12,29 @@ const Question1aFollowUp = () => {
   const [errors, setErrors] = useState<Record<string, boolean>>({}); // Track validation errors
 
   // Parse the areas query parameter
-  useEffect(() => {
-    if (areasParam) {
-      try {
-        const decodedAreas = decodeURIComponent(areasParam).split("|");
-        setAreas(decodedAreas);
-      } catch (error) {
-        console.error("Error parsing areas:", error);
+  useEffect(
+    () => {
+      if (areasParam) {
+        try {
+          const decodedAreas = decodeURIComponent(areasParam).split("|");
+          setAreas(decodedAreas);
+        } catch (error) {
+          console.error("Error parsing areas:", error);
+        }
       }
-    }
-  }, [areasParam]);
+    },
+    [areasParam]
+  );
 
   // Handle input change
   const handleInputChange = (area: string, value: string) => {
-    setResponses((prev) => ({
+    setResponses(prev => ({
       ...prev,
-      [area]: value,
+      [area]: value
     }));
-    setErrors((prev) => ({
+    setErrors(prev => ({
       ...prev,
-      [area]: false, // Clear error when user enters a value
+      [area]: false // Clear error when user enters a value
     }));
   };
 
@@ -41,7 +44,7 @@ const Question1aFollowUp = () => {
     let hasErrors = false;
 
     // Check for empty responses
-    areas.forEach((area) => {
+    areas.forEach(area => {
       if (!responses[area]) {
         newErrors[area] = true;
         hasErrors = true;
@@ -69,18 +72,18 @@ const Question1aFollowUp = () => {
       questionID: "1a.i",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response,
-      })),
+        response
+      }))
     };
 
     try {
       // Save responses via API
-      const res = await fetch("/api/saveResponses", {
+      const res = await fetch("/api/nationalLevel", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(responseObject),
+        body: JSON.stringify(responseObject)
       });
 
       if (!res.ok) {
@@ -115,43 +118,40 @@ const Question1aFollowUp = () => {
         guidelines for data collection?
       </h1>
       <p>Please provide additional details below:</p>
-      {areas.length > 0 ? (
-        <form>
-          {areas.map((area) => (
-            <div
-              key={area}
-              className={`mb-4 p-4 rounded-lg ${
-                errors[area]
+      {areas.length > 0
+        ? <form>
+            {areas.map(area =>
+              <div
+                key={area}
+                className={`mb-4 p-4 rounded-lg ${errors[area]
                   ? "border-red-500 border"
-                  : "border-gray-300 border"
-              }`}
+                  : "border-gray-300 border"}`}
+              >
+                <h3 className="font-semibold">
+                  {area}
+                </h3>
+                <input
+                  type="text"
+                  placeholder={`Enter details for ${area}`}
+                  value={responses[area] || ""}
+                  onChange={e => handleInputChange(area, e.target.value)}
+                  className="w-full p-2 border border-gray-400 rounded"
+                />
+                {errors[area] &&
+                  <p className="text-red-500 text-sm mt-2">
+                    This field is required.
+                  </p>}
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
             >
-              <h3 className="font-semibold">{area}</h3>
-              <input
-                type="text"
-                placeholder={`Enter details for ${area}`}
-                value={responses[area] || ""}
-                onChange={(e) => handleInputChange(area, e.target.value)}
-                className="w-full p-2 border border-gray-400 rounded"
-              />
-              {errors[area] && (
-                <p className="text-red-500 text-sm mt-2">
-                  This field is required.
-                </p>
-              )}
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Next
-          </button>
-        </form>
-      ) : (
-        <p>No areas to display.</p>
-      )}
+              Next
+            </button>
+          </form>
+        : <p>No areas to display.</p>}
     </div>
   );
 };
