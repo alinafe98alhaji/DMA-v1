@@ -34,7 +34,7 @@ const Question1aiii = () => {
 
   // Validate that all areas have responses
   const validateResponses = () => {
-    for (let area of areasFor1aiii) {
+    for (const area of areasFor1aiii) {
       if (!responses[area]) {
         return false; // If any area has no response, validation fails
       }

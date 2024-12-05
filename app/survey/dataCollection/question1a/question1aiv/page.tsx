@@ -46,7 +46,7 @@ const Question1aiv = () => {
 
   const validateResponses = () => {
     // Check if all areas have a response selected
-    for (let area of areasFor1aiv) {
+    for (const area of areasFor1aiv) {
       if (!responses[area]) {
         return false; // If any area is unanswered, return false
       }

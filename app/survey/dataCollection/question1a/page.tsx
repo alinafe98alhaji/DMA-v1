@@ -96,7 +96,7 @@ const Question1a: React.FC = () => {
 
   return (
     <div className="p-6">
-      <div className="mb-6 p-6 border border-blue-500 rounded-lg bg-blue-50">
+      <div className="mb-6 p-6 border border-blue-300 rounded-lg bg-blue-50">
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
@@ -118,54 +118,52 @@ const Question1a: React.FC = () => {
         collected across the sector?
       </h1>
       <form>
-        {areas.map(area =>
+        {areas.map(area => (
           <div
             key={area}
-            className={`mb-4 p-4 rounded-lg ${errors[area]
-              ? "border-red-500 border"
-              : "border-gray-300 border"}`}
+            className={`p-3 mb-2 rounded-lg ${errors[area] ? "border-light-blue-300 border" : "border-gray-300 border"}`}
           >
-            <h3 className="font-semibold">
-              {area}
-            </h3>
-            <div className="flex gap-4 mt-2">
-              <label>
-                <input
-                  type="radio"
-                  name={area}
-                  value="Yes"
-                  checked={responses[area] === "Yes"}
-                  onChange={() => handleChange(area, "Yes")}
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name={area}
-                  value="Partially"
-                  checked={responses[area] === "Partially"}
-                  onChange={() => handleChange(area, "Partially")}
-                />
-                Partially
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name={area}
-                  value="No"
-                  checked={responses[area] === "No"}
-                  onChange={() => handleChange(area, "No")}
-                />
-                No
-              </label>
+            <div className="flex items-center gap-4">
+              <h3 className="font-semibold w-2/5">{area}</h3>
+              <div className="flex gap-20 w-1/8"> {/* Increased gap between responses */}
+                <label>
+                  <input
+                    type="radio"
+                    name={area}
+                    value="Yes"
+                    checked={responses[area] === "Yes"}
+                    onChange={() => handleChange(area, "Yes")}
+                  />
+                  Yes
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name={area}
+                    value="Partially"
+                    checked={responses[area] === "Partially"}
+                    onChange={() => handleChange(area, "Partially")}
+                  />
+                  Partially
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name={area}
+                    value="No"
+                    checked={responses[area] === "No"}
+                    onChange={() => handleChange(area, "No")}
+                  />
+                  No
+                </label>
+              </div>
             </div>
           </div>
-        )}
+        ))}
         <button
           type="button"
           onClick={handleSubmit}
-          className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
+          className="mt-6 px-20 py-2 bg-blue-800 text-white rounded"
         >
           Next
         </button>

@@ -43,7 +43,7 @@ const Question1aV = () => {
 
   // Validation function to check if all areas have been answered
   const validateResponses = () => {
-    for (let area of areas) {
+    for (const area of areas) {
       if (!responses[area]) {
         return false; // If any area is unanswered, return false
       }
