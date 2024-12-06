@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useMemo,useEffect, useState } from "react";
 
 interface ScoreData {
   area: string;
@@ -25,13 +25,21 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const apiEndpoints = [
+  // const apiEndpoints = [
+  //   { collectionName: "responses", url: "/api/getAllUsersData" },
+  //   { collectionName: "data ownership and management", url: "/api/getAllUsersDataOwnershipAndManagement" },
+  //   { collectionName: "data openess and flow", url: "/api/getAllUsersDataOpenessAndFlow" },
+  //   { collectionName: "data quality", url: "/api/getAllUsersDataQuality" },
+  //   { collectionName: "data use", url: "/api/getAllUsersDataUse" }
+  // ];
+  const apiEndpoints = useMemo(() => [
     { collectionName: "responses", url: "/api/getAllUsersData" },
     { collectionName: "data ownership and management", url: "/api/getAllUsersDataOwnershipAndManagement" },
     { collectionName: "data openess and flow", url: "/api/getAllUsersDataOpenessAndFlow" },
     { collectionName: "data quality", url: "/api/getAllUsersDataQuality" },
     { collectionName: "data use", url: "/api/getAllUsersDataUse" }
-  ];
+  ], []); // Empty dependency array means this array will never change during component lifecycle
+  
 
   useEffect(() => {
     async function fetchUserData() {

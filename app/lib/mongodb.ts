@@ -1,10 +1,6 @@
 import { MongoClient } from "mongodb";
 
-declare global {
-  // Allow global variable to persist across hot reloads
-  var _mongoClientPromise: Promise<MongoClient> | undefined;
-}
-
+// Ensure that global._mongoClientPromise is recognized now
 const uri = process.env.MONGODB_URI || ""; // Ensure this is set in your .env.local file
 if (!uri) {
   throw new Error("Please define the MONGODB_URI environment variable");
