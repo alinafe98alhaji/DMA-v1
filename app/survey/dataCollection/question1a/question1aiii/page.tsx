@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const Question1aiii = () => {
   const router = useRouter();
@@ -102,72 +103,74 @@ const Question1aiii = () => {
   };
 
   return (
-    <div className="p-6">
-      {/* Guidance Instructions */}
-      <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
-        <h2 className="text-lg font-bold mb-4 text-blue-800">
-          Guidance Instructions
-        </h2>
-        <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">Organisational Level</h1>
-          <li>Do your data collection processes align with the standards?</li>
-        </ul>
-      </div>
-      <h1 className="text-xl font-bold mb-6">
-        1.a.iii: Does your organisation collect data in adherence to these
-        national guidelines?
-      </h1>
-      {areasFor1aiii.map((area: string) =>
-        <div key={area} className="mb-4">
-          <label className="block font-semibold mb-2">
-            {area}
-          </label>
-          <div className="flex gap-4">
-            <label>
-              <input
-                type="radio"
-                name={area}
-                value="Yes"
-                checked={responses[area] === "Yes"}
-                onChange={() => handleOptionChange(area, "Yes")}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name={area}
-                value="Partially"
-                checked={responses[area] === "Partially"}
-                onChange={() => handleOptionChange(area, "Partially")}
-              />
-              Partially
-            </label>
-            <label>
-              <input
-                type="radio"
-                name={area}
-                value="No"
-                checked={responses[area] === "No"}
-                onChange={() => handleOptionChange(area, "No")}
-              />
-              No
-            </label>
-          </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="p-6">
+        {/* Guidance Instructions */}
+        <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+          <h2 className="text-lg font-bold mb-4 text-blue-800">
+            Guidance Instructions
+          </h2>
+          <ul className="list-disc pl-6 text-black">
+            <h1 className="mb-4 text-lg font-bold">Organisational Level</h1>
+            <li>Do your data collection processes align with the standards?</li>
+          </ul>
         </div>
-      )}
-      {error &&
-        <p className="text-red-500">
-          {error}
-        </p>}{" "}
-      {/* Display error if validation fails */}
-      <button
-        onClick={handleNext}
-        className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
-      >
-        Next
-      </button>
-    </div>
+        <h1 className="text-xl font-bold mb-6">
+          1.a.iii: Does your organisation collect data in adherence to these
+          national guidelines?
+        </h1>
+        {areasFor1aiii.map((area: string) =>
+          <div key={area} className="mb-4">
+            <label className="block font-semibold mb-2">
+              {area}
+            </label>
+            <div className="flex gap-4">
+              <label>
+                <input
+                  type="radio"
+                  name={area}
+                  value="Yes"
+                  checked={responses[area] === "Yes"}
+                  onChange={() => handleOptionChange(area, "Yes")}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={area}
+                  value="Partially"
+                  checked={responses[area] === "Partially"}
+                  onChange={() => handleOptionChange(area, "Partially")}
+                />
+                Partially
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={area}
+                  value="No"
+                  checked={responses[area] === "No"}
+                  onChange={() => handleOptionChange(area, "No")}
+                />
+                No
+              </label>
+            </div>
+          </div>
+        )}
+        {error &&
+          <p className="text-red-500">
+            {error}
+          </p>}{" "}
+        {/* Display error if validation fails */}
+        <button
+          onClick={handleNext}
+          className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Next
+        </button>
+      </div>
+    </Suspense>
   );
 };
 
