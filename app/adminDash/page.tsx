@@ -69,7 +69,7 @@ export default function AdminDashboard() {
         });
 
         setUserData(allUserData);
-      } catch (err) {
+      } catch /*(err)*/ {
         setError("An error occurred while fetching data");
       } finally {
         setLoading(false);
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
     }
 
     fetchUserData();
-  }, []);
+  }, [apiEndpoints]);
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center text-red-600">Error: {error}</div>;
