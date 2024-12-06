@@ -66,10 +66,10 @@ const Question2civ = () => {
     const responseObject = {
       userId: userId_ses,
       questionID: "2c.iv", // Adding questionID
-      responses: Object.entries(responses).map(([area, responseText]) => ({
+      responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        responseText,
-        score: scoreMapping[responseText] // Get the score based on the response text
+        response,
+        score: scoreMapping[response] // Get the score based on the response text
       }))
     };
 
@@ -92,7 +92,10 @@ const Question2civ = () => {
         // Proceed to next question
         // Prepare query parameters for the next step
         const queryParams = new URLSearchParams();
-        queryParams.set("areasFor2cv", JSON.stringify(areasFor2cv));
+        queryParams.set(
+          "areasFor2cv",
+          JSON.stringify(areasFor2cv, areasFor2civ)
+        );
 
         // Navigate to 2.c.v
         router.push(

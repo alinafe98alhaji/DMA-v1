@@ -33,7 +33,7 @@ const optionScores: { [key: string]: number } = {
 
 const Question5bi = () => {
   const router = useRouter();
-  const [responses, setResponses] = useState<{ [key: string]: { text: string, score: number } | null }>(
+  const [responses, setResponses] = useState<{ [key: string]: { response: string; score: number } | null }>(
     Object.fromEntries(areas.map(area => [area, null]))
   );
 
@@ -41,7 +41,7 @@ const Question5bi = () => {
   const handleSelection = (area: string, option: string) => {
     setResponses(prev => ({
       ...prev,
-      [area]: { text: option, score: optionScores[option] }
+      [area]: { response: option, score: optionScores[option] }
     }));
   };
 
@@ -61,7 +61,8 @@ const Question5bi = () => {
       questionID: "5b.i",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response: response ? { text: response.text, score: response.score } : null
+        response: response?.response || null,
+        score: response?.score || null
       }))
     };
 
@@ -135,7 +136,7 @@ const Question5bi = () => {
                     type="radio"
                     name={area}
                     value={option}
-                    checked={responses[area]?.text === option}
+                    checked={responses[area]?.response === option}
                     onChange={() => handleSelection(area, option)}
                     className="hover:bg-blue-100 rounded-md"
                   />

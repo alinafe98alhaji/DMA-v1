@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     const client = await clientPromise;
     const db = client.db("test");
 
-    // Insert the data into the "responses" collection
+    // Insert the data into the "national level" collection
     const result = await db.collection("national level").insertOne({
       userId,
       questionID,

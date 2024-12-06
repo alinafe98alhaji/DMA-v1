@@ -19,3 +19,116 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* General container styling */
+
+/* 
+
+.dashboard-container {
+  padding: 20px;
+  font-family: "Roboto", Arial, sans-serif;
+  background: #f9fafb;  Light, uniform background color 
+  min-height: 100vh; 
+}Ensures background spans the full screen 
+
+ Title styling 
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;  Black color for text
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 3px solid #007bff;  Accent color 
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+Table styling
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;  White table background
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);  Subtle shadow for depth 
+  border-radius: 8px;  Smooth corners 
+  overflow: hidden;  Ensures rounded corners work 
+  table-layout: fixed;  Equal column widths 
+}
+
+Header cells 
+.dashboard-table th {
+  background: #007bff;  Blue background for the header
+  color: #ffffff; White text for contrast
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 15px;
+  text-align: center;
+}
+
+ Body cells 
+.dashboard-table td {
+  text-align: center;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;  Black text for visibility 
+  word-wrap: break-word;  Prevent overflow for long text 
+}
+
+ First column (Collection names) 
+.dashboard-table tbody td:first-child {
+  text-align: left;  Align collection names to the left
+  font-weight: bold;
+  color: #000; Black text for clear visibility 
+}
+
+ Alternate row colors
+.dashboard-table tbody tr:nth-child(even) {
+  background-color: #f4f4f4;  Light gray for even rows
+}
+
+.dashboard-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;  White for odd rows
+}
+
+Hover effect for rows
+.dashboard-table tbody tr:hover {
+  background-color: #e9ecef;  Slightly darker gray on hover
+}
+
+ Score cells with dynamic colors
+.score-cell {
+  font-weight: bold;
+  border-left: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+ High score (Green) 
+.score-cell.high-score {
+  background-color: #d4edda;  Light green 
+  color: #155724;  Dark green 
+}
+
+ Medium score (Orange)
+.score-cell.medium-score {
+  background-color: #ff8800;  Light orange 
+  color: #003cff;  Dark orange 
+}
+
+ Low score (Red) 
+.score-cell.low-score {
+  background-color: #ff0000;  Light red 
+  color: #16ca7f;  Dark red 
+}
+
+ Score cell hover effect
+.score-cell:hover {
+  transform: scale(1.1);  Slight zoom on hover
+}
+
+Ensure full-screen uniform background
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f9fafb;  Matches the dashboard container 
+}
+*/

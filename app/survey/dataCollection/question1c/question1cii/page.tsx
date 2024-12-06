@@ -31,7 +31,10 @@ const Question1CII = () => {
 
         // Filter areas with "No" responses
         const areas = Object.keys(parsedResponses).filter(
-          area => parsedResponses[area] === "No"
+          area =>
+            parsedResponses[area] === "No" ||
+            parsedResponses[area] === "Yes" ||
+            parsedResponses[area] === "Partially"
         );
         setNoAreas(areas);
       }

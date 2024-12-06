@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     const db = client.db("test");
 
     const responses = await db
-      .collection("responses")
+      .collection("data ownership and management")
       .find(
         { "responses.score": { $exists: true }, userId: userId },
         { projection: { responses: 1 } }

@@ -1,15 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Question3aiv = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const responsesQuery = searchParams.get("responses");
 
-  const [responses, setResponses] = useState<any>(null);
-  const [noAreas, setNoAreas] = useState<string[]>([]);
+  // Predefined seven areas
+  const areas = [
+    "Urban Water Supply Coverage",
+    "Urban Sanitation Sector Coverage",
+    "Rural Water Supply Sector Coverage",
+    "Rural Sanitation Sector Coverage",
+    "Finance",
+    "Regulation",
+    "Utility Operations: Technical, Commercial, Financial, HR"
+  ];
+
   const [selectedResponses, setSelectedResponses] = useState<
     Record<string, string>
   >({});
@@ -22,24 +29,8 @@ const Question3aiv = () => {
     No: 0
   };
 
-  // Updated options to have only Yes, Partially, No
+  // Options for the radio buttons
   const options = ["Yes", "Partially", "No"];
-
-  useEffect(
-    () => {
-      if (responsesQuery) {
-        const parsedResponses = JSON.parse(responsesQuery);
-        setResponses(parsedResponses);
-
-        // Filter areas with "No" responses
-        const areas = Object.keys(parsedResponses).filter(
-          area => parsedResponses[area] === "No"
-        );
-        setNoAreas(areas);
-      }
-    },
-    [responsesQuery]
-  );
 
   const handleOptionChange = (area: string, value: string) => {
     setSelectedResponses(prev => ({ ...prev, [area]: value }));
@@ -52,7 +43,7 @@ const Question3aiv = () => {
 
   const validateResponses = () => {
     // Ensure all areas have a selected response
-    return noAreas.every(area => !!selectedResponses[area]);
+    return areas.every(area => !!selectedResponses[area]);
   };
 
   const handleNextClick = async () => {
@@ -104,8 +95,6 @@ const Question3aiv = () => {
       });
   };
 
-  if (!responses) return <div>Loading...</div>;
-
   return (
     <div className="p-6 survey-container">
       {/* Guidance Instructions */}
@@ -120,7 +109,7 @@ const Question3aiv = () => {
           <li>
             This question asks whether your organisation has rules that help
             different systems share and use data easily and govern data sharing
-            processes
+            processes.
           </li>
         </ul>
       </div>
@@ -148,7 +137,7 @@ const Question3aiv = () => {
             </tr>
           </thead>
           <tbody>
-            {noAreas.map(area =>
+            {areas.map(area =>
               <tr key={area} className="hover:bg-gray-100">
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}

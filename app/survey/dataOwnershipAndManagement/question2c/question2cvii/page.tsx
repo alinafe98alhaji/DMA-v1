@@ -43,25 +43,26 @@ const Question2cVII = () => {
       );
       return;
     }
-
+  
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
-
+  
     if (!userId_ses) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
-
-    // Log responses with questionID
+  
+    // Construct the response object in the required format
     const responseObject = {
       userId: userId_ses,
       questionID: "2c.vii", // Adding questionID
-      responses: Object.entries(responses).map(([area, response]) => ({
+      responses: Object.entries(responses).map(([area, score]) => ({
         area,
-        response
+        response: options.find(option => option.score === score)?.label || "",
+        score: parseFloat(score)
       }))
     };
-
+  
     // Send data to your API
     fetch("/api/saveDataOwnershipAndManagement", {
       method: "POST",
@@ -78,13 +79,14 @@ const Question2cVII = () => {
       })
       .then(data => {
         console.log("Responses saved successfully:", data);
-        // Proceed to next question
+        // Proceed to the next question
         router.push("/survey/dataOwnershipAndManagement/question2d");
       })
       .catch(err => {
         console.error("Error saving responses:", err);
       });
   };
+  
 
   const options = [
     {

@@ -32,14 +32,18 @@ const optionScores: { [key: string]: number } = {
 
 const Question4aii = () => {
   const router = useRouter(); // Initialize useRouter for client-side navigation
-  const [responses, setResponses] = useState<{ [key: string]: number | null }>(
-    Object.fromEntries(areas.map(area => [area, null]))
+  const [responses, setResponses] = useState<{
+    [key: string]: { response: string | null; score: number | null };
+  }>(
+    Object.fromEntries(
+      areas.map(area => [area, { response: null, score: null }])
+    )
   );
 
   const handleSelection = (area: string, value: string) => {
     setResponses(prev => ({
       ...prev,
-      [area]: optionScores[value]
+      [area]: { response: value, score: optionScores[value] }
     }));
   };
 
@@ -56,9 +60,10 @@ const Question4aii = () => {
     const responseObject = {
       userId: userId_ses,
       questionID: "4a.ii",
-      responses: Object.entries(responses).map(([area, response]) => ({
+      responses: Object.entries(responses).map(([area, { response, score }]) => ({
         area,
-        response
+        response,
+        score
       }))
     };
 
@@ -115,45 +120,41 @@ const Question4aii = () => {
             <th className="px-4 py-2 border-b bg-black-100 text-center">
               Area
             </th>
-            {options.map((option, index) =>
+            {options.map((option, index) => (
               <th
                 key={index}
                 className="px-4 py-2 border-b bg-black-100 text-center"
               >
-                <strong>
-                  {option}
-                </strong>
+                <strong>{option}</strong>
               </th>
-            )}
+            ))}
           </tr>
         </thead>
         <tbody>
-          {areas.map(area =>
+          {areas.map(area => (
             <tr key={area}>
-              <td className="px-4 py-2 border-b text-left">
-                {area}
-              </td>
-              {options.map((option, index) =>
+              <td className="px-4 py-2 border-b text-left">{area}</td>
+              {options.map((option, index) => (
                 <td key={index} className="px-4 py-2 border-b text-center">
                   <input
                     type="radio"
                     name={area}
                     value={option}
-                    checked={responses[area] === optionScores[option]}
+                    checked={responses[area]?.response === option}
                     onChange={() => handleSelection(area, option)}
                     className="hover:bg-blue-100 rounded-md"
                   />
                 </td>
-              )}
+              ))}
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
 
       <div className="navigation-buttons mt-4">
         <button
           disabled={Object.values(responses).some(
-            response => response === null
+            response => response.response === null
           )}
           onClick={handleNext}
           className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"

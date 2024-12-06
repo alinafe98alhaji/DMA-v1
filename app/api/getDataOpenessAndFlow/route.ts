@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     const db = client.db("test");
 
     const responses = await db
-      .collection("responses")
+      .collection("data openess and flow")
       .find(
         { "responses.score": { $exists: true }, userId: userId },
         { projection: { responses: 1 } }
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
 
     const summedScores = Object.keys(aggregatedScores).map(area => ({
       area,
-      totalScore: aggregatedScores[area] / 13 * 100
+      totalScore: aggregatedScores[area] / 11 * 100
     }));
 
     return NextResponse.json({ success: true, data: summedScores });

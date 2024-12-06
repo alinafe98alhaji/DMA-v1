@@ -13,9 +13,9 @@ const Question1div = () => {
   );
 
   // Parse areas that were answered "No" from 1.d.ii (for 1.d.v)
-  const areasFor1dv: string[] = JSON.parse(
-    searchParams.get("areasFor1dv") || "[]"
-  );
+  // const areasFor1dv: string[] = JSON.parse(
+  //   searchParams.get("areasFor1dv") || "[]"
+  // );
 
   // Define word options for the radio buttons
   const wordOptions = [
@@ -97,13 +97,11 @@ const Question1div = () => {
         // Proceed to next question
 
         // Redirect to the next page with the areas answered "No" in 1.d.ii
-        const queryParams = new URLSearchParams();
-        queryParams.set("areasFor1dv", JSON.stringify(areasFor1dv));
+        // const queryParams = new URLSearchParams();
+        // queryParams.set("areasFor1dv", JSON.stringify(areasFor1dv));
 
         // Redirect to 1.d.v
-        router.push(
-          `/survey/dataCollection/question1d/question1dv?${queryParams.toString()}`
-        );
+        router.push(`/survey/dataCollection/question1d/question1dv`);
       })
       .catch(err => {
         console.error("Error saving responses:", err);

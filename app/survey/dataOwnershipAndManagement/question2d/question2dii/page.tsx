@@ -1,14 +1,22 @@
 "use client"; // This is necessary for client-side hooks in Next.js
 
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Question2dii = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const areasFor2dii = searchParams.get("areasFor2dii"); // Get the areas passed from the URL
 
-  const [areas, setAreas] = useState<string[]>([]);
+  // Predefined seven areas
+  const areas = [
+    "Urban Water Supply Coverage",
+    "Urban Sanitation Sector Coverage",
+    "Rural Water Supply Sector Coverage",
+    "Rural Sanitation Sector Coverage",
+    "Finance",
+    "Regulation",
+    "Utility Operations: Technical, Commercial, Financial, HR"
+  ];
+
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -20,17 +28,6 @@ const Question2dii = () => {
     "Organisational Priorities: Other strategic priorities take precedence over updating data storage practices.",
     "Inadequate staff: Some support is provided but it's not comprehensive, causing frequent issues"
   ];
-
-  // Parse areas passed in the query string
-  useEffect(
-    () => {
-      if (areasFor2dii) {
-        const areasArray = JSON.parse(areasFor2dii); // Parse the areasFor2di from query string
-        setAreas(areasArray); // Set areas to state
-      }
-    },
-    [areasFor2dii]
-  );
 
   // Handle option change for each area
   const handleOptionChange = (area: string, value: string) => {
@@ -82,18 +79,12 @@ const Question2dii = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        // Route to the next page
         router.push("/survey/dataOpenessAndFlow/question3a");
       })
       .catch(err => {
         console.error("Error saving responses:", err);
       });
   };
-
-  // If no areas are selected, display a message
-  if (areas.length === 0) {
-    return <div>No areas to display.</div>;
-  }
 
   return (
     <div className="p-6">
