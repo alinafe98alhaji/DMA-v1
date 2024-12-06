@@ -188,7 +188,6 @@
 // };
 
 // export default Question1aiv;
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -199,28 +198,9 @@ const Question1aiv = () => {
   const router = useRouter();
   const [areasFor1aiv, setAreasFor1aiv] = useState<string[]>([]);
   const [areasFor1av, setAreasFor1av] = useState<string[]>([]);
-
-  const wordOptions = [
-    "Poorly defined and inconsistently used, causing fragmented data practices.",
-    "Complexity of Standards: The standards are too complex or technical",
-    "Partly aligned with organisational strategies, increasing use, with some inconsistencies remaining.",
-    "Well-defined and widely used, aligned with organisation strategies, with minor discrepancies.",
-    "Fully developed, universally used, enabling seamless and consistent data practices across all organisations."
-  ];
-
-  // Define scoring for each option
-  const scoringMap: Record<string, number> = {
-    "Poorly defined and inconsistently used, causing fragmented data practices.": 0.2,
-    "Complexity of Standards: The standards are too complex or technical": 0.4,
-    "Partly aligned with organisational strategies, increasing use, with some inconsistencies remaining.": 0.6,
-    "Well-defined and widely used, aligned with organisation strategies, with minor discrepancies.": 0.8,
-    "Fully developed, universally used, enabling seamless and consistent data practices across all organisations.": 1
-  };
-
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [error, setError] = useState<string>("");
 
-  // Parse query parameters
   useEffect(
     () => {
       if (router.isReady) {
@@ -233,32 +213,44 @@ const Question1aiv = () => {
     [router.isReady, router.query]
   );
 
+  const wordOptions = [
+    "Poorly defined and inconsistently used, causing fragmented data practices.",
+    "Complexity of Standards: The standards are too complex or technical",
+    "Partly aligned with organisational strategies, increasing use, with some inconsistencies remaining.",
+    "Well-defined and widely used, aligned with organisation strategies, with minor discrepancies.",
+    "Fully developed, universally used, enabling seamless and consistent data practices across all organisations."
+  ];
+
+  const scoringMap: Record<string, number> = {
+    "Poorly defined and inconsistently used, causing fragmented data practices.": 0.2,
+    "Complexity of Standards: The standards are too complex or technical": 0.4,
+    "Partly aligned with organisational strategies, increasing use, with some inconsistencies remaining.": 0.6,
+    "Well-defined and widely used, aligned with organisation strategies, with minor discrepancies.": 0.8,
+    "Fully developed, universally used, enabling seamless and consistent data practices across all organisations.": 1
+  };
+
   const handleOptionChange = (area: string, value: string) => {
     setResponses(prev => ({ ...prev, [area]: value }));
-
-    // Clear error message when user selects an option
     if (error) {
       setError("");
     }
   };
 
   const validateResponses = () => {
-    // Check if all areas have a response selected
     for (const area of areasFor1aiv) {
       if (!responses[area]) {
-        return false; // If any area is unanswered, return false
+        return false;
       }
     }
-    return true; // All areas have been answered
+    return true;
   };
 
   const handleNext = async () => {
     if (!validateResponses()) {
       setError("Please answer all areas before proceeding.");
-      return; // Stop navigation if validation fails
+      return;
     }
 
-    // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
 
     if (!userId_ses) {
@@ -266,19 +258,16 @@ const Question1aiv = () => {
       return;
     }
 
-    // Prepare response object with scores
     const responseObject = {
       userId: userId_ses,
       questionID: "1a.iv",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
         response,
-        score: scoringMap[response] || 0 // Apply the scoring logic
+        score: scoringMap[response] || 0
       }))
     };
-    console.log("1a.iv Follow-up responses:", responseObject);
 
-    // Send data to your API
     fetch("/api/saveResponses", {
       method: "POST",
       headers: {
@@ -293,8 +282,6 @@ const Question1aiv = () => {
         return res.json();
       })
       .then(data => {
-        console.log("Responses saved successfully:", data);
-        // Proceed to next question
         const queryParams = new URLSearchParams();
         queryParams.set("areasFor1av", JSON.stringify(areasFor1av));
         router.push(
@@ -308,7 +295,6 @@ const Question1aiv = () => {
 
   return (
     <div className="p-6">
-      {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
@@ -325,8 +311,6 @@ const Question1aiv = () => {
         1.a.iv: How effective are the guidelines in terms of their development,
         adoption, and suitability?
       </h1>
-
-      {/* Tabular layout */}
       <div className="overflow-auto">
         <table className="min-w-full border-collapse border border-gray-200">
           <thead>
@@ -367,13 +351,10 @@ const Question1aiv = () => {
           </tbody>
         </table>
       </div>
-
-      {/* Error message */}
       {error &&
         <p className="text-red-500">
           {error}
         </p>}
-
       <button
         onClick={handleNext}
         className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"

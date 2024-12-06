@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 export default function Home() {
@@ -6,7 +7,7 @@ export default function Home() {
       {/* Logo */}
       <div className="w-60 h-20 mb-10 mt-2 flex justify-center">
         <Image
-          src="/images/logo.svg" // Organisation logo 
+          src="/images/logo.svg" // Organisation logo
           alt="ESAWAS logo"
           width={240}
           height={200}
@@ -22,8 +23,10 @@ export default function Home() {
         </h1>
 
         {/* Subheading */}
-        <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-lg font-[Lato] mb-4">The trusted platform for evaluating and enhancing data maturity in the
-          water and sanitation sectors for both national and organisational levels.
+        <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-lg font-[Lato] mb-4">
+          The trusted platform for evaluating and enhancing data maturity in the
+          water and sanitation sectors for both national and organisational
+          levels.
         </p>
 
         {/* Steps List */}
@@ -32,11 +35,12 @@ export default function Home() {
           <li>Save your progress and return whenever you need.</li>
           <li>Review insights and contribute to better service delivery.</li>
         </ol>
-	<div> </div>
+        <div> </div>
 
         {/* Call to Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 items-center mt-8">
-          <a className="bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-full py-3 px-8 font-semibold text-lg transition-transform transform hover:scale-105 shadow-lg"
+          <a
+            className="bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-full py-3 px-8 font-semibold text-lg transition-transform transform hover:scale-105 shadow-lg"
             href="/basicDetails"
           >
             Start Assessment
