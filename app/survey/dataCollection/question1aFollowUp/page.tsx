@@ -1,220 +1,84 @@
-// "use client";
-
-// import { useSearchParams, useRouter } from "next/navigation";
-// import React, { useState, useEffect } from "react";
-
-// const Question1aFollowUp = () => {
-//   const searchParams = useSearchParams();
-//   const router = useRouter();
-//   const areasParam = searchParams.get("areas"); // Get the 'areas' query parameter
-//   const [areas, setAreas] = useState<string[]>([]);
-//   const [responses, setResponses] = useState<Record<string, string>>({});
-//   const [errors, setErrors] = useState<Record<string, boolean>>({}); // Track validation errors
-
-//   // Parse the areas query parameter
-//   useEffect(
-//     () => {
-//       if (areasParam) {
-//         try {
-//           const decodedAreas = decodeURIComponent(areasParam).split("|");
-//           setAreas(decodedAreas);
-//         } catch (error) {
-//           console.error("Error parsing areas:", error);
-//         }
-//       }
-//     },
-//     [areasParam]
-//   );
-
-//   // Handle input change
-//   const handleInputChange = (area: string, value: string) => {
-//     setResponses(prev => ({
-//       ...prev,
-//       [area]: value
-//     }));
-//     setErrors(prev => ({
-//       ...prev,
-//       [area]: false // Clear error when user enters a value
-//     }));
-//   };
-
-//   // Handle submission with validation
-//   const handleSubmit = async () => {
-//     const newErrors: Record<string, boolean> = {};
-//     let hasErrors = false;
-
-//     // Check for empty responses
-//     areas.forEach(area => {
-//       if (!responses[area]) {
-//         newErrors[area] = true;
-//         hasErrors = true;
-//       }
-//     });
-
-//     setErrors(newErrors);
-
-//     if (hasErrors) {
-//       alert("Please provide details for all areas before proceeding.");
-//       return;
-//     }
-
-//     // Retrieve user_id from sessionStorage
-//     const userId = sessionStorage.getItem("user_id");
-
-//     if (!userId) {
-//       alert("User ID is missing. Please return to the basic details page.");
-//       return;
-//     }
-
-//     // Prepare response object
-//     const responseObject = {
-//       userId, // Include user_id
-//       questionID: "1a.i",
-//       responses: Object.entries(responses).map(([area, response]) => ({
-//         area,
-//         response
-//       }))
-//     };
-
-//     try {
-//       // Save responses via API
-//       const res = await fetch("/api/nationalLevel", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(responseObject)
-//       });
-
-//       if (!res.ok) {
-//         throw new Error("Failed to save responses");
-//       }
-
-//       // Navigate to the next question
-//       router.push(`/survey/dataCollection/question1a/question1aii`);
-//     } catch (error) {
-//       console.error("Error saving follow-up responses:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="p-6">
-//       {/* Guidance Instructions */}
-//       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
-//         <h2 className="text-lg font-bold mb-4 text-blue-800">
-//           Guidance Instructions
-//         </h2>
-//         <ul className="list-disc pl-6 text-black">
-//           <h1 className="mb-4 text-lg font-bold">National Level</h1>
-//           <li>
-//             Identify the governmental or regulatory body responsible for setting
-//             data collection standards. This could be a national authority, a
-//             regulatory agency, or a sector-specific organization.
-//           </li>
-//         </ul>
-//       </div>
-//       <h1>
-//         1.a.i Which organization is mandated to develop and enforce these
-//         guidelines for data collection?
-//       </h1>
-//       <p>Please provide additional details below:</p>
-//       {areas.length > 0
-//         ? <form>
-//             {areas.map(area =>
-//               <div
-//                 key={area}
-//                 className={`mb-4 p-4 rounded-lg ${errors[area]
-//                   ? "border-red-500 border"
-//                   : "border-gray-300 border"}`}
-//               >
-//                 <h3 className="font-semibold">
-//                   {area}
-//                 </h3>
-//                 <input
-//                   type="text"
-//                   placeholder={`Enter details for ${area}`}
-//                   value={responses[area] || ""}
-//                   onChange={e => handleInputChange(area, e.target.value)}
-//                   className="w-full p-2 border border-gray-400 rounded"
-//                 />
-//                 {errors[area] &&
-//                   <p className="text-red-500 text-sm mt-2">
-//                     This field is required.
-//                   </p>}
-//               </div>
-//             )}
-//             <button
-//               type="button"
-//               onClick={handleSubmit}
-//               className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
-//             >
-//               Next
-//             </button>
-//           </form>
-//         : <p>No areas to display.</p>}
-//     </div>
-//   );
-// };
-
-// export default Question1aFollowUp;
-
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 
 const Question1aFollowUp = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
-
+  const areasParam = searchParams.get("areas"); // Get the 'areas' query parameter
   const [areas, setAreas] = useState<string[]>([]);
   const [responses, setResponses] = useState<Record<string, string>>({});
-  const [error, setError] = useState<string>("");
+  const [errors, setErrors] = useState<Record<string, boolean>>({}); // Track validation errors
 
-  const responseScores: Record<string, number> = {
-    Yes: 1,
-    Partially: 0.5,
-    No: 0
+  // Parse the areas query parameter
+  useEffect(
+    () => {
+      if (areasParam) {
+        try {
+          const decodedAreas = decodeURIComponent(areasParam).split("|");
+          setAreas(decodedAreas);
+        } catch (error) {
+          console.error("Error parsing areas:", error);
+        }
+      }
+    },
+    [areasParam]
+  );
+
+  // Handle input change
+  const handleInputChange = (area: string, value: string) => {
+    setResponses(prev => ({
+      ...prev,
+      [area]: value
+    }));
+    setErrors(prev => ({
+      ...prev,
+      [area]: false // Clear error when user enters a value
+    }));
   };
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const parsedAreas = JSON.parse(params.get("areas") || "[]");
-    setAreas(parsedAreas);
-  }, []);
+  // Handle submission with validation
+  const handleSubmit = async () => {
+    const newErrors: Record<string, boolean> = {};
+    let hasErrors = false;
 
-  const handleOptionChange = (area: string, value: string) => {
-    setResponses(prev => ({ ...prev, [area]: value }));
-    if (error) setError("");
-  };
+    // Check for empty responses
+    areas.forEach(area => {
+      if (!responses[area]) {
+        newErrors[area] = true;
+        hasErrors = true;
+      }
+    });
 
-  const validateResponses = () => {
-    return areas.every(area => responses[area]);
-  };
+    setErrors(newErrors);
 
-  const handleNext = async () => {
-    if (!validateResponses()) {
-      setError("Please answer all questions before proceeding.");
+    if (hasErrors) {
+      alert("Please provide details for all areas before proceeding.");
       return;
     }
 
+    // Retrieve user_id from sessionStorage
     const userId = sessionStorage.getItem("user_id");
+
     if (!userId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
 
+    // Prepare response object
     const responseObject = {
-      userId,
-      questionID: "1aFollowUp",
+      userId, // Include user_id
+      questionID: "1a.i",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
-        response,
-        score: responseScores[response]
+        response
       }))
     };
 
     try {
-      const res = await fetch("/api/saveResponses", {
+      // Save responses via API
+      const res = await fetch("/api/nationalLevel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -226,64 +90,68 @@ const Question1aFollowUp = () => {
         throw new Error("Failed to save responses");
       }
 
-      router.push(`/survey/dataCollection/nextQuestion`);
+      // Navigate to the next question
+      router.push(`/survey/dataCollection/question1a/question1aii`);
     } catch (error) {
-      console.error("Error saving responses:", error);
+      console.error("Error saving follow-up responses:", error);
     }
   };
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-6">1.a Follow-Up Question</h1>
-      {areas.map(area =>
-        <div key={area} className="mb-4">
-          <label className="block font-semibold mb-2">
-            {area}
-          </label>
-          <div className="flex gap-4">
-            <label>
-              <input
-                type="radio"
-                name={area}
-                value="Yes"
-                checked={responses[area] === "Yes"}
-                onChange={() => handleOptionChange(area, "Yes")}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name={area}
-                value="Partially"
-                checked={responses[area] === "Partially"}
-                onChange={() => handleOptionChange(area, "Partially")}
-              />
-              Partially
-            </label>
-            <label>
-              <input
-                type="radio"
-                name={area}
-                value="No"
-                checked={responses[area] === "No"}
-                onChange={() => handleOptionChange(area, "No")}
-              />
-              No
-            </label>
-          </div>
-        </div>
-      )}
-      {error &&
-        <p className="text-red-500">
-          {error}
-        </p>}
-      <button
-        onClick={handleNext}
-        className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
-      >
-        Next
-      </button>
+      {/* Guidance Instructions */}
+      <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h2 className="text-lg font-bold mb-4 text-blue-800">
+          Guidance Instructions
+        </h2>
+        <ul className="list-disc pl-6 text-black">
+          <h1 className="mb-4 text-lg font-bold">National Level</h1>
+          <li>
+            Identify the governmental or regulatory body responsible for setting
+            data collection standards. This could be a national authority, a
+            regulatory agency, or a sector-specific organization.
+          </li>
+        </ul>
+      </div>
+      <h1>
+        1.a.i Which organization is mandated to develop and enforce these
+        guidelines for data collection?
+      </h1>
+      <p>Please provide additional details below:</p>
+      {areas.length > 0
+        ? <form>
+            {areas.map(area =>
+              <div
+                key={area}
+                className={`mb-4 p-4 rounded-lg ${errors[area]
+                  ? "border-red-500 border"
+                  : "border-gray-300 border"}`}
+              >
+                <h3 className="font-semibold">
+                  {area}
+                </h3>
+                <input
+                  type="text"
+                  placeholder={`Enter details for ${area}`}
+                  value={responses[area] || ""}
+                  onChange={e => handleInputChange(area, e.target.value)}
+                  className="w-full p-2 border border-gray-400 rounded"
+                />
+                {errors[area] &&
+                  <p className="text-red-500 text-sm mt-2">
+                    This field is required.
+                  </p>}
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Next
+            </button>
+          </form>
+        : <p>No areas to display.</p>}
     </div>
   );
 };
