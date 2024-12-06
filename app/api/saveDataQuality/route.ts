@@ -18,10 +18,20 @@ export async function POST(request: Request) {
       );
     }
 
+    // Wait for the MongoDB client promise to resolve
     const client = await clientPromise;
+
+    // Check if the client is undefined (connection failed)
+    if (!client) {
+      return NextResponse.json(
+        { error: "Failed to connect to the database" },
+        { status: 500 }
+      );
+    }
+
     const db = client.db("test");
 
-    // Insert the data into the "responses" collection
+    // Insert the data into the "data quality" collection
     const result = await db.collection("data quality").insertOne({
       userId,
       questionID,

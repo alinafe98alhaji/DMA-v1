@@ -18,7 +18,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Wait for the MongoDB client promise to resolve
     const client = await clientPromise;
+
+    // Check if client is undefined (indicating a failure to connect)
+    if (!client) {
+      return NextResponse.json(
+        { error: "Failed to connect to the database" },
+        { status: 500 }
+      );
+    }
+
     const db = client.db("test");
 
     // Insert the data into the "responses" collection

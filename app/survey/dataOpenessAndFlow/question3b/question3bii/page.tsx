@@ -1,8 +1,9 @@
 "use client"; // Ensure the code is only executed client-side
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
+import Question3biii from "../question3biii/page";
 
 // List of areas for which the user can select Yes/Partially/No
 const areas = [
@@ -189,4 +190,10 @@ const Question3bii = () => {
   );
 };
 
-export default Question3bii;
+// Suspense wrapper component
+const SuspenseWrapper = () =>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question3bii />
+  </Suspense>;
+
+export default SuspenseWrapper;

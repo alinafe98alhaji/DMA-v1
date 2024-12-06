@@ -18,7 +18,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Wait for the client promise to resolve
     const client = await clientPromise;
+
+    // Ensure client is defined before accessing the db
+    if (!client) {
+      return NextResponse.json(
+        { error: "Failed to connect to the database" },
+        { status: 500 }
+      );
+    }
+
     const db = client.db("test");
 
     // Insert the data into the "responses" collection

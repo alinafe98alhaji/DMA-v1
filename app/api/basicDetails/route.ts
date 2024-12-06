@@ -17,8 +17,17 @@ export async function POST(req: Request) {
 
     // Connect to MongoDB
     const client = await clientPromise;
-    const db = client.db("depa"); // your actual database name
-    const collection = db.collection("basicDetails"); // users collection
+
+    // Ensure client is defined before proceeding
+    if (!client) {
+      return NextResponse.json(
+        { message: "Failed to connect to the database." },
+        { status: 500 }
+      );
+    }
+
+    const db = client.db("test"); // your actual database name
+    const collection = db.collection("users"); // users collection
 
     // Check if user already exists
     const existingUser = await collection.findOne({

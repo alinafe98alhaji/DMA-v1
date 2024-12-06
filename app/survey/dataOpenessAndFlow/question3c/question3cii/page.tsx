@@ -1,6 +1,6 @@
 "use client"; // Ensure the code runs only client-side
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link"; // For navigation
 export const dynamic = "force-dynamic";
 
@@ -193,4 +193,10 @@ const Question3cii = () => {
   );
 };
 
-export default Question3cii;
+// Suspense wrapper component
+const SuspenseWrapper = () =>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question3cii />
+  </Suspense>;
+
+export default SuspenseWrapper;

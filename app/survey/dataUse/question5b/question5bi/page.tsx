@@ -1,7 +1,7 @@
 "use client"; // Ensure the code runs only client-side
 
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 export const dynamic = "force-dynamic";
 
 // Define areas and options
@@ -163,4 +163,11 @@ const Question5bi = () => {
   );
 };
 
-export default Question5bi;
+// Suspense wrapper component
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question5bi />
+  </Suspense>
+);
+
+export default SuspenseWrapper;

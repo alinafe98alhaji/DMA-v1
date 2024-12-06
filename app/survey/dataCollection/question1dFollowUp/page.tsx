@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { Suspense,useState, useEffect } from "react";
 export const dynamic = "force-dynamic";
 
 const Question1dFollowUp = () => {
@@ -136,4 +136,11 @@ const Question1dFollowUp = () => {
   );
 };
 
-export default Question1dFollowUp;
+// Suspense wrapper component
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question1dFollowUp />
+  </Suspense>
+);
+
+export default SuspenseWrapper;

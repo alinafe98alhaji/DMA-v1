@@ -1,7 +1,7 @@
 "use client"; // This is necessary for client-side hooks in Next.js
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 export const dynamic = "force-dynamic";
 
 const Question2dii = () => {
@@ -166,4 +166,10 @@ const Question2dii = () => {
   );
 };
 
-export default Question2dii;
+// Suspense wrapper component
+const SuspenseWrapper = () =>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question2dii />
+  </Suspense>;
+
+export default SuspenseWrapper;

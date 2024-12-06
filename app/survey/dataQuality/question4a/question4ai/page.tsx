@@ -1,6 +1,6 @@
 "use client"; // Ensure the code runs only client-side
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link"; // To enable navigation to the next page
 export const dynamic = "force-dynamic";
 
@@ -177,4 +177,10 @@ const Question4ai = () => {
   );
 };
 
-export default Question4ai;
+// Suspense wrapper component
+const SuspenseWrapper = () =>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question4ai />
+  </Suspense>;
+
+export default SuspenseWrapper;

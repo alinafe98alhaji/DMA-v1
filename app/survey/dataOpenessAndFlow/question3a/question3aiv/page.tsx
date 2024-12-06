@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 export const dynamic = "force-dynamic";
 
@@ -182,4 +182,10 @@ const Question3aiv = () => {
   );
 };
 
-export default Question3aiv;
+// Suspense wrapper component
+const SuspenseWrapper = () =>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question3aiv />
+  </Suspense>;
+
+export default SuspenseWrapper;

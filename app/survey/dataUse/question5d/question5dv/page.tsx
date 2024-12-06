@@ -187,7 +187,7 @@
 
 "use client"; // This is necessary for client-side hooks in Next.js
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 export const dynamic = "force-dynamic";
 
 const Question5dV = () => {
@@ -357,4 +357,10 @@ const Question5dV = () => {
   );
 };
 
-export default Question5dV;
+// Suspense wrapper component
+const SuspenseWrapper = () =>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question5dV />
+  </Suspense>;
+
+export default SuspenseWrapper;

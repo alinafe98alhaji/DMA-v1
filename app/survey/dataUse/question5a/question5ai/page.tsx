@@ -1,6 +1,6 @@
 "use client"; // Ensure the code runs only client-side
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link"; // Import Link from next/link
 export const dynamic = "force-dynamic";
@@ -209,4 +209,11 @@ const scoreMapping: { [key: number]: number } = {
   );
 };
 
-export default Question5ai;
+// Suspense wrapper component
+const SuspenseWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question5ai />
+  </Suspense>
+);
+
+export default SuspenseWrapper;
