@@ -180,7 +180,7 @@
 
 import { Suspense, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-export const dynamic = "force-dynamic";
+//export const dynamic = "force-dynamic";
 
 const Question1aiii = () => {
   const router = useRouter();
