@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 declare global {
   // Declare _mongoClientPromise globally with a consistent type
   // Use "var" instead of "let" or "const" for global variables
-  var _mongoClientPromise: Promise<MongoClient> | undefined;
+  let _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
 // Ensure you have a valid MongoDB URI in your environment variables
