@@ -1,5 +1,5 @@
 "use client";
-import { useMemo,useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ScoreData {
   area: string;
@@ -25,21 +25,13 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // const apiEndpoints = [
-  //   { collectionName: "responses", url: "/api/getAllUsersData" },
-  //   { collectionName: "data ownership and management", url: "/api/getAllUsersDataOwnershipAndManagement" },
-  //   { collectionName: "data openess and flow", url: "/api/getAllUsersDataOpenessAndFlow" },
-  //   { collectionName: "data quality", url: "/api/getAllUsersDataQuality" },
-  //   { collectionName: "data use", url: "/api/getAllUsersDataUse" }
-  // ];
-  const apiEndpoints = useMemo(() => [
+  const apiEndpoints = [
     { collectionName: "responses", url: "/api/getAllUsersData" },
     { collectionName: "data ownership and management", url: "/api/getAllUsersDataOwnershipAndManagement" },
     { collectionName: "data openess and flow", url: "/api/getAllUsersDataOpenessAndFlow" },
     { collectionName: "data quality", url: "/api/getAllUsersDataQuality" },
     { collectionName: "data use", url: "/api/getAllUsersDataUse" }
-  ], []); // Empty dependency array means this array will never change during component lifecycle
-  
+  ];
 
   useEffect(() => {
     async function fetchUserData() {
@@ -77,7 +69,7 @@ export default function AdminDashboard() {
         });
 
         setUserData(allUserData);
-      } catch /*(err)*/ {
+      } catch (err) {
         setError("An error occurred while fetching data");
       } finally {
         setLoading(false);
@@ -85,7 +77,7 @@ export default function AdminDashboard() {
     }
 
     fetchUserData();
-  }, [apiEndpoints]);
+  }, []);
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center text-red-600">Error: {error}</div>;

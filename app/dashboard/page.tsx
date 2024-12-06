@@ -1,6 +1,5 @@
 "use client";
-import { useMemo, useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 
 interface ScoreData {
   area: string;
@@ -19,21 +18,13 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // const apiEndpoints = [
-  //   { collectionName: "Data Collection", url: "/api/getData" },
-  //   { collectionName: "Data Ownership and Management", url: "/api/getDataOwnershipAndManagement" },
-  //   { collectionName: "Data Openness and Flow", url: "/api/getDataOpenessAndFlow" },
-  //   { collectionName: "Data Quality", url: "/api/getDataQuality" },
-  //   { collectionName: "Data Use", url: "/api/getDataUse" }
-  // ];
-   // Memoize apiEndpoints to avoid it changing on every render
-   const apiEndpoints = useMemo(() => [
+  const apiEndpoints = [
     { collectionName: "Data Collection", url: "/api/getData" },
     { collectionName: "Data Ownership and Management", url: "/api/getDataOwnershipAndManagement" },
     { collectionName: "Data Openness and Flow", url: "/api/getDataOpenessAndFlow" },
     { collectionName: "Data Quality", url: "/api/getDataQuality" },
     { collectionName: "Data Use", url: "/api/getDataUse" }
-  ], []); // Empty dependency array ensures it only gets created once
+  ];
 
   useEffect(() => {
     async function fetchAllData() {
@@ -66,7 +57,7 @@ export default function Dashboard() {
     }
 
     fetchAllData();
-  }, [apiEndpoints]);
+  }, []);
 
   const getScoreClass = (score: number) => {
     if (score >= 80) return "bg-green-600 text-white"; // Bright green
