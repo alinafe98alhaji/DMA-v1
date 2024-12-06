@@ -1,6 +1,7 @@
 "use client"; // Ensure the code is only executed client-side
 
 import React, { useState } from "react";
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 
 // List of areas for which the user can select Yes/Partially/No

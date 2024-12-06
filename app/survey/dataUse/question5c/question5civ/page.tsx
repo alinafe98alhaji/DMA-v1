@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+export const dynamic = "force-dynamic";
 
 // Mapping options to scores
 const optionScores: { [key: string]: number } = {

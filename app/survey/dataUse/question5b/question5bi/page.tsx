@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+export const dynamic = "force-dynamic";
 
 // Define areas and options
 const areas = [

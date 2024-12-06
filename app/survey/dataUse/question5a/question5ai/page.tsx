@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link"; // Import Link from next/link
+export const dynamic = "force-dynamic";
 
 const Question5ai = () => {
   const searchParams = useSearchParams();

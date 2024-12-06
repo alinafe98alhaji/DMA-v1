@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter
+export const dynamic = "force-dynamic";
 
 // List of areas for which the user can select Yes/Partially/No
 const areas = [

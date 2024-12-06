@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link"; // To enable navigation to the next page
+export const dynamic = "force-dynamic";
 
 const areas = [
   "Urban Water Supply Coverage",

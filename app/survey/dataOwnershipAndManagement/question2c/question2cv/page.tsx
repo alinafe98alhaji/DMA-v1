@@ -190,6 +190,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+export const dynamic = "force-dynamic";
 
 const Question2cV = () => {
   const router = useRouter();

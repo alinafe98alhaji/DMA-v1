@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation"; // Correct hook for routing in App Router
+export const dynamic = "force-dynamic";
 
 // List of areas that need to be rendered for this question
 const areas = [

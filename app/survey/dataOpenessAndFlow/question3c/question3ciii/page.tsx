@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link"; // For navigation
+export const dynamic = "force-dynamic";
 
 // List of areas that need to be rendered for this question
 const areas = [

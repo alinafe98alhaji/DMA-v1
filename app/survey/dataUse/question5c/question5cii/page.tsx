@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+export const dynamic = "force-dynamic";
 
 const areas = [
   "Urban Water Supply Coverage",

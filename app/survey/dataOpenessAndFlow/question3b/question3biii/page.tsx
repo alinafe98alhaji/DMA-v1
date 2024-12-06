@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation"; // New hook to read query params
 import { useRouter } from "next/navigation"; // Import useRouter for programmatic navigation
+export const dynamic = "force-dynamic";
 
 const Question3biii = () => {
   const searchParams = useSearchParams();

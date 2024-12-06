@@ -188,6 +188,7 @@
 "use client"; // This is necessary for client-side hooks in Next.js
 
 import { useState } from "react";
+export const dynamic = "force-dynamic";
 
 const Question5dV = () => {
   // Predefined seven areas

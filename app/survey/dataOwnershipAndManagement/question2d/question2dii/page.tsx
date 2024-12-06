@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+export const dynamic = "force-dynamic";
 
 const Question2dii = () => {
   const router = useRouter();

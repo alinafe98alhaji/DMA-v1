@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+export const dynamic = "force-dynamic";
 
 const Question5ciii = () => {
   const searchParams = useSearchParams();

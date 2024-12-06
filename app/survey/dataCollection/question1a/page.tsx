@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+export const dynamic = "force-dynamic";
 
 interface Responses {
   [key: string]: string;
@@ -118,14 +119,19 @@ const Question1a: React.FC = () => {
         collected across the sector?
       </h1>
       <form>
-        {areas.map(area => (
+        {areas.map(area =>
           <div
             key={area}
-            className={`p-3 mb-2 rounded-lg ${errors[area] ? "border-light-blue-300 border" : "border-gray-300 border"}`}
+            className={`p-3 mb-2 rounded-lg ${errors[area]
+              ? "border-light-blue-300 border"
+              : "border-gray-300 border"}`}
           >
             <div className="flex items-center gap-4">
-              <h3 className="font-semibold w-2/5">{area}</h3>
-              <div className="flex gap-20 w-1/8"> {/* Increased gap between responses */}
+              <h3 className="font-semibold w-2/5">
+                {area}
+              </h3>
+              <div className="flex gap-20 w-1/8">
+                {" "}{/* Increased gap between responses */}
                 <label>
                   <input
                     type="radio"
@@ -159,7 +165,7 @@ const Question1a: React.FC = () => {
               </div>
             </div>
           </div>
-        ))}
+        )}
         <button
           type="button"
           onClick={handleSubmit}
