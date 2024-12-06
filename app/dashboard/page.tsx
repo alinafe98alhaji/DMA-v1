@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useMemo,useEffect, useState } from "react";
 
 interface ScoreData {
   area: string;
@@ -17,14 +17,13 @@ export default function Dashboard() {
   const [areas, setAreas] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const apiEndpoints = [
+  const apiEndpoints = useMemo(() => [
     { collectionName: "Data Collection", url: "/api/getData" },
     { collectionName: "Data Ownership and Management", url: "/api/getDataOwnershipAndManagement" },
     { collectionName: "Data Openness and Flow", url: "/api/getDataOpenessAndFlow" },
     { collectionName: "Data Quality", url: "/api/getDataQuality" },
-    { collectionName: "Data Use", url: "/api/getDataUse" }
-  ];
+    { collectionName: "Data Use", url: "/api/getDataUse" },
+  ], []);
 
   useEffect(() => {
     async function fetchAllData() {
@@ -57,7 +56,7 @@ export default function Dashboard() {
     }
 
     fetchAllData();
-  }, []);
+  }, [apiEndpoints]);
 
   const getScoreClass = (score: number) => {
     if (score >= 80) return "bg-green-600 text-white"; // Bright green

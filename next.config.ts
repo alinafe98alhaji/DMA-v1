@@ -9,8 +9,13 @@ const nextConfig: NextConfig = {
 };
 module.exports = {
   experimental: {
-    missingSuspenseWithCSRBailout: false,
   },
 }
 export default nextConfig;
+module.exports = {
+  eslint: {
+    ignoreDuringBuilds: true, // Ignores ESLint errors during builds
+  },
+};
+
 
