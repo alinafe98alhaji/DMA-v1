@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation"; // New hook to read query params
 import { useRouter } from "next/navigation"; // Import useRouter for programmatic navigation
 
-const question3biii = () => {
+const Question3biii = () => {
   const searchParams = useSearchParams();
   const responsesQuery = searchParams.get("responses");
 
@@ -250,4 +250,4 @@ const question3biii = () => {
   );
 };
 
-export default question3biii;
+export default Question3biii;
