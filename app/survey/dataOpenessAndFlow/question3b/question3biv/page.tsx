@@ -1,24 +1,25 @@
 "use client"; // Ensures the code runs only client-side
 
 import React, { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Question3biv = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const responsesQuery = searchParams.get("responses");
-  const responses = responsesQuery
-    ? JSON.parse(decodeURIComponent(responsesQuery))
-    : {};
 
-  // Filter areas where the previous response was "No"
-  const noAreas = Object.entries(responses)
-    .filter(([_, value]) => value === "No")
-    .map(([area]) => area);
+  // Predefined seven areas
+  const areas = [
+    "Urban Water Supply Coverage",
+    "Urban Sanitation Sector Coverage",
+    "Rural Water Supply Sector Coverage",
+    "Rural Sanitation Sector Coverage",
+    "Finance",
+    "Regulation",
+    "Utility Operations: Technical, Commercial, Financial, HR"
+  ];
 
-  // State to track user inputs for the filtered areas
+  // State to track user inputs for the areas
   const [answers, setAnswers] = useState(() =>
-    noAreas.reduce((acc, area) => {
+    areas.reduce((acc, area) => {
       acc[area] = null; // Initialize all answers as null
       return acc;
     }, {} as { [key: string]: "Yes" | "Partially" | "No" | null })
@@ -43,7 +44,7 @@ const Question3biv = () => {
   };
 
   // Function to check if all required areas are answered
-  const isValid = noAreas.every(area => answers[area] !== null);
+  const isValid = areas.every(area => answers[area] !== null);
 
   // Handle the "Next" button click with validation and navigation
   const handleNextClick = async () => {
@@ -89,10 +90,9 @@ const Question3biv = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        // Navigate to the next page if valid
         const nextPage = "/survey/dataOpenessAndFlow/question3b/question3bv"; // Adjust next page path as needed
         const queryParams = new URLSearchParams({
-          responses: JSON.stringify({ ...responses, ...answers })
+          responses: JSON.stringify(answers)
         }).toString();
 
         router.push(`${nextPage}?${queryParams}`);
@@ -120,8 +120,8 @@ const Question3biv = () => {
         </ul>
       </div>
 
-      <h1>
-        3.b.iv. Does your organisation make use of centralised platforms to
+      <h1 className="text-xl font-bold mb-4">
+        3.b.iv: Does your organisation make use of centralised platforms to
         share data internally?
       </h1>
 
@@ -132,55 +132,58 @@ const Question3biv = () => {
           <strong>Error:</strong> Please answer all questions before proceeding.
         </div>}
 
-      {noAreas.length === 0
-        ? <p>No areas marked as "No" from the previous step.</p>
-        : <form>
-            {noAreas.map(area =>
-              <div key={area} className="mb-4 mt-4 area-section">
-                <label>
-                  <strong>
-                    {area}
-                  </strong>
-                </label>
-                <div className="options">
-                  <label>
-                    <input
-                      type="radio"
-                      name={area}
-                      value="Yes"
-                      checked={answers[area] === "Yes"}
-                      onChange={() => handleSelection(area, "Yes")}
-                    />
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={area}
-                      value="Partially"
-                      checked={answers[area] === "Partially"}
-                      onChange={() => handleSelection(area, "Partially")}
-                    />
-                    Partially
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={area}
-                      value="No"
-                      checked={answers[area] === "No"}
-                      onChange={() => handleSelection(area, "No")}
-                    />
-                    No
-                  </label>
-                </div>
-              </div>
-            )}
-          </form>}
+      <form>
+        {areas.map(area =>
+          <div key={area} className="mb-4 mt-4 area-section">
+            <label>
+              <strong>
+                {area}
+              </strong>
+            </label>
+            <div className="options">
+              <label>
+                <input
+                  type="radio"
+                  name={area}
+                  value="Yes"
+                  checked={answers[area] === "Yes"}
+                  onChange={() => handleSelection(area, "Yes")}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={area}
+                  value="Partially"
+                  checked={answers[area] === "Partially"}
+                  onChange={() => handleSelection(area, "Partially")}
+                />
+                Partially
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={area}
+                  value="No"
+                  checked={answers[area] === "No"}
+                  onChange={() => handleSelection(area, "No")}
+                />
+                No
+              </label>
+            </div>
+          </div>
+        )}
+      </form>
 
       {/* Navigation Buttons */}
-      <div className="navigation-buttons">
-        <button onClick={handleNextClick}>Next</button>
+      <div className="navigation-buttons mt-6">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+          onClick={handleNextClick}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
