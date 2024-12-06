@@ -192,7 +192,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { Suspense,useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const Question1bii = () => {
@@ -378,5 +378,10 @@ const Question1bii = () => {
     </div>
   );
 };
+const SuspendedQuestion1bii = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Question1bii />
+  </Suspense>
+);
 
 export default Question1bii;
