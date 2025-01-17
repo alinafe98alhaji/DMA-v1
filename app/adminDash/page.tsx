@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 
 interface ScoreData {
@@ -28,17 +27,17 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
 
   const apiEndpoints = [
-    { collectionName: "responses", url: "/api/getAllUsersData" },
+    { collectionName: "Data Collection", url: "/api/getAllUsersData" },
     {
-      collectionName: "data ownership and management",
+      collectionName: "Data Ownership And Management",
       url: "/api/getAllUsersDataOwnershipAndManagement",
     },
     {
-      collectionName: "data openness and flow",
+      collectionName: "Data Openness And Flow",
       url: "/api/getAllUsersDataOpenessAndFlow",
     },
-    { collectionName: "data quality", url: "/api/getAllUsersDataQuality" },
-    { collectionName: "data use", url: "/api/getAllUsersDataUse" },
+    { collectionName: "Data Quality", url: "/api/getAllUsersDataQuality" },
+    { collectionName: "Data Use", url: "/api/getAllUsersDataUse" },
   ];
 
   useEffect(() => {
@@ -118,25 +117,15 @@ export default function AdminDashboard() {
 
   const selectedUserData = selectedUser ? userData[selectedUser] : null;
 
-  const areas = [
-    "Urban Water Supply Coverage",
-    "Urban Sanitation Sector Coverage",
-    "Rural Water Supply Sector Coverage",
-    "Rural Sanitation Sector Coverage",
-    "Finance",
-    "Regulation",
-    "Utility Operations: Technical, Commercial, Financial, HR",
-  ];
-
-  const getColorForScore = (score: number | null) => {
-    if (score === null || score === undefined) return "bg-gray-200";
-    if (score <= 40) return "bg-[rgb(204,51,0)] text-white"; // Dark red
-    if (score <= 60) return "bg-[rgb(247,202,172)] text-black"; // Light orange
-    if (score <= 70) return "bg-[rgb(255,192,0)] text-black"; // Orange
-    if (score <= 80) return "bg-[rgb(255,255,153)] text-black"; // Yellow
-    if (score <= 90) return "bg-[rgb(159,255,159)] text-black"; // Light green
-    return "bg-[rgb(0,153,0)] text-white"; // Dark green
-  };
+  // Function to return color based on score percentage
+  function getScoreColor(score: number) {
+    if (score >= 91) return "bg-green-700"; // Dark green
+    if (score >= 81) return "bg-green-200"; // Light green
+    if (score >= 71) return "bg-yellow-200"; // Yellow
+    if (score >= 61) return "bg-orange-400"; // Orange
+    if (score >= 41) return "bg-orange-100"; // Light orange
+    return "bg-red-600"; // Dark red
+  }
 
   return (
     <div className="flex h-screen">
@@ -164,6 +153,10 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <div className="flex-grow h-screen bg-gray-100">
+        <nav className="bg-white shadow-md p-4 flex justify-between items-center">
+          <h1 className="text-xl font-bold text-gray-800">User Details</h1>
+        </nav>
+
         <div className="p-6">
           {!selectedUserData ? (
             <div className="text-center text-gray-500">
@@ -197,47 +190,45 @@ export default function AdminDashboard() {
                 <table className="min-w-full table-fixed border-collapse rounded-lg overflow-hidden shadow-md">
                   <thead>
                     <tr className="bg-gray-200">
-                      <th className="px-4 py-2 text-left font-bold text-gray-900 border border-gray-400">
-                        Areas
+                      <th className="px-4 py-2 text-left font-bold text-gray-900">
+                        Collection Name
                       </th>
-                      {apiEndpoints.map(({ collectionName }) => (
-                        <th
-                          key={collectionName}
-                          className="px-4 py-2 text-left font-bold text-gray-900 border border-gray-400"
-                        >
-                          {collectionName === "responses"
-                            ? "Data Collection"
-                            : collectionName}
-                        </th>
-                      ))}
+                      {selectedUserData.collections["Data Collection"]?.map(
+                        (item) => (
+                          <th
+                            key={item.area}
+                            className="px-4 py-2 text-left font-bold text-gray-900"
+                          >
+                            {item.area}
+                          </th>
+                        )
+                      )}
                     </tr>
                   </thead>
                   <tbody>
-                    {areas.map((area) => (
-                      <tr key={area} className="border-t">
-                        <td className="px-4 py-2 font-medium text-gray-900 border border-gray-400">
-                          {area}
+                    {apiEndpoints.map(({ collectionName }) => (
+                      <tr key={collectionName} className="border-t">
+                        <td className="px-4 py-2 font-bold border border-gray-400">
+                          {collectionName}
                         </td>
-                        {apiEndpoints.map(({ collectionName }) => {
-                          const scoreData =
-                            selectedUserData.collections[collectionName]?.find(
-                              (data) => data.area === area
+                        {selectedUserData.collections["Data Collection"]?.map(
+                          (item) => {
+                            const scoreData =
+                              selectedUserData.collections[collectionName]?.find(
+                                (data) => data.area === item.area
+                              );
+                            return (
+                              <td
+                                key={item.area}
+                                className={`px-4 py-2 text-center border border-gray-400 ${scoreData ? getScoreColor(scoreData.totalScore) : ""}`}
+                              >
+                                {scoreData
+                                  ? `${scoreData.totalScore.toFixed(2)}%`
+                                  : "N/A"}
+                              </td>
                             );
-                          const score = scoreData
-                            ? Number(scoreData.totalScore.toFixed(2))
-                            : null;
-
-                          return (
-                            <td
-                              key={collectionName}
-                              className={`px-4 py-2 text-center border border-gray-400 ${getColorForScore(
-                                score
-                              )}`}
-                            >
-                              {score !== null ? `${score}%` : "N/A"}
-                            </td>
-                          );
-                        })}
+                          }
+                        )}
                       </tr>
                     ))}
                   </tbody>
