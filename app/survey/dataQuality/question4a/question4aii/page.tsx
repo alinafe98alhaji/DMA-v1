@@ -79,7 +79,7 @@ const Question4aii = () => {
 
       const data = await res.json();
       console.log("Responses saved successfully:", data);
-      router.push("/survey/dataQuality/question4b"); // Navigate to the next page
+      router.push("/survey/dataQuality/question4b/question4bii"); // Navigate to the next page
     } catch (err) {
       console.error("Error saving responses:", err);
     }
@@ -94,26 +94,28 @@ const Question4aii = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">
+            Data Quality
+          </h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+         <h1 className="text-gray-900 mb-4 text-lg font-bold">
+        4.a.ii How effective is the centralised process for ongoing assessment
+        of data quality at improving/ ensuring the quality of data for your
+        organisation?
+      </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Quality Assessment Organisational Level
-          </h1>
+          
           <li>
             This question evaluates the success of the centralised data quality
             assessments in improving your data quality.
           </li>
         </ul>
       </div>
-      <h1 className="mb-4 text-xl font-bold">
-        4.a.ii How effective is the centralised process for ongoing assessment
-        of data quality at improving/ ensuring the quality of data for your
-        organisation?
-      </h1>
+     
 
       <table className="min-w-full table-auto border-collapse">
         <thead>
@@ -134,7 +136,7 @@ const Question4aii = () => {
         <tbody>
           {areas.map(area => (
             <tr key={area}>
-              <td className="px-4 py-2 border-b text-left">{area}</td>
+              <td className="font-bold px-4 py-2 border-b text-left">{area}</td>
               {options.map((option, index) => (
                 <td key={index} className="px-4 py-2 border-b text-center">
                   <input

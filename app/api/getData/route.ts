@@ -10,7 +10,7 @@ const clientPromise = MongoClient.connect(process.env.MONGODB_URI);
 
 export async function GET(req: NextRequest) {
   try {
-    const userId = "67505eda1a268fa5f9edeb0a";
+    const userId = "6761c3f9f5abc5e97c14b899";
     if (!userId) {
       return NextResponse.json(
         { success: false, error: "User ID is required" },

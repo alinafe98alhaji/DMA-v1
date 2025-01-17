@@ -44,25 +44,23 @@ const Question5bii = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Use</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 font-bold text-lg mb-4">
+          5.b.ii Does your organisation benefit from external incentives to
+          promote data-driven decision making?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
           <li>
             This question examines if your organisation takes advantage of these
             incentives to enhance its decision-making processes.
           </li>
         </ul>
       </div>
-      <h1>
-        5.b.ii Does your organisation benefit from external incentives to
-        promote data-driven decision making?
-      </h1>
 
       <form>
         {areas.map(area =>
@@ -72,7 +70,7 @@ const Question5bii = () => {
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="flex gap-4 options">
               <label>
                 <input
                   type="radio"
@@ -110,7 +108,7 @@ const Question5bii = () => {
 
       {/* Next button to navigate to the next page */}
       <div className="navigation-buttons mt-6">
-        <Link href="/survey/dataUse/question5c">
+        <Link href="/survey/dataUse/question5c/question5cii">
           <button
             type="button"
             disabled={!isFormComplete} // Disable the button if the form is not complete

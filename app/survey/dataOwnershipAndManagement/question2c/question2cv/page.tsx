@@ -287,26 +287,23 @@ const Question2cV = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-6">
+          2.c.v: Is your organisation aware of cybersecurity threats in the WSS
+          sector?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             This question asks if your organisation knows about cybersecurity
             threats within the sector and ensures its security.
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-6">
-        2.c.v: Is your organisation aware of cybersecurity threats in the WSS
-        sector?
-      </h1>
 
       {areas.map((area, index) =>
         <div className="mb-4 mt-4" key={index}>

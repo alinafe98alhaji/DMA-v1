@@ -44,15 +44,17 @@ const Question4ai = () => {
 
   return (
     <div className="survey-container" style={{ padding: "50px" }}>
+      <h1 className="mb-4 text-lg font-bold">Data Quality</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 font-bold text-lg mb-4">
+          4.a.i Which department is mandated to assess data quality?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             Identify the department tasked with assessing data quality. This
             could be a regulatory agency, a national data management authority,
@@ -60,9 +62,7 @@ const Question4ai = () => {
           </li>
         </ul>
       </div>
-      <h1 style={{ marginBottom: "20px" }}>
-        4.a.i Which department is mandated to assess data quality?
-      </h1>
+
       <form style={{ marginBottom: "40px" }}>
         {areas.map(area =>
           <div

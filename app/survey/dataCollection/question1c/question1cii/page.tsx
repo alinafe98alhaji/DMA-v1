@@ -103,7 +103,7 @@ const Question1CII = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Navigate to the next question
-        router.push("/survey/dataCollection/question1d");
+        router.push("/survey/dataCollection/question1d/question1dii");
       })
       .catch(err => {
         console.error("Error saving responses:", err);
@@ -114,26 +114,23 @@ const Question1CII = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data collection</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-6">
+          1.c.ii: Why isn't your organisation's data collection properly
+          supported by allocated resources?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
           <li>
             This question asks why internal funding and support aren't enough
             for your organisation's data collection needs.
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-6">
-        1.c.ii: Why isn't your organisation's data collection properly supported
-        by allocated resources?
-      </h1>
 
       {/* Table Layout */}
       <div className="overflow-auto">
@@ -153,14 +150,14 @@ const Question1CII = () => {
           </thead>
           <tbody>
             {noAreas.map(area =>
-              <tr key={area} className="hover:bg-gray-100">
+              <tr key={area}>
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}
                 </td>
                 {options.map(option =>
                   <td
                     key={option}
-                    className="border border-gray-300 text-center"
+                    className="hover:bg-blue-100 border border-gray-300 text-center"
                   >
                     <input
                       type="radio"

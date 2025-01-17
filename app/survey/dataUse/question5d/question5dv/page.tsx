@@ -268,25 +268,24 @@ const Question5dV = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Use</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          5.d.v: Does your organisation run internal data-related capacity
+          building/training programmes?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
           <li>
             This question examines if your organisation conducts internal
             training and capacity-building initiatives in data-related aspects.
           </li>
         </ul>
       </div>
-      <h1>
-        5.d.v: Does your organisation run internal data-related capacity
-        building/training programmes?
-      </h1>
+
       {areas.map((area, index) =>
         <div key={index} className="mb-4 mt-4">
           <label>
@@ -294,7 +293,7 @@ const Question5dV = () => {
               {area}
             </strong>
           </label>
-          <div>
+          <div className="flex gap-4">
             <label>
               <input
                 type="radio"

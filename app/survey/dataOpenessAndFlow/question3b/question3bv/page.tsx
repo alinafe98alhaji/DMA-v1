@@ -53,27 +53,29 @@ const Question3bv = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">
+            Data Openness and Flow
+          </h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50 shadow-md">
+        <h1 className="mb-4 text-gray-900 font-bold text-lg">
+        3.b.v. How effective are these centralised platforms in facilitating
+        data sharing?
+      </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Openness and Flow Assessment Organisational Level
-          </h1>
+          
           <li>
             This question evaluates the functional effectiveness of internal
             central systems.
           </li>
         </ul>
       </div>
-      <h1 className="mb-6 text-white">
-        3.b.v. How effective are these centralised platforms in facilitating
-        data sharing?
-      </h1>
+      
       {partiallyAreas.length === 0
-        ? <p className="text-white">
+        ? <p className="mb-4">
             No areas marked as "Partially" or "Yes" in the previous step.
           </p>
         : <form>
@@ -81,7 +83,7 @@ const Question3bv = () => {
               style={{
                 width: "100%",
                 borderCollapse: "collapse",
-                color: "white"
+                
               }}
             >
               <thead>
@@ -90,8 +92,6 @@ const Question3bv = () => {
                     style={{
                       border: "1px solid #444",
                       padding: "10px",
-                      background: "black",
-                      color: "white"
                     }}
                   >
                     Area
@@ -102,8 +102,8 @@ const Question3bv = () => {
                       style={{
                         border: "1px solid #444",
                         padding: "10px",
-                        background: "black",
-                        color: "white",
+                       
+                      
                         textAlign: "center"
                       }}
                     >
@@ -117,19 +117,14 @@ const Question3bv = () => {
                   <tr
                     key={area}
                     style={{
-                      transition: "background-color 0.3s ease"
+                      
                     }}
-                    onMouseEnter={e =>
-                      (e.currentTarget.style.backgroundColor = "#444")}
-                    onMouseLeave={e =>
-                      (e.currentTarget.style.backgroundColor = "#333")}
-                  >
+                      >
                     <td
                       style={{
                         border: "1px solid #444",
                         padding: "10px",
-                        background: "#222",
-                        color: "white"
+                        
                       }}
                     >
                       <strong>
@@ -138,20 +133,16 @@ const Question3bv = () => {
                     </td>
                     {options.map(option =>
                       <td
+                      className="hover:bg-blue-100"
                         key={option}
                         style={{
                           border: "1px solid #444",
                           padding: "10px",
                           textAlign: "center",
-                          background: "#333",
-                          color: "white",
-                          transition: "background-color 0.3s ease"
+                          
+                        
                         }}
-                        onMouseEnter={e =>
-                          (e.currentTarget.style.backgroundColor = "#555")}
-                        onMouseLeave={e =>
-                          (e.currentTarget.style.backgroundColor = "#333")}
-                      >
+                       >
                         <input
                           type="radio"
                           name={area}
@@ -217,7 +208,7 @@ const Question3bv = () => {
                 console.log("Responses saved successfully:", data);
                 // Proceed to next question
                 router.push(
-                  `/survey/dataOpenessAndFlow/question3c?responses=${encodeURIComponent(
+                  `/survey/dataOpenessAndFlow/question3c/question3cii?responses=${encodeURIComponent(
                     JSON.stringify(answers)
                   )}`
                 );
@@ -227,7 +218,7 @@ const Question3bv = () => {
               });
           }}
         >
-          Submit
+          Next
         </button>
       </div>
     </div>

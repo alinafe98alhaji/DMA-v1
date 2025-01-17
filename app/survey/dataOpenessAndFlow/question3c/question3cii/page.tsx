@@ -108,15 +108,17 @@ const Question3cii = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data Openness and Flow</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50 shadow-md">
+        <h1 className="text-gray-900 mb-4 text-lg font-bold">
+          3.c.ii Is your organisation aware of clear rules or policies in the
+          WSS sector for sharing data freely and publicly?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Openness and Flow Assessment National Level
-          </h1>
           <li>
             This question asks if your organisation knows about clear guidelines
             that promote making data freely available to everyone to use,
@@ -125,10 +127,6 @@ const Question3cii = () => {
           </li>
         </ul>
       </div>
-      <h1>
-        3.c.ii Is your organisation aware of clear rules or policies in the WSS
-        sector for sharing data freely and publicly?
-      </h1>
 
       <form>
         {areas.map(area =>
@@ -138,7 +136,7 @@ const Question3cii = () => {
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="flex gap-4 options">
               <label>
                 <input
                   type="radio"

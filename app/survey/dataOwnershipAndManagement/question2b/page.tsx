@@ -101,15 +101,17 @@ const Question2b = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          2.b. Are there established consultation processes and forums where
+          staff can discuss their data usage and requirements?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             Look for established processes or platforms that facilitate
             communication and coordination among staff regarding their data
@@ -121,18 +123,14 @@ const Question2b = () => {
           </li>
         </ul>
       </div>
-      <h1>
-        2.b. Are there established consultation processes and forums where staff
-        can discuss their data usage and requirements?
-      </h1>
 
       {/* Render areas */}
       {areas.map(area =>
         <div className="mb-4 mt-4" key={area}>
-          <p>
+          <p className="font-bold">
             {area}
           </p>
-          <div>
+          <div className="flex gap-4">
             <label>
               <input
                 type="radio"

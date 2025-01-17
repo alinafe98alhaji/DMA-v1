@@ -123,31 +123,33 @@ const Question2cVII = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">
+            Data Ownership and Management
+          </h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+        2.c.vii: Does your organisation have management mechanisms for
+        cybersecurity threats?
+      </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
+          
           <li>
             This question examines why/why not your organisation has put in
             place mechanisms to prevent/respond to cybersecurity threats.
           </li>
         </ul>
       </div>
-      <h1 className="text-xl font-bold mb-6">
-        2.c.vii: Does your organisation have management mechanisms for
-        cybersecurity threats?
-      </h1>
+      
 
       {/* Tabular Layout */}
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border-collapse border border-gray-300">
           <thead>
-            <tr className="bg-black text-white">
+            <tr>
               <th className="border border-gray-300 px-4 py-2 text-left">
                 Area
               </th>
@@ -165,15 +167,15 @@ const Question2cVII = () => {
             {areas.map((area, index) =>
               <tr
                 key={index}
-                className="border-t border-gray-300 hover:bg-gray-100 transition duration-300"
+                className="border-t border-gray-300  transition duration-300"
               >
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="font-bold border border-gray-300 px-4 py-2">
                   {area}
                 </td>
                 {options.map((option, optIndex) =>
                   <td
                     key={optIndex}
-                    className="border border-gray-300 px-4 py-2 text-center"
+                    className="border hover:bg-blue-100 border-gray-300 px-4 py-2 text-center"
                   >
                     <input
                       type="radio"
@@ -199,7 +201,7 @@ const Question2cVII = () => {
         onClick={handleSubmit}
         className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
       >
-        Submit
+        Next
       </button>
     </div>
   );

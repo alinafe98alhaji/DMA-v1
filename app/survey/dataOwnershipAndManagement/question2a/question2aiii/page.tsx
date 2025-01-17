@@ -104,25 +104,23 @@ const Question2aiii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          2.a.iii: How effective are these data ownership rules at establishing
+          clear and undisputed ownership of data?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             This question examines why or why not your organisation follows the
             established guidelines on data ownership.
           </li>
         </ul>
       </div>
-      <h1>
-        2.a.iii: How effective are these data ownership rules at establishing
-        clear and undisputed ownership of data?
-      </h1>
 
       {/* Render in Tabular Format with Options as Columns */}
       <table className="table-auto w-full mt-4 border-collapse">
@@ -139,7 +137,7 @@ const Question2aiii = () => {
         <tbody>
           {areasFor2aiii.map((area: string) =>
             <tr key={area}>
-              <td className="border px-4 py-2">
+              <td className="hover:bg-blue-100 font-bold border px-4 py-2">
                 {area}
               </td>
               {options.map(option =>
@@ -170,7 +168,7 @@ const Question2aiii = () => {
         onClick={handleSubmit}
         className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md"
       >
-        Submit
+        Next
       </button>
     </div>
   );

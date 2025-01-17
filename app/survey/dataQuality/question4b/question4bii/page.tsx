@@ -111,26 +111,23 @@ const Question4bii = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data Quality</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 mb-4 text-lg font-bold">
+          4.b.ii Does your organisation participate in centrally coordinated
+          programs for data quality improvement?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Quality Assessment Organisational Level
-          </h1>
           <li>
             This question examines if your organisation takes part in programs
             aimed at enhancing data quality.
           </li>
         </ul>
       </div>
-
-      <h1>
-        4.b.ii Does your organisation participate in centrally coordinated
-        programs for data quality improvement?
-      </h1>
 
       <form onSubmit={handleNext}>
         {areas.map(area =>
@@ -140,7 +137,7 @@ const Question4bii = () => {
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="flex gap-4 options">
               <label>
                 <input
                   type="radio"

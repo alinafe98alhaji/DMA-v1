@@ -300,26 +300,23 @@ const Question1div = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data collection</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-6">
+          1.d.iv: How well suited are these tools for your needs as a data
+          collector?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
           <li>
             This question examines why/why not your organisation utilises the
             provided digital tools for collecting data.
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-6">
-        1.d.iv: How well suited are these tools for your needs as a data
-        collector?
-      </h1>
 
       {/* Table layout */}
       <div className="overflow-auto">
@@ -339,14 +336,14 @@ const Question1div = () => {
           </thead>
           <tbody>
             {areasFor1div.map((area: string) =>
-              <tr key={area} className="hover:bg-gray-100">
+              <tr key={area}>
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}
                 </td>
                 {wordOptions.map((option, index) =>
                   <td
                     key={index}
-                    className="border border-gray-300 text-center"
+                    className="hover:bg-blue-100 border border-gray-300 text-center"
                   >
                     <label>
                       <input

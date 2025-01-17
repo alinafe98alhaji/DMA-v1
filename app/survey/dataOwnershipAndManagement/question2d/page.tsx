@@ -100,25 +100,25 @@ const Question2d = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          2.d: Are there common rules and methods that govern data storage and
+          backup in the organisation?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
-            This question examines why/why not your organisation has put in
-            place mechanisms to prevent/respond to cybersecurity threats.
+            Look for documented standards and protocols that dictate the
+            procedures for data storage and backup. This includes physical and
+            digital storage methods, frequency of backups, and security
+            measures.
           </li>
         </ul>
       </div>
-      <h1 className="text-xl font-bold mb-6">
-        2.d: Are there common rules and methods that govern data storage and
-        backup in the organisation?
-      </h1>
 
       {areas.map(area =>
         <div key={area} className="mb-4">

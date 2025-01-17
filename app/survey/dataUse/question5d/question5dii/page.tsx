@@ -101,26 +101,23 @@ const Question5dii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Use</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          5.d.ii: Does your organisation participate in centralised capacity
+          building/training programmes for data-related aspects in WSS sector?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
           <li>
             This question examines if your organisation takes part in these
             training and capacity building initiatives.
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-6">
-        5.d.ii: Does your organisation participate in these capacity
-        building/training programmes?
-      </h1>
 
       {/* Display error message if there are unanswered areas */}
       {error &&

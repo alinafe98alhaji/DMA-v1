@@ -306,23 +306,24 @@ const Question1aiv = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data collection</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          1.a.iv: How effective are the guidelines in terms of their
+          development, adoption, and suitability?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">Organisational Level</h1>
           <li>
             This question examines why/why not your data collection processes
             align with the standards
           </li>
         </ul>
       </div>
-      <h1 className="text-xl font-bold mb-6">
-        1.a.iv: How effective are the guidelines in terms of their development,
-        adoption, and suitability?
-      </h1>
 
       {/* Tabular layout */}
       <div className="overflow-auto">

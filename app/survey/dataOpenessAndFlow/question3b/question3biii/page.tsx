@@ -156,25 +156,22 @@ const Question3biii = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Openness and Flow</h1>
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50 shadow-md">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          3.b.iii. How effective are these centralised platforms in facilitating
+          data sharing?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Openness and Flow Assessment Organisational Level
-          </h1>
           <li>
             This question evaluates the practicality and implementation success
             of the technical systems for data sharing.
           </li>
         </ul>
       </div>
-
-      <h1>
-        3.b.iii. How effective are these centralised platforms in facilitating
-        data sharing?
-      </h1>
 
       {/* Error message */}
       {showError &&
@@ -218,7 +215,7 @@ const Question3biii = () => {
         <tbody>
           {filteredAreas.map(area =>
             <tr key={area}>
-              <td className="border p-2 text-left">
+              <td className="font-bold border p-2 text-left">
                 {area}
               </td>
               {[
@@ -228,7 +225,10 @@ const Question3biii = () => {
                 "Systems are well-integrated, supporting many data formats and ensuring reliable data transfer with minimal delays or errors. Staff lack adequate training to use the systems effectively, leading to underutilisation.",
                 "Centralised systems are top-notch, connecting all data sources seamlessly with high reliability, speed, and no compatibility issues, ensuring optimal data sharing."
               ].map(value =>
-                <td key={value} className="border p-2 text-center">
+                <td
+                  key={value}
+                  className="border hover:bg-blue-100 Sborder p-2 text-center"
+                >
                   <input
                     type="radio"
                     name={area}

@@ -296,25 +296,28 @@ const Question1bii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">
+            Data collection
+          </h1>
+          
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+         <h1 className="mb-4 text-lg text-gray-900 font-bold">
+        1.b.ii: How effective is this process at ensuring that data is collected
+        universally and inclusively?
+      </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
+          
           <li>
             This question examines why/why not your organisation follows the
             guidelines for inclusive data collection.
           </li>
         </ul>
       </div>
-      <h1 className="mb-4 text-xl font-bold">
-        1.b.ii: How effective is this process at ensuring that data is collected
-        universally and inclusively?
-      </h1>
+     
       <p className="mb-6" />
 
       {/* Table */}
@@ -337,9 +340,9 @@ const Question1bii = () => {
         {/* Body Rows */}
         <tbody>
           {areasFor1bii.map(area =>
-            <tr key={area} className="hover:bg-gray-100">
+            <tr key={area} >
               {/* Area Name */}
-              <td className="border border-gray-300 p-2">
+              <td className="border font-bold border-gray-300 p-2">
                 {area}
               </td>
 
@@ -347,7 +350,7 @@ const Question1bii = () => {
               {options.map(option =>
                 <td
                   key={option.text}
-                  className="border border-gray-300 p-2 text-center"
+                  className="border hover:bg-blue-100 border-gray-300 p-2 text-center"
                 >
                   <input
                     type="radio"
@@ -374,7 +377,7 @@ const Question1bii = () => {
         onClick={handleSubmit}
         className="mt-6 px-4 py-2 bg-blue-500 text-white rounded"
       >
-        Submit
+        Next
       </button>
     </div>
   );

@@ -89,7 +89,7 @@ const Question3aiv = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        router.push("/survey/dataOpenessAndFlow/question3b");
+        router.push("/survey/dataOpenessAndFlow/question3b/question3bii");
       })
       .catch(err => {
         console.error("Error saving responses:", err);
@@ -98,15 +98,18 @@ const Question3aiv = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data Openness and Flow</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          3.a.iv: Are there established rules and regular processes for data
+          sharing across different systems in your organisation
+          (interoperability support)?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Openness and Flow Assessment Organisational Level
-          </h1>
           <li>
             This question asks whether your organisation has rules that help
             different systems share and use data easily and govern data sharing
@@ -114,12 +117,6 @@ const Question3aiv = () => {
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-6">
-        3.a.iv: Are there established rules and regular processes for data
-        sharing across different systems in your organisation (interoperability
-        support)?
-      </h1>
 
       {/* Table Layout */}
       <div className="overflow-auto">
@@ -139,14 +136,14 @@ const Question3aiv = () => {
           </thead>
           <tbody>
             {areas.map(area =>
-              <tr key={area} className="hover:bg-gray-100">
+              <tr key={area}>
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}
                 </td>
                 {options.map(option =>
                   <td
                     key={option}
-                    className="border border-gray-300 text-center"
+                    className="hover:bg-gray-100 border border-gray-300 text-center"
                   >
                     <input
                       type="radio"

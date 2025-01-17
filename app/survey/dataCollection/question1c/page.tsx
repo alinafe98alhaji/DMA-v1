@@ -113,15 +113,18 @@ const Question1C = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data collection</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="mb-4 text-lg font-bold text-gray-900">
+          1.c. Are there financial and technical resources allocated to ensure
+          data collection continues smoothly over time across the organisation?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
           <li>
             Check if there are documented plans or policies that outline how
             data collection will be sustained financially, technically, and
@@ -133,23 +136,15 @@ const Question1C = () => {
           </li>
         </ul>
       </div>
-      <h1>
-        1.c. Are there financial and technical resources allocated to ensure
-        data collection continues smoothly over time across the organisation?
-      </h1>
-      <p>
-        Please respond for each area below. Select <strong>Yes</strong>,{" "}
-        <strong>Partially</strong>, <strong>or No</strong>.
-      </p>
       <form>
         {areas.map(area =>
           <div key={area} className="mb-4 mt-4 area-section">
-            <label className="area-label">
+            <label className=" area-label">
               <strong>
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="flex gap-4 options">
               <label>
                 <input
                   type="radio"

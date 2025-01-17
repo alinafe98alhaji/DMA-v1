@@ -110,15 +110,16 @@ const Question2civ = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          2.c.iv: How suitable are data protection rules for your organisation?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             This question examines why/why not your organisation follows the
             established data protection guidelines.
@@ -126,16 +127,12 @@ const Question2civ = () => {
         </ul>
       </div>
 
-      <h1 className="text-xl font-bold mb-6">
-        2.c.iv: How suitable are data protection rules for your organisation?
-      </h1>
-
       <table className="table-auto w-full border-collapse border border-gray-300">
-        <thead className="bg-black-500 text-white">
+        <thead>
           <tr>
             <th className="border border-gray-300 p-2 text-left">Area</th>
             {wordOptions.map((option, index) =>
-              <th key={index} className="border border-gray-300 p-2">
+              <th key={index} className=" border border-gray-300 p-2">
                 {option}
               </th>
             )}
@@ -143,14 +140,14 @@ const Question2civ = () => {
         </thead>
         <tbody>
           {areasFor2civ.map(area =>
-            <tr key={area} className="hover:bg-blue-100">
-              <td className="border border-gray-300 p-2">
+            <tr key={area}>
+              <td className="font-bold border border-gray-300 p-2">
                 {area}
               </td>
               {wordOptions.map(option =>
                 <td
                   key={option}
-                  className="border border-gray-300 p-2 text-center"
+                  className="hover:bg-blue-100 border border-gray-300 p-2 text-center"
                 >
                   <input
                     type="radio"

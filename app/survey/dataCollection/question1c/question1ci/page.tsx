@@ -143,15 +143,20 @@ const Question1CI = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">
+            Data collection
+          </h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="font-bold mb-4 text-gray-900 text-lg">
+        1.c.i. How well have the resources ensured the sustainability of your
+        organisation's data collection processes?
+      </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
+          
           <li>
             This question asks how effective the resourcing strategy is for your
             organisation.
@@ -159,10 +164,7 @@ const Question1CI = () => {
         </ul>
       </div>
 
-      <h1>
-        1.c.i. How well have the resources ensured the sustainability of your
-        organisation's data collection processes?
-      </h1>
+      
 
       {/* Table layout */}
       <div className="overflow-auto">
@@ -182,14 +184,14 @@ const Question1CI = () => {
           </thead>
           <tbody>
             {filteredAreas.map(area => (
-              <tr key={area} className="hover:bg-gray-100">
+              <tr key={area} >
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}
                 </td>
                 {options.map(option => (
                   <td
                     key={option.text}
-                    className="border border-gray-300 text-center"
+                    className="hover:bg-blue-100 border border-gray-300 text-center"
                   >
                     <input
                       type="radio"

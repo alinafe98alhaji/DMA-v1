@@ -93,25 +93,23 @@ const Question5ciii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Use</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          5.c.iii: Why does your organisation not use these KPIs for performance
+          monitoring?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
           <li>
             This question seeks reasons why your organisation might not be using
             the established KPIs.
           </li>
         </ul>
       </div>
-      <h1 className="text-xl font-bold mb-6">
-        5.c.iii: Why does your organisation not use these KPIs for performance
-        monitoring?
-      </h1>
 
       {/* Tabular Layout for Radio Buttons */}
       <table className="w-full border-collapse mb-4">
@@ -144,10 +142,10 @@ const Question5ciii = () => {
         <tbody>
           {areasFor5ciii.map(area =>
             <tr key={area}>
-              <td className="border p-2">
+              <td className="font-bold border p-2">
                 {area}
               </td>
-              <td className="border p-2 text-center">
+              <td className="hover:bg-blue-100 border p-2 text-center">
                 <input
                   type="radio"
                   name={area}
@@ -163,7 +161,7 @@ const Question5ciii = () => {
                     )}
                 />
               </td>
-              <td className="border p-2 text-center">
+              <td className="hover:bg-blue-100 border p-2 text-center">
                 <input
                   type="radio"
                   name={area}
@@ -179,7 +177,7 @@ const Question5ciii = () => {
                     )}
                 />
               </td>
-              <td className="border p-2 text-center">
+              <td className="hover:bg-blue-100 border p-2 text-center">
                 <input
                   type="radio"
                   name={area}
@@ -195,7 +193,7 @@ const Question5ciii = () => {
                     )}
                 />
               </td>
-              <td className="border p-2 text-center">
+              <td className="hover:bg-blue-100 border p-2 text-center">
                 <input
                   type="radio"
                   name={area}
@@ -211,7 +209,7 @@ const Question5ciii = () => {
                     )}
                 />
               </td>
-              <td className="border p-2 text-center">
+              <td className="hover:bg-blue-100 border p-2 text-center">
                 <input
                   type="radio"
                   name={area}

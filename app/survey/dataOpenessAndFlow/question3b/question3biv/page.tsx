@@ -105,26 +105,24 @@ const Question3biv = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Openness and Flow</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50 shadow-md">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          3.b.iv: Does your organisation make use of centralised platforms to
+          share data internally?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Openness and Flow Assessment Organisational Level
-          </h1>
           <li>
             This question evaluates the practicality and implementation success
             of the technical systems for data sharing.
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-4">
-        3.b.iv: Does your organisation make use of centralised platforms to
-        share data internally?
-      </h1>
 
       {/* Error message */}
       {showError &&
@@ -141,7 +139,7 @@ const Question3biv = () => {
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="flex gap-4 options">
               <label>
                 <input
                   type="radio"

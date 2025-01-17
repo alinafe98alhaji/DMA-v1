@@ -98,25 +98,23 @@ const Question2di = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          2.d.i: Does your organisation comply with these rules for data storage
+          and backup?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             This question examines if your organisation follows the established
             guidelines for storing and backing up data consistently.
           </li>
         </ul>
       </div>
-      <h1 className="text-xl font-bold mb-6">
-        2.d.i: Does your organisation comply with these rules for data storage
-        and backup?
-      </h1>
 
       {/* Loop through each area and render the options */}
       {areasFor2di.map((area: string) =>

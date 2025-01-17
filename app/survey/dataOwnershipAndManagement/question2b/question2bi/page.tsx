@@ -99,33 +99,31 @@ const Question2bi = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="mb-4 text-gray-900 text-lg font-bold">
+          2.b.i Which department is mandated to coordinate these processes?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             Determine which department is responsible for managing and
             facilitating the central mechanism for staff data needs.
           </li>
         </ul>
       </div>
-      <h1 className="mb-4 mt-4">
-        2.b.i Which department is mandated to coordinate these processes?
-      </h1>
-
       {areas.length > 0
         ? <form>
             {areas.map(area =>
               <div key={area} style={{ marginBottom: "20px" }}>
-                <h3>
+                <h3 className="font-bold">
                   {area}
                 </h3>
                 <input
+                  className="border border-gray-900"
                   type="text"
                   placeholder={`Enter details for ${area}`}
                   value={responses[area] || ""}

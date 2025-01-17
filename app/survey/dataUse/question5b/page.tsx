@@ -110,25 +110,24 @@ const Question5b = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Use</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 mb-4 text-lg font-bold">
+          5.b Are there internal incentives or mechanisms to promote data-driven
+          decision making?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
           <li>
             Check if there are training and capacity-building efforts that
             highlight the benefits of data-driven decision-making.
           </li>
         </ul>
       </div>
-      <h1>
-        5.b Are there internal incentives or mechanisms to promote data-driven
-        decision making?
-      </h1>
+
       <form>
         {areas.map(area =>
           <div key={area} className="mb-4 mt-4 area-section">
@@ -137,7 +136,7 @@ const Question5b = () => {
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="flex gap-4 options">
               <label>
                 <input
                   type="radio"

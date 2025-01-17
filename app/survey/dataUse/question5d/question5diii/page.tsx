@@ -111,26 +111,23 @@ const Question5diii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Use</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          5.d.iii: How effective are these capacity building/training programmes
+          at improving data literacy in your organisation?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
           <li>
             This question evaluates the success of the training programmes in
             enhancing data literacy within your organisation.
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-6">
-        5.d.iii: How effective are these capacity building/training programmes
-        at improving data literacy in your organisation?
-      </h1>
 
       {/* Display error message if there are unanswered areas */}
       {error &&
@@ -153,11 +150,14 @@ const Question5diii = () => {
         <tbody>
           {areasFor1diii.map(area =>
             <tr key={area}>
-              <td className="border p-2">
+              <td className="font-bold border p-2">
                 {area}
               </td>
               {options.map((option, index) =>
-                <td key={index} className="border p-2">
+                <td
+                  key={index}
+                  className="hover:bg-blue-100 text-center border p-2"
+                >
                   <label>
                     <input
                       type="radio"

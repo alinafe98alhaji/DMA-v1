@@ -97,17 +97,19 @@ const Question3cv = () => {
 
   return (
     <div className="survey-container p-6">
-      <h1 className="mb-4 text-xl font-bold">
-        3.c.v How effective are open data policies in promoting increased
-        external user engagement with your data?
-      </h1>
+      <h1 className="mb-4 text-lg font-bold">Data Openness and Flow</h1>
+      {/* Guidance Instructions */}
+      <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50 shadow-md">
+        <h1 className="text-gray-900 mb-4 text-xl font-bold">
+          3.c.v How effective are open data policies in promoting increased
+          external user engagement with your data?
+        </h1>
+      </div>
 
       <table className="min-w-full table-auto border-collapse">
         <thead>
           <tr>
-            <th className="px-4 py-2 border-b bg-black-100 text-center">
-              Area
-            </th>
+            <th className="px-4 py-2 border-b text-center">Area</th>
             {optionScores.map((option, index) =>
               <th
                 key={index}
@@ -123,7 +125,7 @@ const Question3cv = () => {
         <tbody>
           {areas.map(area =>
             <tr key={area}>
-              <td className="px-4 py-2 border-b text-left">
+              <td className="font-bold px-4 py-2 border-b text-left">
                 {area}
               </td>
               {optionScores.map((option, index) =>

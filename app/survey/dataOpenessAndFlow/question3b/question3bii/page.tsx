@@ -100,15 +100,17 @@ const Question3bii = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Openess and Flow</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50 shadow-md">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          3.b.ii Does your organisation make use of centralised platforms to
+          share data at sector level?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Openess and Flow Assessment Organisational Level
-          </h1>
           <li>
             This question examines if your organisation utilises the provided
             technical platforms for sharing data.
@@ -116,14 +118,6 @@ const Question3bii = () => {
         </ul>
       </div>
 
-      <h1>
-        3.b.ii Does your organisation make use of centralised platforms to share
-        data at sector level?
-      </h1>
-      <p>
-        Please respond for each area below. Select <strong>Yes = 1</strong>,{" "}
-        <strong>Partially = 0.5</strong>, or <strong>No = 0</strong>.
-      </p>
       <form>
         {areas.map(area =>
           <div key={area} className="mb-4 mt-4 area-section">

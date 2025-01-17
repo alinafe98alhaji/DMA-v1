@@ -93,25 +93,27 @@ const Question5bi = () => {
 
   return (
     <div className="survey-container p-6">
+      <h1 className="mb-4 text-lg font-bold">
+            Data Use
+          </h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+         <h1 className="text-gray-900 mb-4 text-lg font-bold">
+        5.b.i How effective are incentives to promote data-driven decision
+        making?
+      </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
+          
           <li>
             This question evaluates the success of the incentives in encouraging
             your organisation to make decisions based on data.
           </li>
         </ul>
       </div>
-      <h1 className="mb-4 text-xl font-bold">
-        5.b.i How effective are incentives to promote data-driven decision
-        making?
-      </h1>
+     
 
       <table className="min-w-full table-auto border-collapse">
         <thead>
@@ -130,7 +132,7 @@ const Question5bi = () => {
         <tbody>
           {areas.map(area => (
             <tr key={area}>
-              <td className="px-4 py-2 border-b text-left">{area}</td>
+              <td className="font-bold px-4 py-2 border-b text-left">{area}</td>
               {options.map((option, index) => (
                 <td key={index} className="px-4 py-2 border-b text-center">
                   <input

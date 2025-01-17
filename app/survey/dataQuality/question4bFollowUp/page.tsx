@@ -113,8 +113,8 @@ const Question4bFollowUp = () => {
         </ul>
       </div>
       <h1>
-        4.b.i Which organisation is mandated to define rules for public data
-        sharing?
+        4.b.i Which organisation is mandated to coordinate programs for data
+        quality improvement?
       </h1>
       {areas.length > 0
         ? <form>

@@ -108,15 +108,17 @@ const Question2ai = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="font-bold text-gray-900 text-lg mb-4">
+          2.a.i Is your organisation aware of centrally agreed upon rules for
+          who owns the data in the sector?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             This question asks if your organisation knows about clear guidelines
             on who owns the data collected within the water and sanitation
@@ -124,18 +126,14 @@ const Question2ai = () => {
           </li>
         </ul>
       </div>
-      <h1 className="mb-4">
-        2.a.i Is your organisation aware of centrally agreed upon rules for who
-        owns the data in the sector?
-      </h1>
 
       {/* Render areas */}
       {areas.map(area =>
         <div className="mb-4 mt-4" key={area}>
-          <p>
+          <p className="font-bold">
             {area}
           </p>
-          <div>
+          <div className="flex gap-4">
             <label>
               <input
                 type="radio"

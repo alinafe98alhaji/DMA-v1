@@ -268,19 +268,21 @@ const Question1aiii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="text-xl font-bold mb-6">Data collection</h1>
+
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-lg text-gray-900 font-bold mb-6">
+          1.a.iii: Does your organisation collect data in adherence to these
+          national guidelines?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">Organisational Level</h1>
           <li>Do your data collection processes align with the standards?</li>
         </ul>
       </div>
-      <h1 className="text-xl font-bold mb-6">
-        1.a.iii: Does your organisation collect data in adherence to these
-        national guidelines?
-      </h1>
+
       {areasFor1aiii.map((area: string) =>
         <div key={area} className="mb-4">
           <label className="block font-semibold mb-2">

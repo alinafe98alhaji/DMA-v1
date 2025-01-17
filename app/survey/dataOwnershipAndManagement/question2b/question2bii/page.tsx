@@ -94,7 +94,9 @@ const Question2bii = () => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
         // Navigate to the next page after 2.b.ii (you can define the next page here)
-        router.push(`/survey/dataOwnershipAndManagement/question2c`);
+        router.push(
+          `/survey/dataOwnershipAndManagement/question2c/question2cii`
+        );
       })
       .catch(err => {
         console.error("Error saving responses:", err);
@@ -103,15 +105,18 @@ const Question2bii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="font-bold text-gray-900 text-lg mb-4">
+          2.b.ii Does your organisation participate in national consultation
+          processes and forums where stakeholders in the sector can discuss
+          their data usage and requirements?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             This question checks if your organisation knows about an existing
             process to gather and understand the data requirements of various
@@ -119,49 +124,46 @@ const Question2bii = () => {
           </li>
         </ul>
       </div>
-      <h1 className="mb-4">
-        2.b.ii Does your organisation participate in national consultation
-        processes and forums where stakeholders in the sector can discuss their
-        data usage and requirements?
-      </h1>
 
       {areas.length > 0
         ? <form>
             {areas.map(area =>
               <div key={area} style={{ marginBottom: "20px" }}>
-                <h3>
+                <h3 className="font-bold">
                   {area}
                 </h3>
-                <label>
-                  <input
-                    type="radio"
-                    name={area}
-                    value="Yes"
-                    onChange={() => handleRadioChange(area, "Yes")}
-                    checked={responses[area] === "Yes"}
-                  />
-                  Yes
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name={area}
-                    value="Partially"
-                    onChange={() => handleRadioChange(area, "Partially")}
-                    checked={responses[area] === "Partially"}
-                  />
-                  Partially
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name={area}
-                    value="No"
-                    onChange={() => handleRadioChange(area, "No")}
-                    checked={responses[area] === "No"}
-                  />
-                  No
-                </label>
+                <div className="flex gap-4">
+                  <label>
+                    <input
+                      type="radio"
+                      name={area}
+                      value="Yes"
+                      onChange={() => handleRadioChange(area, "Yes")}
+                      checked={responses[area] === "Yes"}
+                    />
+                    Yes
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={area}
+                      value="Partially"
+                      onChange={() => handleRadioChange(area, "Partially")}
+                      checked={responses[area] === "Partially"}
+                    />
+                    Partially
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name={area}
+                      value="No"
+                      onChange={() => handleRadioChange(area, "No")}
+                      checked={responses[area] === "No"}
+                    />
+                    No
+                  </label>
+                </div>
               </div>
             )}
             {/* Display error message */}

@@ -95,26 +95,23 @@ const Question5div = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Use</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          5.d.iv: How could these capacity building/training programmes be more
+          effective at improving data literacy in your organisation?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Use Assessment Organisational Level
-          </h1>
           <li>
             This question seeks suggestions for improving the effectiveness of
             the training programmes in boosting data literacy.
           </li>
         </ul>
       </div>
-
-      <h1 className="text-xl font-bold mb-6">
-        5.d.iv: How could these capacity building/training programmes be more
-        effective at improving data literacy in your organisation?
-      </h1>
 
       {/* Display error message if there are unanswered areas */}
       {error &&
@@ -137,11 +134,14 @@ const Question5div = () => {
         <tbody>
           {areasFor5div.map((area: string) =>
             <tr key={area}>
-              <td className="border p-2">
+              <td className="font-bold border p-2">
                 {area}
               </td>
               {options.map((option: string, index: number) =>
-                <td key={index} className="border p-2 text-center align-middle">
+                <td
+                  key={index}
+                  className="hover:bg-blue-100 border p-2 text-center align-middle"
+                >
                   <label className="flex justify-center items-center h-full">
                     <input
                       type="radio"

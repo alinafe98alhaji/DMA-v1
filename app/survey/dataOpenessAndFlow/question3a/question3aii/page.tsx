@@ -114,30 +114,25 @@ const Question3aii = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data Openness and Flow</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 font-bold text-lg mb-4">
+          3.a.ii Is your organisation aware of clear rules and regular processes
+          across the WSS sector for easy data sharing?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
           <li>
-            Check if there are documented plans or policies that outline how
-            data collection will be sustained financially, technically, and
-            institutionally.
-          </li>
-          <li>
-            Look for long-term commitments or funding mechanisms that support
-            continuous data collection.
+            This question asks whether your organisation knows about common
+            rules in the sector that help different systems share and use data
+            easily and govern data sharing processes.
           </li>
         </ul>
       </div>
-      <h1>
-        3.a.ii Are there financial and technical resources allocated to ensure
-        data collection continues smoothly over time across the organisation?
-      </h1>
       <form>
         {areas.map(area =>
           <div key={area} className="mb-4 mt-4 area-section">
@@ -146,7 +141,7 @@ const Question3aii = () => {
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="flex gap-4 options">
               <label>
                 <input
                   type="radio"

@@ -264,30 +264,31 @@ const Question1bi = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold"> Data collection</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          1.b.i: Does your organisation collect data in line with this process?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold"> Organisational Level</h1>
           <li>
             This question examines if your organisation follows the guidelines
             for inclusive data collection.
           </li>
         </ul>
       </div>
-      <h1>
-        1.b.i: Does your organisation collect data in line with this process?
-      </h1>
 
       {/* Render areas */}
       {areasFor1bi.map((area: string) =>
         <div className="mt-4 mb-4" key={area}>
-          <p>
+          <p className="font-bold">
             {area}
           </p>
-          <div>
+          <div className="flex gap-4">
             <label>
               <input
                 type="radio"

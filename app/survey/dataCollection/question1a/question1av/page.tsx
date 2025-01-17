@@ -109,26 +109,24 @@ const Question1av = () => {
 
   return (
     <div className="p-6 survey-container">
+      <h1 className="mb-4 text-lg font-bold">Data collection</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          1.a.v Are there internal guidelines that specify how data should be
+          collected across the organisation?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
           <li>
             Check if there is a documented set of rules or guidelines that
             dictate how data should be collected internally.
           </li>
         </ul>
       </div>
-
-      <h1>
-        1.a.v Are there internal guidelines that specify how data should be
-        collected across the organisation?
-      </h1>
 
       <form onSubmit={handleNext}>
         {areas.map(area =>
@@ -138,7 +136,7 @@ const Question1av = () => {
                 {area}
               </strong>
             </label>
-            <div className="options">
+            <div className="options flex gap-4">
               <label>
                 <input
                   type="radio"

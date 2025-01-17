@@ -80,7 +80,7 @@ const Question2dii = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         // Proceed to next question
-        router.push("/survey/dataOpenessAndFlow/question3a");
+        router.push("/survey/dataOpenessAndFlow/question3a/question3aii");
       })
       .catch(err => {
         console.error("Error saving responses:", err);
@@ -89,29 +89,27 @@ const Question2dii = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data Ownership and Management</h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50 shadow-md">
+        <h1 className="text-lg text-gray-900 font-bold mb-4">
+          2.d.ii: How well equipped is your organisation in complying with data
+          storage and backup rules
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Ownership and Management Assessment Organisational Level
-          </h1>
           <li>
             This question evaluates if your organisation has the necessary
             resources and support to follow the storage and backup standards.
           </li>
         </ul>
       </div>
-      <h1 className="text-xl font-bold mb-6">
-        2.d.ii: How well equipped is your organisation in complying with data
-        storage and backup rules
-      </h1>
 
       {/* Table displaying the areas and options */}
       <table className="w-full table-auto border-collapse">
-        <thead className="bg-black text-white">
+        <thead>
           <tr>
             <th className="p-4 border border-gray-700">Area</th>
             {wordOptions.map(option =>
@@ -123,16 +121,16 @@ const Question2dii = () => {
         </thead>
         <tbody>
           {areas.map((area, index) =>
-            <tr
-              key={area}
-              className="hover:bg-gray-50 transition-all duration-200 ease-in-out"
-            >
+            <tr key={area} className=" ">
               <td className="p-4 font-semibold border border-gray-700">
                 {area}
               </td>
               {wordOptions.map(option =>
-                <td key={option} className="p-4 border border-gray-700">
-                  <div className="flex justify-center items-center">
+                <td
+                  key={option}
+                  className="hover:bg-blue-100 transition-all ease-in-out duration-200 p-4 border border-gray-700"
+                >
+                  <div className=" flex justify-center items-center">
                     <input
                       type="radio"
                       name={area}
@@ -160,7 +158,7 @@ const Question2dii = () => {
         onClick={handleSubmit}
         className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
       >
-        Submit
+        Next
       </button>
     </div>
   );

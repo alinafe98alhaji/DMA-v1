@@ -124,8 +124,8 @@ const Question4b = () => {
         </ul>
       </div>
       <h1>
-        4.b: Are there clear rules, guidelines or policies in the WSS sector for
-        sharing data publicly?
+        4.b: Are there centrally coordinated programs or initiatives for
+        improving data quality?
       </h1>
       <form onSubmit={handleSubmit}>
         {areas.map(area =>

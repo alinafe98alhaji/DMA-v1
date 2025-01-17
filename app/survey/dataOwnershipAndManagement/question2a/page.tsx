@@ -101,6 +101,10 @@ const Question2A = () => {
     <div className="p-6 survey-container">
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1>
+          2.a. Are there centrally agreed upon rules for who owns the data in
+          the sector?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
@@ -119,10 +123,6 @@ const Question2A = () => {
         </ul>
       </div>
 
-      <h1>
-        2.a. Are there centrally agreed upon rules for who owns the data in the
-        sector?
-      </h1>
       <form>
         {AREAS.map(area =>
           <div key={area} className="mb-4 mt-4 area-section">

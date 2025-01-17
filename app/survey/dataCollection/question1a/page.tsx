@@ -102,7 +102,7 @@ const Question1a: React.FC = () => {
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold"> National Level</h1>
+          <h1 className="mb-4 text-lg font-bold"> Data collection</h1>
           <li>
             Check if there is a documented set of rules or guidelines that
             dictate how data should be collected.

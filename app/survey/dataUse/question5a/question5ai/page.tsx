@@ -112,24 +112,26 @@ const scoreMapping: { [key: number]: number } = {
 
   return (
     <div className="survey-container" style={{ padding: "20px" }}>
+      <h1 className="mb-4 text-lg font-bold">
+            Data Use
+          </h1>
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold" style={{ marginBottom: "20px" }}>
+        5.a.i How useful are these platforms for informing decision making?
+      </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Quality Assessment National Level
-          </h1>
+          
           <li>
             This question evaluates the practicality and usefulness of the
             platforms in helping your organisation make informed decisions.
           </li>
         </ul>
       </div>
-      <h1 style={{ marginBottom: "20px" }}>
-        5.a.i How useful are these platforms for informing decision making?
-      </h1>
+      
       <form style={{ marginBottom: "40px" }}>
         {/* Table Layout */}
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -162,6 +164,7 @@ const scoreMapping: { [key: number]: number } = {
                 </td>
                 {options.map((option, index) =>
                   <td
+                  className="text-center hover:bg-blue-100"
                     key={index}
                     style={{ padding: "10px", border: "1px solid #ccc" }}
                   >

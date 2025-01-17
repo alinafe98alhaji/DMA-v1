@@ -102,15 +102,18 @@ const Question1b = () => {
 
   return (
     <div className="p-6">
+      <h1 className="mb-4 text-lg font-bold">Data collection</h1>
+
       {/* Guidance Instructions */}
       <div className="mb-6 p-6 border border-blue-500 rounded-md bg-blue-50">
+        <h1 className="text-gray-900 text-lg font-bold mb-4">
+          1.b: Is there a process/procedure for ensuring that data is collected
+          universally/inclusively across the organisation?
+        </h1>
         <h2 className="text-lg font-bold mb-4 text-blue-800">
           Guidance Instructions
         </h2>
         <ul className="list-disc pl-6 text-black">
-          <h1 className="mb-4 text-lg font-bold">
-            Data Collection Assessment Organisational Level
-          </h1>
           <li>
             Look for established processes or protocols that ensure data is
             collected from all regions and populations, including marginalised
@@ -122,18 +125,14 @@ const Question1b = () => {
           </li>
         </ul>
       </div>
-      <h1>
-        1.b: Is there a process/procedure for ensuring that data is collected
-        universally/inclusively across the organisation?
-      </h1>
 
       {/* Render areas */}
       {areas.map(area =>
         <div className="mt-4 mb-4" key={area}>
-          <p>
+          <p className="font-bold">
             {area}
           </p>
-          <div>
+          <div className="flex gap-4">
             <label>
               <input
                 type="radio"
