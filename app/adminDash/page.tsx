@@ -605,7 +605,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
+    {/* Sidebar 
       <aside className="w-64 bg-gray-800 text-white flex-shrink-0 shadow-lg">
         <div className="p-4 font-bold text-lg border-b border-gray-700">
           Admin Dashboard
@@ -619,7 +619,7 @@ export default function AdminDashboard() {
             </li>
           ))}
         </ul>
-      </aside>
+      </aside>*/}
 
       {/* Main Content */}
       <div className="flex-grow h-screen bg-gray-100">
