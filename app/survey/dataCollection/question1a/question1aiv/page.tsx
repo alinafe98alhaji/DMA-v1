@@ -343,14 +343,14 @@ const Question1aiv = () => {
           </thead>
           <tbody>
             {areasFor1aiv.map(area =>
-              <tr key={area} className="hover:bg-gray-100">
+              <tr key={area} >
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}
                 </td>
                 {wordOptions.map(option =>
                   <td
                     key={option}
-                    className="border border-gray-300 text-center"
+                    className="hover:bg-gray-100 border border-gray-300 text-center"
                   >
                     <input
                       type="radio"
