@@ -52,6 +52,43 @@ const Question3cv = () => {
     setResponses(prev => ({ ...prev, [area]: score }));
   };
 
+  // const handleNext = async () => {
+  //   console.log("Final answers submitted:", responses);
+
+  //   const userId_ses = sessionStorage.getItem("user_id");
+
+  //   if (!userId_ses) {
+  //     alert("User ID is missing. Please return to the basic details page.");
+  //     return;
+  //   }
+
+  //   const responseObject = {
+  //     userId: userId_ses,
+  //     questionID: "3c.v",
+  //     responses: Object.entries(responses).map(([area, response]) => ({
+  //       area,
+  //       response,
+
+  //     }))
+  //   };
+
+  //   try {
+  //     const res = await fetch("/api/saveDataOpenessAndFlow", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(responseObject)
+  //     });
+
+  //     if (!res.ok) throw new Error("Failed to save responses");
+
+  //     const data = await res.json();
+  //     console.log("Responses saved successfully:", data);
+  //     router.push("/survey/dataQuality/question4a"); // Navigate to the next page
+  //   } catch (err) {
+  //     console.error("Error saving responses:", err);
+  //   }
+  // };
+
   const handleNext = async () => {
     console.log("Final answers submitted:", responses);
 
@@ -65,10 +102,18 @@ const Question3cv = () => {
     const responseObject = {
       userId: userId_ses,
       questionID: "3c.v",
-      responses: Object.entries(responses).map(([area, response]) => ({
-        area,
-        response
-      }))
+      responses: Object.entries(responses).map(([area, response]) => {
+        // Find the selected option based on the score
+        const selectedOption = optionScores.find(
+          option => option.score === response
+        );
+
+        return {
+          area,
+          response: selectedOption ? selectedOption.text : null, // Include the response text (not the score)
+          score: selectedOption ? selectedOption.score : null // Include the score explicitly
+        };
+      })
     };
 
     try {

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface ScoreData {
   area: string;
@@ -21,6 +22,7 @@ interface UserData {
 }
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [userData, setUserData] = useState<UserData>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,14 +30,8 @@ export default function AdminDashboard() {
 
   const apiEndpoints = [
     { collectionName: "Data Collection", url: "/api/getAllUsersData" },
-    {
-      collectionName: "Data Ownership And Management",
-      url: "/api/getAllUsersDataOwnershipAndManagement",
-    },
-    {
-      collectionName: "Data Openness And Flow",
-      url: "/api/getAllUsersDataOpenessAndFlow",
-    },
+    { collectionName: "Data Ownership And Management", url: "/api/getAllUsersDataOwnershipAndManagement" },
+    { collectionName: "Data Openness And Flow", url: "/api/getAllUsersDataOpenessAndFlow" },
     { collectionName: "Data Quality", url: "/api/getAllUsersDataQuality" },
     { collectionName: "Data Use", url: "/api/getAllUsersDataUse" },
   ];
@@ -62,35 +58,25 @@ export default function AdminDashboard() {
             Object.keys(response.data).forEach((userId) => {
               if (!allUserData[userId]) {
                 allUserData[userId] = {
-                  details: {
-                    name: "Unknown",
-                    organisation: "Unknown",
-                    country: "Unknown",
-                    submittedAt: "",
-                  },
+                  details: { name: "Unknown", organisation: "Unknown", country: "Unknown", submittedAt: "" },
                   collections: {},
                 };
               }
-              allUserData[userId].collections[response.collectionName] =
-                response.data[userId].data;
+              allUserData[userId].collections[response.collectionName] = response.data[userId].data;
             });
           }
         });
 
         await Promise.all(
           Object.keys(allUserData).map(async (userId) => {
-            const userDetailsResponse = await fetch(
-              `/api/getUserInfo/${userId}`
-            );
+            const userDetailsResponse = await fetch(`/api/getUserInfo/${userId}`);
             const userDetails = await userDetailsResponse.json();
             if (userDetails.success) {
               allUserData[userId].details = {
                 name: userDetails.data.name,
                 organisation: userDetails.data.organisation,
                 country: userDetails.data.country,
-                submittedAt: new Date(
-                  userDetails.data.submittedAt
-                ).toLocaleString(),
+                submittedAt: new Date(userDetails.data.submittedAt).toLocaleString(),
               };
             }
           })
@@ -117,14 +103,13 @@ export default function AdminDashboard() {
 
   const selectedUserData = selectedUser ? userData[selectedUser] : null;
 
-  // Function to return color based on score percentage
   function getScoreColor(score: number) {
-    if (score >= 91) return "bg-green-700"; // Dark green
-    if (score >= 81) return "bg-green-200"; // Light green
-    if (score >= 71) return "bg-yellow-200"; // Yellow
-    if (score >= 61) return "bg-orange-400"; // Orange
-    if (score >= 41) return "bg-orange-100"; // Light orange
-    return "bg-red-600"; // Dark red
+    if (score >= 91) return "bg-green-700";
+    if (score >= 81) return "bg-green-200";
+    if (score >= 71) return "bg-yellow-200";
+    if (score >= 61) return "bg-orange-400";
+    if (score >= 41) return "bg-orange-100";
+    return "bg-red-600";
   }
 
   return (
@@ -155,34 +140,27 @@ export default function AdminDashboard() {
       <div className="flex-grow h-screen bg-gray-100">
         <nav className="bg-white shadow-md p-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-gray-800">User Details</h1>
+          {/* ✅ Added Button to Navigate to Responses Page */}
+          <button
+            onClick={() => router.push("/adminDash/responses")}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition"
+          >
+            View Responses
+          </button>
         </nav>
 
         <div className="p-6">
           {!selectedUserData ? (
-            <div className="text-center text-gray-500">
-              Select a user to view their data.
-            </div>
+            <div className="text-center text-gray-500">Select a user to view their data.</div>
           ) : (
             <div>
               {/* User Info */}
               <div className="mb-6 bg-white shadow-md p-4 rounded-lg">
                 <h2 className="text-lg font-bold mb-2">User Information</h2>
-                <p className="text-sm">
-                  <span className="font-bold">Name:</span>{" "}
-                  {selectedUserData.details.name}
-                </p>
-                <p className="text-sm">
-                  <span className="font-bold">Organization:</span>{" "}
-                  {selectedUserData.details.organisation}
-                </p>
-                <p className="text-sm">
-                  <span className="font-bold">Country:</span>{" "}
-                  {selectedUserData.details.country}
-                </p>
-                <p className="text-sm">
-                  <span className="font-bold">Submitted At:</span>{" "}
-                  {selectedUserData.details.submittedAt}
-                </p>
+                <p className="text-sm"><span className="font-bold">Name:</span> {selectedUserData.details.name}</p>
+                <p className="text-sm"><span className="font-bold">Organization:</span> {selectedUserData.details.organisation}</p>
+                <p className="text-sm"><span className="font-bold">Country:</span> {selectedUserData.details.country}</p>
+                <p className="text-sm"><span className="font-bold">Submitted At:</span> {selectedUserData.details.submittedAt}</p>
               </div>
 
               {/* User Scores */}
@@ -190,45 +168,24 @@ export default function AdminDashboard() {
                 <table className="min-w-full table-fixed border-collapse rounded-lg overflow-hidden shadow-md">
                   <thead>
                     <tr className="bg-gray-200">
-                      <th className="px-4 py-2 text-left font-bold text-gray-900">
-                        Collection Name
-                      </th>
-                      {selectedUserData.collections["Data Collection"]?.map(
-                        (item) => (
-                          <th
-                            key={item.area}
-                            className="px-4 py-2 text-left font-bold text-gray-900"
-                          >
-                            {item.area}
-                          </th>
-                        )
-                      )}
+                      <th className="px-4 py-2 text-left font-bold text-gray-900">Collection Name</th>
+                      {selectedUserData.collections["Data Collection"]?.map((item) => (
+                        <th key={item.area} className="px-4 py-2 text-left font-bold text-gray-900">{item.area}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
                     {apiEndpoints.map(({ collectionName }) => (
                       <tr key={collectionName} className="border-t">
-                        <td className="px-4 py-2 font-bold border border-gray-400">
-                          {collectionName}
-                        </td>
-                        {selectedUserData.collections["Data Collection"]?.map(
-                          (item) => {
-                            const scoreData =
-                              selectedUserData.collections[collectionName]?.find(
-                                (data) => data.area === item.area
-                              );
-                            return (
-                              <td
-                                key={item.area}
-                                className={`px-4 py-2 text-center border border-gray-400 ${scoreData ? getScoreColor(scoreData.totalScore) : ""}`}
-                              >
-                                {scoreData
-                                  ? `${scoreData.totalScore.toFixed(2)}%`
-                                  : "N/A"}
-                              </td>
-                            );
-                          }
-                        )}
+                        <td className="px-4 py-2 font-bold border border-gray-400">{collectionName}</td>
+                        {selectedUserData.collections["Data Collection"]?.map((item) => {
+                          const scoreData = selectedUserData.collections[collectionName]?.find((data) => data.area === item.area);
+                          return (
+                            <td key={item.area} className={`px-4 py-2 text-center border border-gray-400 ${scoreData ? getScoreColor(scoreData.totalScore) : ""}`}>
+                              {scoreData ? `${scoreData.totalScore.toFixed(2)}%` : "N/A"}
+                            </td>
+                          );
+                        })}
                       </tr>
                     ))}
                   </tbody>
@@ -491,6 +448,263 @@ export default function AdminDashboard() {
 //               </div>
 //             );
 //           })}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+//---------------
+//---------------
+//---------------
+// "use client";
+// import { useEffect, useState } from "react";
+
+// interface ScoreData {
+//   area: string;
+//   totalScore: number;
+// }
+
+// interface UserDetails {
+//   name: string;
+//   organisation: string;
+//   country: string;
+//   submittedAt: string;
+// }
+
+// interface UserData {
+//   [userId: string]: {
+//     details: UserDetails;
+//     collections: { [collectionName: string]: ScoreData[] };
+//   };
+// }
+
+// export default function AdminDashboard() {
+//   const [userData, setUserData] = useState<UserData>({});
+//   const [loading, setLoading] = useState<boolean>(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+//   const [rawApiData, setRawApiData] = useState<any | null>(null); // For storing raw API data
+
+//   const apiEndpoints = [
+//     { collectionName: "Data Collection", url: "/api/getAllUsersData" },
+//     {
+//       collectionName: "Data Ownership And Management",
+//       url: "/api/getAllUsersDataOwnershipAndManagement",
+//     },
+//     {
+//       collectionName: "Data Openness And Flow",
+//       url: "/api/getAllUsersDataOpenessAndFlow",
+//     },
+//     { collectionName: "Data Quality", url: "/api/getAllUsersDataQuality" },
+//     { collectionName: "Data Use", url: "/api/getAllUsersDataUse" },
+//   ];
+
+//   useEffect(() => {
+//     async function fetchUserData() {
+//       try {
+//         const allUserData: UserData = {};
+//         const responses = await Promise.all(
+//           apiEndpoints.map(async ({ collectionName, url }) => {
+//             const response = await fetch(url);
+//             const result = await response.json();
+//             if (result.success) {
+//               setRawApiData(result); // Store raw API response
+//               return { collectionName, data: result.data };
+//             } else {
+//               setError(`Failed to fetch data for ${collectionName}`);
+//               return null;
+//             }
+//           })
+//         );
+
+//         responses.forEach((response) => {
+//           if (response && response.data) {
+//             Object.keys(response.data).forEach((userId) => {
+//               if (!allUserData[userId]) {
+//                 allUserData[userId] = {
+//                   details: {
+//                     name: "Unknown",
+//                     organisation: "Unknown",
+//                     country: "Unknown",
+//                     submittedAt: "",
+//                   },
+//                   collections: {},
+//                 };
+//               }
+//               allUserData[userId].collections[response.collectionName] =
+//                 response.data[userId].data;
+//             });
+//           }
+//         });
+
+//         await Promise.all(
+//           Object.keys(allUserData).map(async (userId) => {
+//             const userDetailsResponse = await fetch(
+//               `/api/getUserInfo/${userId}`
+//             );
+//             const userDetails = await userDetailsResponse.json();
+//             if (userDetails.success) {
+//               allUserData[userId].details = {
+//                 name: userDetails.data.name,
+//                 organisation: userDetails.data.organisation,
+//                 country: userDetails.data.country,
+//                 submittedAt: new Date(
+//                   userDetails.data.submittedAt
+//                 ).toLocaleString(),
+//               };
+//             }
+//           })
+//         );
+
+//         setUserData(allUserData);
+//       } catch (err) {
+//         setError("An error occurred while fetching data");
+//       } finally {
+//         setLoading(false);
+//       }
+//     }
+
+//     fetchUserData();
+//   }, []);
+
+//   if (loading) return <div className="text-center">Loading...</div>;
+//   if (error) return <div className="text-center text-red-600">Error: {error}</div>;
+
+//   const userOptions = Object.keys(userData).map((userId) => ({
+//     id: userId,
+//     name: userData[userId].details.name,
+//   }));
+
+//   const selectedUserData = selectedUser ? userData[selectedUser] : null;
+
+//   // Function to return color based on score percentage
+//   function getScoreColor(score: number) {
+//     if (score >= 91) return "bg-green-500"; // Dark green
+//     if (score >= 81) return "bg-green-500"; // Light green
+//     if (score >= 71) return "bg-yellow-500"; // Yellow
+//     if (score >= 61) return "bg-orange-500"; // Orange
+//     if (score >= 41) return "bg-orange-300"; // Light orange
+//     return "bg-red-600"; // Dark red
+//   }
+
+//   return (
+//     <div className="flex h-screen">
+//       {/* Sidebar */}
+//       <aside className="w-64 bg-gray-800 text-white flex-shrink-0 shadow-lg">
+//         <div className="p-4 font-bold text-lg border-b border-gray-700">
+//           Admin Dashboard
+//         </div>
+//         <div className="p-4">
+//           <label className="block text-sm font-medium mb-2">Select User</label>
+//           <select
+//             className="w-full p-2 border border-gray-400 rounded"
+//             value={selectedUser || ""}
+//             onChange={(e) => setSelectedUser(e.target.value || null)}
+//           >
+//             <option value="">-- Select a User --</option>
+//             {userOptions.map((user) => (
+//               <option key={user.id} value={user.id}>
+//                 {user.name}
+//               </option>
+//             ))}
+//           </select>
+//         </div>
+//       </aside>
+
+//       {/* Main Content */}
+//       <div className="flex-grow h-screen bg-gray-100">
+//         <nav className="bg-white shadow-md p-4 flex justify-between items-center">
+//           <h1 className="text-xl font-bold text-gray-800">User Details</h1>
+//         </nav>
+
+//         <div className="p-6">
+//           {!selectedUserData ? (
+//             <div className="text-center text-gray-500">
+//               Select a user to view their data.
+//             </div>
+//           ) : (
+//             <div>
+//               {/* User Info */}
+//               <div className="mb-6 bg-white shadow-md p-4 rounded-lg">
+//                 <h2 className="text-lg font-bold mb-2">User Information</h2>
+//                 <p className="text-sm">
+//                   <span className="font-bold">Name:</span>{" "}
+//                   {selectedUserData.details.name}
+//                 </p>
+//                 <p className="text-sm">
+//                   <span className="font-bold">Organization:</span>{" "}
+//                   {selectedUserData.details.organisation}
+//                 </p>
+//                 <p className="text-sm">
+//                   <span className="font-bold">Country:</span>{" "}
+//                   {selectedUserData.details.country}
+//                 </p>
+//                 <p className="text-sm">
+//                   <span className="font-bold">Submitted At:</span>{" "}
+//                   {selectedUserData.details.submittedAt}
+//                 </p>
+//               </div>
+
+//               {/* User Scores */}
+//               <div className="overflow-x-auto">
+//                 <table className="min-w-full table-fixed border-collapse rounded-lg overflow-hidden shadow-md">
+//                   <thead>
+//                     <tr className="bg-gray-200">
+//                       <th className="px-4 py-2 text-left font-bold text-gray-900">
+//                         Collection Name
+//                       </th>
+//                       {selectedUserData.collections["Data Collection"]?.map(
+//                         (item) => (
+//                           <th
+//                             key={item.area}
+//                             className="px-4 py-2 text-left font-bold text-gray-900"
+//                           >
+//                             {item.area}
+//                           </th>
+//                         )
+//                       )}
+//                     </tr>
+//                   </thead>
+//                   <tbody>
+//                     {apiEndpoints.map(({ collectionName }) => (
+//                       <tr key={collectionName} className="border-t">
+//                         <td className="px-4 py-2 font-bold border border-gray-400">
+//                           {collectionName}
+//                         </td>
+//                         {selectedUserData.collections["Data Collection"]?.map(
+//                           (item) => {
+//                             const scoreData =
+//                               selectedUserData.collections[collectionName]?.find(
+//                                 (data) => data.area === item.area
+//                               );
+//                             return (
+//                               <td
+//                                 key={item.area}
+//                                 className={`px-4 py-2 text-center border border-gray-400 ${scoreData ? getScoreColor(scoreData.totalScore) : ""}`}
+//                               >
+//                                 {scoreData
+//                                   ? `${scoreData.totalScore.toFixed(2)}%`
+//                                   : "N/A"}
+//                               </td>
+//                             );
+//                           }
+//                         )}
+//                       </tr>
+//                     ))}
+//                   </tbody>
+//                 </table>
+//               </div>
+//             </div>
+//           )}
+
+//           {/* Display Raw JSON Data */}
+//           <div className="mt-8">
+//             <h2 className="text-lg font-bold mb-2">Raw API Data</h2>
+//             <pre className="bg-gray-800 text-white p-4 rounded-lg">
+//               <code>{JSON.stringify(rawApiData, null, 2)}</code>
+//             </pre>
+//           </div>
 //         </div>
 //       </div>
 //     </div>
