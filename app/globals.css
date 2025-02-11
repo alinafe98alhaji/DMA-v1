@@ -63,7 +63,7 @@ body {
   background: white;
   border-radius: 50%;
   opacity: 0.8;
-  animation: twinkle 5s infinite ease-in-out;
+  animation: twinkle 1s infinite ease-in-out;
 }
 
 @keyframes twinkle {
