@@ -1,12 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Ensure Tailwind CSS is properly installed and imported */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #ffffff;
+  --foreground: #171717;
   --neon-blue: #00ffff;
   --neon-green: #00ff64;
   --neon-glow: rgba(0, 255, 255, 0.8);
@@ -14,11 +15,24 @@
   --glass-border: rgba(255, 255, 255, 0.2);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: "Orbitron", sans-serif;
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* 🌌 Fullscreen Background */
@@ -124,23 +138,6 @@ body {
   transform: scale(1.1);
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
 /* General container styling */
 
 /* 
