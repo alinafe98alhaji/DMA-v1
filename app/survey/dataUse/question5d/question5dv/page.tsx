@@ -187,6 +187,7 @@
 
 "use client"; // This is necessary for client-side hooks in Next.js
 
+import router from "next/router";
 import { useState, Suspense } from "react";
 export const dynamic = "force-dynamic";
 
@@ -259,6 +260,8 @@ const Question5dV = () => {
       .then(data => {
         console.log("Responses saved successfully:", data);
         setIsSubmitted(true);
+        // Redirect to results dashboard
+        router.push(`/adminDash/responses`);
       })
       .catch(err => {
         console.error("Error saving responses:", err);

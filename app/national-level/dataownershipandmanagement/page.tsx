@@ -135,7 +135,7 @@ export default function Survey() {
       alert("Survey complete!");
       console.log("Responses:", responses);
       console.log("Sub-Responses:", subResponses);
-      router.push("/dataopenessandflow")
+      router.push("/national-level/dataopenessandflow")
     }
   };
 

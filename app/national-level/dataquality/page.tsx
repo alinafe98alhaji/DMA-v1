@@ -101,7 +101,7 @@ export default function Survey() {
       alert("complete!");
       console.log("Responses:", responses);
       console.log("Sub-Responses:", subResponses);
-      router.push("/datause");
+      router.push("/national-level/datause");
     }
   };
 

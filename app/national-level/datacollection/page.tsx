@@ -306,7 +306,7 @@ export default function Survey() {
       console.log("Sub-Responses:", subResponses);
     
         // Navigate to the next survey component
-        router.push("/dataownershipandmanagement"); // Change to the next survey page route
+        router.push("/national-level/dataownershipandmanagement"); // Change to the next survey page route
       
   
      }

@@ -1,195 +1,8 @@
-// "use client";
-// import { useState } from 'react';
-
-// // Define types for responses
-// type ResponseValue = 'Yes' | 'Partially' | 'No';
-// type Responses = {
-//   [questionId: string]: {
-//     [area: string]: ResponseValue;
-//   };
-// };
-
-// // Questions data
-// const questions = [
-//   {
-//     id: '5a',
-//     title: '5.a. Are there centralised systems/ platforms for sector data analysis, visualisation and reporting?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: true,
-//     subQuestion: '5.a.i. Which organisation is mandated to develop and maintain platforms for data analysis, visualisation and reporting?',
-//   },
-//   {
-//     id: '5b',
-//     title: '5.b. Are there incentives or mechanisms to promote data-driven decision making?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: true,
-//     subQuestion: '5.b.i. Which organisation is mandated to coordinate incentives to promote data-driven decision making?',
-//   },
-//   {
-//     id: '5c',
-//     title: '5.c. Are there established, standard, sector-wide KPIs?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: true,
-//     subQuestion: '5.c.i. Which organisation is mandated to develop and maintain standard sector-wide KPIs?',
-//   },
-//   {
-//     id: '5d',
-//     title: '5.d. Is there a formalised approach to training and capacity development for data-related aspects in the WSS sector?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: true,
-//     subQuestion: '5.d.i. Which organisation is mandated to develop and maintain these training and capacity development programmes?',
-//   },
-// ];
-
-// export default function Survey() {
-//   const [responses, setResponses] = useState<Responses>({});
-//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-//   const currentQuestion = questions[currentQuestionIndex];
-
-//   const handleResponseChange = (area: string, value: ResponseValue) => {
-//     setResponses((prev) => ({
-//       ...prev,
-//       [currentQuestion.id]: {
-//         ...prev[currentQuestion.id],
-//         [area]: value,
-//       },
-//     }));
-//   };
-
-//   const handleNext = () => {
-//     if (currentQuestionIndex < questions.length - 1) {
-//       setCurrentQuestionIndex(currentQuestionIndex + 1);
-//     } else {
-//       alert('Survey complete!');
-//       console.log('Responses:', responses);
-//     }
-//   };
-
-//   return (
-//     <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
-//       <h1 style={{ textAlign: 'center' }}>Survey Tool</h1>
-
-//       {/* Current Question */}
-//       <div className="card" style={{ margin: '20px 0', padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-//         <h3>{currentQuestion.title}</h3>
-
-//         {/* Render areas */}
-//         {currentQuestion.areas.map((area) => (
-//           <div key={area} style={{ margin: '15px 0' }}>
-//             <h4 style={{ marginBottom: '10px' }}>{area}</h4>
-//             <div style={{ display: 'flex', gap: '10px' }}>
-//               <label>
-//                 <input
-//                   type="radio"
-//                   name={`${currentQuestion.id}-${area}`}
-//                   value="Yes"
-//                   checked={responses[currentQuestion.id]?.[area] === 'Yes'}
-//                   onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
-//                 />
-//                 Yes
-//               </label>
-//               <label>
-//                 <input
-//                   type="radio"
-//                   name={`${currentQuestion.id}-${area}`}
-//                   value="Partially"
-//                   checked={responses[currentQuestion.id]?.[area] === 'Partially'}
-//                   onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
-//                 />
-//                 Partially
-//               </label>
-//               <label>
-//                 <input
-//                   type="radio"
-//                   name={`${currentQuestion.id}-${area}`}
-//                   value="No"
-//                   checked={responses[currentQuestion.id]?.[area] === 'No'}
-//                   onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
-//                 />
-//                 No
-//               </label>
-//             </div>
-
-//             {/* Sub-Question for specific area */}
-//             {currentQuestion.hasSubQuestion &&
-//               (responses[currentQuestion.id]?.[area] === 'Yes' ||
-//                 responses[currentQuestion.id]?.[area] === 'Partially') && (
-//                 <div style={{ marginLeft: '20px', marginTop: '10px' }}>
-//                   <h5 style={{ fontStyle: 'italic' }}>{currentQuestion.subQuestion}</h5>
-//                   <textarea
-//                     placeholder={`Provide details for ${area}...`}
-//                     style={{
-//                       width: '100%',
-//                       height: '50px',
-//                       marginTop: '5px',
-//                       padding: '5px',
-//                       border: '1px solid #ccc',
-//                       borderRadius: '4px',
-//                     }}
-//                   />
-//                 </div>
-//               )}
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Navigation */}
-//       <button
-//         onClick={handleNext}
-//         style={{
-//           display: 'block',
-//           margin: '0 auto',
-//           padding: '10px 20px',
-//           backgroundColor: '#007BFF',
-//           color: 'white',
-//           border: 'none',
-//           borderRadius: '5px',
-//           cursor: 'pointer',
-//         }}
-//       >
-//         Next
-//       </button>
-//     </div>
-//   );
-// }
-
 "use client";
 import { useState } from "react";
-import "../styles/styles.css";
+import { useRouter } from "next/navigation";
 
+// Define types for responses
 type ResponseValue = "Yes" | "Partially" | "No";
 type Responses = {
   [questionId: string]: {
@@ -197,10 +10,12 @@ type Responses = {
   };
 };
 
+// Questions data
 const questions = [
   {
     id: "5a",
-    title: "5.a. Are there centrally managed, accessible platforms for data analysis and visualisation?",
+    title:
+      "5.a. Are there centrally managed, accessible platforms for data analysis and visualisation?",
     areas: [
       "Urban Water Supply Sector Monitoring",
       "Urban Sanitation Sector Monitoring",
@@ -216,7 +31,8 @@ const questions = [
   },
   {
     id: "5b",
-    title: "5.b. Are there incentives to promote data-drive decision making?",
+    title:
+      "5.b. Are there incentives to promote data driven decision making?",
     areas: [
       "Urban Water Supply Sector Monitoring",
       "Urban Sanitation Sector Monitoring",
@@ -232,7 +48,8 @@ const questions = [
   },
   {
     id: "5c",
-    title: "5.c. Are there established, standard, sector-wide KPIs?",
+    title:
+      "5.c. Are there established, standard, sector-wide KPIs?",
     areas: [
       "Urban Water Supply Sector Monitoring",
       "Urban Sanitation Sector Monitoring",
@@ -243,8 +60,7 @@ const questions = [
       "Utility Operations",
     ],
     hasSubQuestion: true,
-    subQuestion:
-      "5.c.i. Which organisation is mandated to develop and maintain standard sector wide KPIs?",
+    subQuestion: "5.c.i. Which organisation is mandated to develop and maintain standard sector-wide KPIs?",
   },
   {
     id: "5d",
@@ -260,9 +76,8 @@ const questions = [
       "Utility Operations",
     ],
     hasSubQuestion: true,
-    subQuestion:
-      "5.d.i. Which organisation is mandated to develop and maintain these training and capacity building programmes?",
-  },
+    subQuestion: "5.d.i. Which organisation is mandated to develop and maintain these training and capacity building programmes?",
+  }
 ];
 
 export default function Survey() {
@@ -272,7 +87,9 @@ export default function Survey() {
   const [error, setError] = useState<string | null>(null);
 
   const currentQuestion = questions[currentQuestionIndex];
+  const router = useRouter();
 
+  // Handle response selection
   const handleResponseChange = (area: string, value: ResponseValue) => {
     setResponses((prev) => ({
       ...prev,
@@ -283,6 +100,7 @@ export default function Survey() {
     }));
   };
 
+  // Handle sub-question response
   const handleSubResponseChange = (area: string, value: string) => {
     setSubResponses((prev) => ({
       ...prev,
@@ -290,6 +108,7 @@ export default function Survey() {
     }));
   };
 
+  // Handle next button click with validation
   const handleNext = () => {
     const responsesForCurrentQuestion = responses[currentQuestion.id] || {};
     const allAreasResponded = currentQuestion.areas.every((area) => responsesForCurrentQuestion[area]);
@@ -321,47 +140,49 @@ export default function Survey() {
       alert("Survey complete!");
       console.log("Responses:", responses);
       console.log("Sub-Responses:", subResponses);
+      router.push("/adminDash/responses");
     }
   };
 
   return (
-    <div className="survey-container">
-      <div className="survey-header">
-        <h1>Data Use</h1>
-      </div>
+    <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
+      <h1 className="text-2xl font-bold mb-4">Data Openness and Flow</h1>
 
-      {error && <p className="error-message">{error}</p>}
+      {/* Error Message */}
+      {error && <p className="text-red-600 font-semibold mb-3">{error}</p>}
 
-      <div className="survey-card">
-        <h2 className="survey-title">{currentQuestion.title}</h2>
+      {/* Current Question */}
+      <div className="border p-4 rounded-md shadow-sm bg-gray-50">
+        <h3 className="text-lg font-semibold mb-3">{currentQuestion.title}</h3>
 
+        {/* Render areas */}
         {currentQuestion.areas.map((area) => (
-          <div className="survey-area" key={area}>
-            <h4>{area}</h4>
-            <div className="survey-options">
-              {["Yes", "Partially", "No"].map((value) => (
-                <label className="survey-radio" key={value}>
+          <div key={area} className="mb-4">
+            <h4 className="font-medium">{area}</h4>
+            <div className="flex gap-4 mt-2">
+              {["Yes", "Partially", "No"].map((option) => (
+                <label key={option} className="flex items-center gap-1">
                   <input
                     type="radio"
                     name={`${currentQuestion.id}-${area}`}
-                    value={value}
-                    checked={responses[currentQuestion.id]?.[area] === value}
-                    onChange={() => handleResponseChange(area, value as ResponseValue)}
+                    value={option}
+                    checked={responses[currentQuestion.id]?.[area] === option}
+                    onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
                   />
-                  <span className="custom-radio"></span>
-                  {value}
+                  {option}
                 </label>
               ))}
             </div>
 
+            {/* Sub-Question for specific area */}
             {currentQuestion.hasSubQuestion &&
               (responses[currentQuestion.id]?.[area] === "Yes" ||
                 responses[currentQuestion.id]?.[area] === "Partially") && (
-                <div className="survey-subquestion">
-                  <h5>{currentQuestion.subQuestion}</h5>
+                <div className="mt-2 ml-4">
+                  <h5 className="text-sm font-semibold">{currentQuestion.subQuestion}</h5>
                   <textarea
+                    className="border rounded w-full p-2 mt-1"
                     placeholder={`Provide details for ${area}...`}
-                    className="survey-textarea"
                     value={subResponses[`${currentQuestion.id}-${area}`] || ""}
                     onChange={(e) => handleSubResponseChange(area, e.target.value)}
                   />
@@ -369,13 +190,15 @@ export default function Survey() {
               )}
           </div>
         ))}
-
-        <div className="survey-navigation">
-          <button className="next-button" onClick={handleNext}>
-            {currentQuestionIndex < questions.length - 1 ? "Next" : "Submit"}
-          </button>
-        </div>
       </div>
+
+      {/* Navigation */}
+      <button
+        className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
+        onClick={handleNext}
+      >
+        {currentQuestionIndex < questions.length - 1 ? "Next" : "Submit"}
+      </button>
     </div>
   );
 }
