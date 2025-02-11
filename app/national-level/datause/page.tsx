@@ -188,7 +188,7 @@
 
 "use client";
 import { useState } from "react";
-import "../../../national-level/styles/styles.css";
+import "../styles/styles.css";
 
 type ResponseValue = "Yes" | "Partially" | "No";
 type Responses = {
