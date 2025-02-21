@@ -146,20 +146,20 @@ export default function Survey() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Data Openness and Flow</h1>
+      <h1 className="text-gray-900 text-2xl font-bold mb-4">Data Openness and Flow</h1>
 
       {/* Error Message */}
       {error && <p className="text-red-600 font-semibold mb-3">{error}</p>}
 
       {/* Current Question */}
       <div className="border p-4 rounded-md shadow-sm bg-gray-50">
-        <h3 className="text-lg font-semibold mb-3">{currentQuestion.title}</h3>
+        <h3 className="text-gray-900 text-lg font-semibold mb-3">{currentQuestion.title}</h3>
 
         {/* Render areas */}
         {currentQuestion.areas.map((area) => (
           <div key={area} className="mb-4">
-            <h4 className="font-medium">{area}</h4>
-            <div className="flex gap-4 mt-2">
+            <h4 className="text-gray-900 font-medium">{area}</h4>
+            <div className="text-gray-900 flex gap-4 mt-2">
               {["Yes", "Partially", "No"].map((option) => (
                 <label key={option} className="flex items-center gap-1">
                   <input
@@ -179,9 +179,9 @@ export default function Survey() {
               (responses[currentQuestion.id]?.[area] === "Yes" ||
                 responses[currentQuestion.id]?.[area] === "Partially") && (
                 <div className="mt-2 ml-4">
-                  <h5 className="text-sm font-semibold">{currentQuestion.subQuestion}</h5>
+                  <h5 className="text-gray-900 text-sm font-semibold">{currentQuestion.subQuestion}</h5>
                   <textarea
-                    className="border rounded w-full p-2 mt-1"
+                    className="text-gray-900 border rounded w-full p-2 mt-1"
                     placeholder={`Provide details for ${area}...`}
                     value={subResponses[`${currentQuestion.id}-${area}`] || ""}
                     onChange={(e) => handleSubResponseChange(area, e.target.value)}
