@@ -49,7 +49,7 @@ export default function LandingPage() {
         <div className="button-container">
           <div
             className="assessment-card"
-            onClick={() => router.push("/national-level/datacollection")}
+            onClick={() => router.push("/national-level/login")}
           >
             <h2 className="assessment-title">🌍 National Level Assessment</h2>
             <p className="assessment-description">

@@ -44,6 +44,92 @@ body {
   overflow: auto;
 }
 
+
+/* 🌌 Fullscreen Background */
+.landing-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, #010024, #001f3f);
+  overflow: hidden;
+}
+
+/* 🚀 Glassmorphism Effect */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0px 4px 30px rgba(0, 255, 255, 0.2);
+  max-width: 800px;
+}
+
+/* ✨ Title & Subtitle */
+.landing-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--neon-blue);
+  text-shadow: 0px 0px 15px var(--neon-glow);
+  animation: neonGlow 1.5s infinite alternate;
+}
+
+@keyframes neonGlow {
+  from {
+    text-shadow: 0px 0px 10px var(--neon-blue);
+  }
+  to {
+    text-shadow: 0px 0px 20px var(--neon-glow);
+  }
+}
+
+.landing-subtitle {
+  font-size: 1rem;
+  color: var(--foreground);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+/* 🚀 Assessment Cards */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.assessment-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--neon-glow);
+  text-align: left;
+}
+
+.assessment-card:hover {
+  box-shadow: 0 0 20px var(--neon-glow);
+  transform: translateY(-5px);
+}
+
+.assessment-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--neon-blue);
+}
+
+.assessment-description {
+  font-size: 1rem;
+  color: var(--foreground);
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
 /* 🌌 Fullscreen Background */
 .landing-container {
   position: relative;

@@ -1,72 +1,160 @@
-"use client";
-import Image from "next/image";
+"use client"; // Enables client-side interactivity in Next.js
+
+import { useState } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter
 
 export default function Home() {
+  const router = useRouter(); // Initialize router
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    name: ""
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const endpoint = isSignUp ? "/api/auth/signup" : "/api/auth/login";
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
+
+      // Store token and redirect on successful login
+      if (!isSignUp) {
+        document.cookie = `token=${data.token}; path=/; Secure`;
+        router.push("/survey/userDash"); // Redirect after successful login
+      } else {
+        alert("Account created! You can now log in.");
+        setIsSignUp(false);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="h-screen bg-gradient-to-b from-teal-200 via-blue-500 to-indigo-800 text-white flex flex-col items-center justify-center font-sans overflow-hidden">
-      {/* Logo */}
-      <div className="w-60 h-20 mb-10 mt-2 flex justify-center">
-        <Image
-          src="/images/logo.svg" // Organisation logo
-          alt="ESAWAS logo"
-          width={240}
-          height={200}
-          priority
-        />
+    <div className="flex h-screen">
+      {/* Left Side */}
+      <div className="w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#004F9F] to-[#00AEEF] text-white p-10">
+        <h1 className="text-4xl font-bold">Welcome to eSAWAS</h1>
+        <p className="mt-4 text-lg text-center max-w-lg">
+          Join our platform to assess and improve water and sanitation services.
+        </p>
       </div>
 
-      {/* Main Content */}
-      <main className="flex mb-28 mt-18 flex-col gap-4 items-center text-center bg-blue-200 bg-opacity-85 p-6 rounded-2xl shadow-2xl max-w-2xl w-full transform hover:scale-[1.01] duration-300 mb-30 mb-9">
-        {/* Main Heading */}
-        <h1 className="text-3xl sm:text-4xl font-[Inter] font-bold tracking-tight text-blue-700 drop-shadow-md leading-tight mb-4">
-          ESAWAS Data Maturity Assessment Tool
-        </h1>
+      {/* Right Side */}
+      <div className="w-1/2 flex items-center justify-center bg-white p-10">
+        <div className="w-full max-w-md">
+          {/* Toggle between Login and Sign Up */}
+          <div className="flex justify-between mb-6">
+            <button
+              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${!isSignUp
+                ? "text-[#004F9F] border-[#004F9F]"
+                : "text-gray-400 border-transparent"}`}
+              onClick={() => setIsSignUp(false)}
+            >
+              Login
+            </button>
+            <button
+              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${isSignUp
+                ? "text-[#004F9F] border-[#004F9F]"
+                : "text-gray-400 border-transparent"}`}
+              onClick={() => setIsSignUp(true)}
+            >
+              Sign Up
+            </button>
+          </div>
 
-        {/* Subheading */}
-        <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-lg font-[Lato] mb-4">
-          The trusted platform for evaluating and enhancing data maturity in the
-          water and sanitation sectors for both national and organisational
-          levels.
-        </p>
+          {/* Form */}
+          <form onSubmit={handleSubmit}>
+            {isSignUp &&
+              <div className="mb-4">
+                <label className="block text-gray-600">Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
+                  placeholder="John Doe"
+                  required
+                />
+              </div>}
 
-        {/* Steps List */}
-        <ol className="list-decimal list-inside text-base text-gray-600 max-w-lg space-y-2 text-left mt-4">
-          <li>Get started by completing our comprehensive assessment.</li>
-          <li>Save your progress and return whenever you need.</li>
-          <li>Review insights and contribute to better service delivery.</li>
-        </ol>
-        <div> </div>
+            <div className="mb-4">
+              <label className="block text-gray-600">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
 
-        {/* Call to Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 items-center mt-8">
-          <a
-            className="bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-full py-3 px-8 font-semibold text-lg transition-transform transform hover:scale-105 shadow-lg"
-            href="/basicDetails"
-          >
-            Start Assessment
-          </a>
-          <a
-            className="bg-gray-100 border border-gray-300 text-gray-800 rounded-full py-3 px-8 font-semibold text-lg transition-transform transform hover:scale-105 shadow-md hover:bg-gray-200"
-            href="/documentation"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read Documentation
-          </a>
+            <div className="mb-4">
+              <label className="block text-gray-600">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            {error &&
+              <p className="text-red-500 text-sm mb-2">
+                {error}
+              </p>}
+
+            <button
+              type="submit"
+              className="w-full bg-[#004F9F] text-white py-3 rounded-lg hover:bg-[#003A70] transition"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : isSignUp ? "Sign Up" : "Login"}
+            </button>
+          </form>
+
+          <p className="text-center text-gray-600 mt-6">
+            {isSignUp
+              ? "Already have an account?"
+              : "Don't have an account?"}{" "}
+            <button
+              className="text-[#004F9F] font-semibold"
+              onClick={() => setIsSignUp(!isSignUp)}
+            >
+              {isSignUp ? "Login" : "Sign Up"}
+            </button>
+          </p>
         </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="flex items-center justify-center text-gray-200 mt-8 text-sm">
-        <a
-          className="flex items-center gap-2 hover:text-teal-200 transition-colors"
-          href="https://www.esawas.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Visit ESAWAS Website →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }

@@ -146,7 +146,7 @@ export default function Survey() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
-      <h1 className="text-gray-900 text-2xl font-bold mb-4">Data Openness and Flow</h1>
+      <h1 className="text-gray-900 text-2xl font-bold mb-4">Data Use</h1>
 
       {/* Error Message */}
       {error && <p className="text-red-600 font-semibold mb-3">{error}</p>}
