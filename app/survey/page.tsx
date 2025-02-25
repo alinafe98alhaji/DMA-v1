@@ -1,30 +1,33 @@
-"use client"; // Enables client-side interactivity in Next.js
+"use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
+import countries from "../lib/countries"; // Import countries list
 
-export default function Home() {
-  const router = useRouter(); // Initialize router
+export default function AuthForm() {
+  const router = useRouter();
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: ""
+    name: "",
+    country: "",
+    organisation: ""
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const endpoint = isSignUp ? "/api/auth/signup" : "/api/auth/login";
+      const endpoint = isSignUp ? "/api/auth/register" : "/api/auth/login";
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,20 +37,15 @@ export default function Home() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
 
-      // Store token and redirect on successful login
       if (!isSignUp) {
         document.cookie = `token=${data.token}; path=/; Secure`;
-        router.push("/survey/userDash"); // Redirect after successful login
+        router.push("/survey/userDash");
       } else {
         alert("Account created! You can now log in.");
         setIsSignUp(false);
       }
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred");
-      }
+      setError((err as Error).message || "An unknown error occurred");
     } finally {
       setLoading(false);
     }
@@ -55,7 +53,6 @@ export default function Home() {
 
   return (
     <div className="flex h-screen">
-      {/* Left Side */}
       <div className="w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#004F9F] to-[#00AEEF] text-white p-10">
         <h1 className="text-4xl font-bold">Welcome to eSAWAS</h1>
         <p className="mt-4 text-lg text-center max-w-lg">
@@ -63,44 +60,69 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Right Side */}
       <div className="w-1/2 flex items-center justify-center bg-white p-10">
         <div className="w-full max-w-md">
-          {/* Toggle between Login and Sign Up */}
           <div className="flex justify-between mb-6">
             <button
-              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${!isSignUp
-                ? "text-[#004F9F] border-[#004F9F]"
-                : "text-gray-400 border-transparent"}`}
+              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${!isSignUp ? "text-[#004F9F] border-[#004F9F]" : "text-gray-400 border-transparent"}`}
               onClick={() => setIsSignUp(false)}
             >
               Login
             </button>
             <button
-              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${isSignUp
-                ? "text-[#004F9F] border-[#004F9F]"
-                : "text-gray-400 border-transparent"}`}
+              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${isSignUp ? "text-[#004F9F] border-[#004F9F]" : "text-gray-400 border-transparent"}`}
               onClick={() => setIsSignUp(true)}
             >
               Sign Up
             </button>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit}>
-            {isSignUp &&
-              <div className="mb-4">
-                <label className="block text-gray-600">Full Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>}
+            {isSignUp && (
+              <>
+                <div className="mb-4">
+                  <label className="block text-gray-600">Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+
+                <div className=" text-gray-900 mb-4">
+                  <label className="block text-gray-600">Country</label>
+                  <select
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
+                    required
+                  >
+                    <option className="text-gray-900" value="">Select your country</option>
+                    {countries.map((country) => (
+                      <option className="text-gray-900" key={country.code} value={country.name}>{country.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="text-gray-900 mb-4">
+                  <label className="block text-gray-600">Organisation</label>
+                  <input
+                    type="text"
+                    name="organisation"
+                    value={formData.organisation}
+                    onChange={handleChange}
+                    className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
+                    placeholder="Your Organisation"
+                    required
+                  />
+                </div>
+              </>
+            )}
 
             <div className="mb-4">
               <label className="block text-gray-600">Email</label>
@@ -115,7 +137,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="mb-4">
+            <div className="text-gray-900 mb-4">
               <label className="block text-gray-600">Password</label>
               <input
                 type="password"
@@ -128,10 +150,7 @@ export default function Home() {
               />
             </div>
 
-            {error &&
-              <p className="text-red-500 text-sm mb-2">
-                {error}
-              </p>}
+            {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
             <button
               type="submit"
@@ -143,9 +162,7 @@ export default function Home() {
           </form>
 
           <p className="text-center text-gray-600 mt-6">
-            {isSignUp
-              ? "Already have an account?"
-              : "Don't have an account?"}{" "}
+            {isSignUp ? "Already have an account?" : "Don't have an account?"} {" "}
             <button
               className="text-[#004F9F] font-semibold"
               onClick={() => setIsSignUp(!isSignUp)}
