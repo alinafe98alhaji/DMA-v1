@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import countries from "../lib/countries"; // Import the countries list
+import countries from "../../lib/countries"; // Import the countries list
 
 export default function SignUp() {
   const router = useRouter();
