@@ -62,18 +62,19 @@
 //     );
 //   }
 // }
-
 import { NextResponse } from "next/server";
 import clientPromise from "../../../lib/mongodb";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"; // ✅ Add JWT for session handling
+
+const JWT_SECRET = "your_secret_key"; // ⚠️ Store this in .env instead of hardcoding
 
 export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
     if (!email || !password) {
       return NextResponse.json(
-        { error: "Missing email or password" },
+        { error: "Email and password are required" },
         { status: 400 }
       );
     }
@@ -85,9 +86,11 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
-    const db = client.db("test");
+
+    const db = client.db("test"); // Replace with your actual DB name
     const usersCollection = db.collection("users");
 
+    // Find user by email
     const user = await usersCollection.findOne({ email });
     if (!user) {
       return NextResponse.json(
@@ -96,33 +99,26 @@ export async function POST(req: Request) {
       );
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
+    // Compare hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return NextResponse.json(
         { error: "Invalid credentials" },
         { status: 401 }
       );
     }
 
-    const token = jwt.sign(
-      { email: user.email, name: user.name },
-      process.env.JWT_SECRET!,
-      {
-        expiresIn: "1d"
-      }
+    // Generate a JWT token
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+      expiresIn: "24h"
+    });
+
+    return NextResponse.json(
+      { message: "Login successful", userId: user._id, token },
+      { status: 200 }
     );
-
-    const response = NextResponse.json({ message: "Login successful" });
-
-    response.headers.set(
-      "Set-Cookie",
-      `token=${token}; HttpOnly; Path=/; Secure=${process.env.NODE_ENV ===
-        "production"}`
-    );
-
-    return response;
   } catch (error) {
-    console.error("Login API Error:", error);
+    console.error("Login Error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

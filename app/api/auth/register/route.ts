@@ -35,8 +35,8 @@ export async function POST(req: Request) {
     // Hash the password securely
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert new user
-    await usersCollection.insertOne({
+    // Insert new user and get the inserted document ID
+    const result = await usersCollection.insertOne({
       name,
       email,
       password: hashedPassword,
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: "User registered successfully" },
+      { message: "User registered successfully", userId: result.insertedId },
       { status: 201 }
     );
   } catch (error) {

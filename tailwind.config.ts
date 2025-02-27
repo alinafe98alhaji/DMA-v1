@@ -9,6 +9,9 @@ export default {
   theme: {
     extend: {
       colors: {
+        'esa-blue': '#0072B1', // Adjust according to ESAWAS brand colors
+        'esa-lightblue': '#00A9E0', // Adjust accordingly
+        'esa-darkblue': '#004D73', // Adjust accordingly
         background: "var(--background)",
         foreground: "var(--foreground)",
       },

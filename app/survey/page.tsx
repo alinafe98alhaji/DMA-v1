@@ -21,28 +21,29 @@ export default function AuthForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+  
     try {
       const endpoint = isSignUp ? "/api/auth/register" : "/api/auth/login";
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-
+  
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
-
-      if (!isSignUp) {
-        document.cookie = `token=${data.token}; path=/; Secure`;
-        router.push("/survey/userDash");
-      } else {
+  
+      if (isSignUp) {
         alert("Account created! You can now log in.");
         setIsSignUp(false);
+      } else {
+        sessionStorage.setItem("user_id", data.userId); // ✅ Store userId after login
+        sessionStorage.setItem("token", data.token); // ✅ Store token for authentication
+        router.push("/survey/userDash");
       }
     } catch (err) {
       setError((err as Error).message || "An unknown error occurred");
@@ -50,7 +51,7 @@ export default function AuthForm() {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="flex h-screen">
       <div className="w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#004F9F] to-[#00AEEF] text-white p-10">
