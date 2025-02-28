@@ -53,8 +53,9 @@ const Question2aiii = () => {
 
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
-    if (!userId_ses) {
+    if (!userId_ses || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
@@ -71,6 +72,7 @@ const Question2aiii = () => {
     // Prepare the payload
     const responseObject = {
       userId: userId_ses,
+      completionId,
       questionID: "2a.iii",
       responses: filteredResponses,
       submittedAt: new Date().toISOString() // Optional timestamp

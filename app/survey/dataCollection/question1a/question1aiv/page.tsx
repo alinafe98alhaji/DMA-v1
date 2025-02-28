@@ -258,8 +258,8 @@ const Question1aiv = () => {
       setError("Please answer all areas before proceeding.");
       return; // Stop navigation if validation fails
     }
-
-    if (!userId) {
+    const completionId = sessionStorage.getItem("completionId");
+    if (!userId || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
@@ -267,6 +267,7 @@ const Question1aiv = () => {
     // Prepare response object with scores
     const responseObject = {
       userId,
+      completionId,
       questionID: "1a.iv",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
@@ -343,7 +344,7 @@ const Question1aiv = () => {
           </thead>
           <tbody>
             {areasFor1aiv.map(area =>
-              <tr key={area} >
+              <tr key={area}>
                 <td className="border border-gray-300 p-2 font-semibold">
                   {area}
                 </td>

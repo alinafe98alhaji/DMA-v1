@@ -57,8 +57,9 @@ const Question3biv = () => {
 
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
-    if (!userId_ses) {
+    if (!userId_ses || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
@@ -66,6 +67,7 @@ const Question3biv = () => {
     // Create response object only with the selected answers
     const responseObject = {
       userId: userId_ses,
+      completionId,
       questionID: "3b.iv", // Adding questionID
       responses: Object.entries(answers).map(([area, response]) => ({
         area,

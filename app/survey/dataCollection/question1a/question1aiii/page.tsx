@@ -220,14 +220,16 @@ const Question1aiii = () => {
     }
 
     const userId = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
-    if (!userId) {
+    if (!userId || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
 
     const responseObject = {
       userId,
+      completionId,
       questionID: "1a.iii",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,

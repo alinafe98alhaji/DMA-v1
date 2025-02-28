@@ -55,8 +55,9 @@ const Question2A = () => {
 
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
-    if (!userId_ses) {
+    if (!userId_ses || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
@@ -64,6 +65,7 @@ const Question2A = () => {
     // Log responses with questionID
     const responseObject = {
       userId: userId_ses,
+      completionId,
       questionID: "2a", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,

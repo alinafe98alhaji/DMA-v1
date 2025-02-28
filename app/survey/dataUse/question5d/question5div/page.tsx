@@ -51,10 +51,12 @@ const Question5div = () => {
 
     // Retrieve user_id from sessionStorage
     const userId_ses = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
     // Log responses with questionID
     const responseObject = {
       userId: userId_ses,
+      completionId,
       questionID: "5d.iv", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,

@@ -57,8 +57,9 @@ const Question1aii = () => {
 
     // Retrieve user_id from sessionStorage
     const userId = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
-    if (!userId) {
+    if (!userId || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
@@ -66,6 +67,7 @@ const Question1aii = () => {
     // Prepare responses with scores
     const responseObject = {
       userId, // Include user_id
+      completionId, // Include completionId
       questionID: "1a.ii",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,

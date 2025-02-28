@@ -171,8 +171,9 @@ const Question3bv = () => {
 
             // Retrieve user_id from sessionStorage
             const userId_ses = sessionStorage.getItem("user_id");
+            const completionId = sessionStorage.getItem("completionId");
 
-            if (!userId_ses) {
+            if (!userId_ses || !completionId) {
               alert(
                 "User ID is missing. Please return to the basic details page."
               );
@@ -182,6 +183,7 @@ const Question3bv = () => {
             // Create responseObject with both response and score
             const responseObject = {
               userId: userId_ses,
+              completionId,
               questionID: "3b.v", // Adding questionID
               responses: Object.entries(answers).map(([area, { response, score }]) => ({
                 area,

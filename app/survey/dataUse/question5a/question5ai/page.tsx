@@ -78,14 +78,16 @@ const scoreMapping: { [key: number]: number } = {
 
     // Send selected answers to the database
     const userId_ses = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
-    if (!userId_ses) {
+    if (!userId_ses || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
 
     const responseObject = {
       userId: userId_ses,
+      completionId,
       questionID: "5a.i", // Adding questionID
       responses: selectedAnswers
     };

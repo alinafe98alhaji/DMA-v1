@@ -51,14 +51,16 @@ const Question5bi = () => {
     console.log("Final answers submitted:", responses);
 
     const userId_ses = sessionStorage.getItem("user_id");
+    const completionId = sessionStorage.getItem("completionId");
 
-    if (!userId_ses) {
+    if (!userId_ses || !completionId) {
       alert("User ID is missing. Please return to the basic details page.");
       return;
     }
 
     const responseObject = {
       userId: userId_ses,
+      completionId,
       questionID: "5b.i",
       responses: Object.entries(responses).map(([area, response]) => ({
         area,

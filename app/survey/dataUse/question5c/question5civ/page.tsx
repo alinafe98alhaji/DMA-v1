@@ -54,10 +54,11 @@ const Question5civ = () => {
 
     // Clear error if all areas are answered
     setError("");
-
+    const completionId = sessionStorage.getItem("completionId");
     // Prepare the responses to be sent to the backend
     const responseObject = {
       userId: sessionStorage.getItem("user_id"), // Retrieve user_id from sessionStorage
+      completionId,
       questionID: "5c.iv", // Adding questionID
       responses: Object.entries(responses).map(([area, response]) => ({
         area,
