@@ -137,7 +137,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-grow h-screen bg-gray-100">
+      <div className="text-gray-900 flex-grow h-screen bg-gray-100">
         <nav className="bg-white shadow-md p-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-gray-800">User Details</h1>
           {/* ✅ Added Button to Navigate to Responses Page */}

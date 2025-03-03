@@ -204,7 +204,7 @@ const DashboardLanding = () => {
             Start Assessment
           </button>
           <button
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/survey/results")}
             className="px-8 py-4 bg-coral-400 text-white rounded-lg text-xl transition-transform hover:scale-105 hover:bg-coral-500 shadow-lg"
           >
             Go to Dashboard
