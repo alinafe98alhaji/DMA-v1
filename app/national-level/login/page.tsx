@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import countries from "../../lib/countries"; // Import countries list
 
 const esawasImages = [
-  "/images/ws1.jpg",
+  
   "/images/OP.png",
   "/images/clean-water.jpgq_-958x700.jpg",
   "/images/OG-image.jpg",
-  "/images/LVWATSAN - RW - Water Treatment plant 3",
+  "/images/LVWATSAN.jpg",
 ];
 
 export default function AuthForm() {
