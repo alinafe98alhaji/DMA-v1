@@ -62,9 +62,15 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen w-screen bg-gray-50 text-gray-900 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-cyan-800 to-blue-900 text-white p-6 flex flex-col justify-between shadow-2xl rounded-r-xl">
+      <aside className="w-72 bg-gradient-to-b from-blue-400 to-teal-600 text-white p-6 flex flex-col justify-between shadow-2xl rounded-r-xl">
         <div>
-          <h1 className="text-3xl font-semibold mb-8 text-center">Dashboard</h1>
+          <div className="mb-4">
+            <img
+              src="/images/logo.svg"
+              alt="ESAWAS"
+              style={{ width: "200px" }}
+            />
+          </div>
           <nav className="space-y-4">
             {sections.map(section =>
               <button
