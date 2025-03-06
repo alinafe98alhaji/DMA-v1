@@ -83,7 +83,7 @@ export default function AuthForm() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed");
 
-      router.push("/national-level/homepage");
+      router.push("/national-level/signup");
     } catch (err) {
       setError((err as Error).message || "Login failed. Please try logging in manually.");
     }
