@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -8,7 +8,24 @@ import Image from "next/image"; // For logo
 
 const UserLandingPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState<{ email: string; name: string } | null>(
+    null
+  );
   const userName = "John Doe"; // Replace with dynamic user data
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/auth/getUser", {
+          credentials: "include"
+        });
+        const data = await res.json();
+        if (data.email) setUser({ email: data.email, name: data.name });
+      } catch (error) {
+        console.error("Failed to fetch user", error);
+      }
+    }
+    fetchUser();
+  }, []);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -72,12 +89,12 @@ const UserLandingPage = () => {
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12">
               <AvatarFallback>
-                {userName.slice(0, 2).toUpperCase()}
+                {user ? user.name.slice(0, 2).toUpperCase() : "JD"}
               </AvatarFallback>
             </Avatar>
             <div>
               <h1 className="text-xl font-semibold text-esa-darkblue">
-                Welcome, {userName}!
+                Welcome, {user ? user.name : "Loading..."}!
               </h1>
               <p className="text-sm text-esa-darkblue">
                 Here's your dashboard.
