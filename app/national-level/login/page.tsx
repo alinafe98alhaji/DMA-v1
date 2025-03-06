@@ -215,6 +215,7 @@ export default function AuthForm() {
             </button>
           </form>
         </div>
+        <footer className="absolute bottom-6 text-gray-600 text-sm">© 2025 ESAWAS. All rights reserved.</footer>
       </div>
     </div>
   );
