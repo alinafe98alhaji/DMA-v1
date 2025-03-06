@@ -59,7 +59,7 @@ export default function AuthForm() {
         setIsSignUp(false);
         await handleLoginAfterSignup();
       } else {
-        router.push("/national-level/homepage");
+        router.push("/national-level/signup");
       }
     } catch (err) {
       setError((err as Error).message || "An unknown error occurred");
