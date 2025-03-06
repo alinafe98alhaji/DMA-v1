@@ -61,13 +61,13 @@
 //       { status: 500 }
 //     );
 //   }
-// }
-import { NextResponse } from "next/server";
+// }import { NextResponse } from "next/server";import clientPromise from "../../../lib/mongodb";
 import clientPromise from "../../../lib/mongodb";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"; // ✅ Add JWT for session handling
+import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
-const JWT_SECRET = "your_secret_key"; // ⚠️ Store this in .env instead of hardcoding
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(req: Request) {
   try {
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const db = client.db("test"); // Replace with your actual DB name
+    const db = client.db("test");
     const usersCollection = db.collection("users");
 
     // Find user by email
@@ -109,14 +109,22 @@ export async function POST(req: Request) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-      expiresIn: "24h"
+    const token = jwt.sign({ userId: user._id, name: user.name }, JWT_SECRET, {
+      expiresIn: "7d"
     });
 
-    return NextResponse.json(
+    // Set the token in cookies with HttpOnly, Secure flag
+    const response = NextResponse.json(
       { message: "Login successful", userId: user._id, token },
       { status: 200 }
     );
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 // 7 days
+    });
+
+    return response;
   } catch (error) {
     console.error("Login Error:", error);
     return NextResponse.json(

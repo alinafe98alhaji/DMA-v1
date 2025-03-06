@@ -274,15 +274,15 @@ export default function Survey() {
   };
 
   // Handle next button click with validation
-  const handleNext = () => {
+  const handleNext = async () => {
     const responsesForCurrentQuestion = responses[currentQuestion.id] || {};
     const allAreasResponded = currentQuestion.areas.every((area) => responsesForCurrentQuestion[area]);
-
+  
     if (!allAreasResponded) {
       setError("Please respond to all areas before proceeding.");
       return;
     }
-
+  
     if (currentQuestion.hasSubQuestion) {
       const allSubResponsesFilled = currentQuestion.areas.every((area) => {
         const response = responsesForCurrentQuestion[area];
@@ -291,27 +291,42 @@ export default function Survey() {
         }
         return true;
       });
-
+  
       if (!allSubResponsesFilled) {
         setError("Please provide details for all required sub-questions.");
         return;
       }
     }
-
+  
     setError(null);
+  
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-       console.log("Responses:", responses);
-      console.log("Sub-Responses:", subResponses);
-    
-        // Navigate to the next survey component
-        router.push("/national-level/dataownershipandmanagement"); // Change to the next survey page route
-      
+      try {
+        const res = await fetch("/api/saveDataCollectionNational", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: "someUserId", // Replace with actual user ID if available
+            responses,
+            subResponses,
+          }),
+        });
   
-     }
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to save responses");
+  
+        console.log("Responses saved successfully:", data);
+  
+        //router.push("/national-level/dataownershipandmanagement");
+      } catch (error) {
+        console.error("Error saving responses:", error);
+        setError("Failed to save responses. Please try again.");
+      }
+    }
   };
-
+  
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
       <h1 className="text-2xl text-gray-900 font-bold mb-4">Data Collection</h1>

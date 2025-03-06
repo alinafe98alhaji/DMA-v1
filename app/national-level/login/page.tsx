@@ -1,8 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import countries from "../../lib/countries"; // Import countries list
+
+const esawasImages = [
+  "/images/ws1.jpg",
+  "/images/OP.png",
+  "/images/clean-water.jpgq_-958x700.jpg",
+  "/images/OG-image.jpg",
+  "/images/LVWATSAN - RW - Water Treatment plant 3",
+];
 
 export default function AuthForm() {
   const router = useRouter();
@@ -12,16 +20,24 @@ export default function AuthForm() {
     password: "",
     name: "",
     country: "",
-    organisation: ""
+    organisation: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImageIndex((prevIndex) => (prevIndex + 1) % esawasImages.length);
+    }, 5000); // Change image every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -31,18 +47,19 @@ export default function AuthForm() {
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
 
-      if (!isSignUp) {
-        document.cookie = `token=${data.token}; path=/; Secure`;
-        router.push("/national-level/homepage");
-      } else {
-        alert("Account created! You can now log in.");
+      if (isSignUp) {
+        alert("Account created! Logging you in...");
         setIsSignUp(false);
+        await handleLoginAfterSignup();
+      } else {
+        router.push("/national-level/homepage");
       }
     } catch (err) {
       setError((err as Error).message || "An unknown error occurred");
@@ -51,26 +68,61 @@ export default function AuthForm() {
     }
   };
 
+  const handleLoginAfterSignup = async () => {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Login failed");
+
+      router.push("/national-level/homepage");
+    } catch (err) {
+      setError((err as Error).message || "Login failed. Please try logging in manually.");
+    }
+  };
+
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#004F9F] to-[#00AEEF] text-white p-10">
-        <h1 className="text-4xl font-bold">Welcome to eSAWAS</h1>
-        <p className="mt-4 text-lg text-center max-w-lg">
+      {/* Left Side with Image Slideshow */}
+      <div
+        className="w-2/3 flex flex-col justify-center items-center text-white p-10 transition-all duration-1000 bg-cover bg-center"
+        style={{ backgroundImage: `url(${esawasImages[imageIndex]})` }}
+      >
+        <h1 className="text-4xl font-bold px-4 py-2 rounded-lg">
+          Welcome to ESAWAS
+        </h1>
+        <p className="mt-4 text-lg text-center max-w-lg px-4 py-2 rounded-lg">
           Join our platform to assess and improve water and sanitation services.
         </p>
       </div>
 
+      {/* Right Side */}
       <div className="w-1/2 flex items-center justify-center bg-white p-10">
         <div className="w-full max-w-md">
+          <div className="mb-4">
+          <img src="/images/logo.svg" alt="ESAWAS" style={{width:"200px", marginLeft:"100px"}} />
+          </div>
           <div className="flex justify-between mb-6">
             <button
-              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${!isSignUp ? "text-[#004F9F] border-[#004F9F]" : "text-gray-400 border-transparent"}`}
+              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${
+                !isSignUp ? "text-[#004F9F] border-[#004F9F]" : "text-gray-400 border-transparent"
+              }`}
               onClick={() => setIsSignUp(false)}
             >
               Login
             </button>
             <button
-              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${isSignUp ? "text-[#004F9F] border-[#004F9F]" : "text-gray-400 border-transparent"}`}
+              className={`text-lg font-semibold pb-2 w-1/2 border-b-2 ${
+                isSignUp ? "text-[#004F9F] border-[#004F9F]" : "text-gray-400 border-transparent"
+              }`}
               onClick={() => setIsSignUp(true)}
             >
               Sign Up
@@ -93,7 +145,7 @@ export default function AuthForm() {
                   />
                 </div>
 
-                <div className=" text-gray-900 mb-4">
+                <div className="mb-4">
                   <label className="block text-gray-600">Country</label>
                   <select
                     name="country"
@@ -102,14 +154,16 @@ export default function AuthForm() {
                     className="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:border-[#004F9F] focus:ring-[#004F9F] focus:ring-1 outline-none"
                     required
                   >
-                    <option className="text-gray-900" value="">Select your country</option>
+                    <option value="">Select your country</option>
                     {countries.map((country) => (
-                      <option className="text-gray-900" key={country.code} value={country.name}>{country.name}</option>
+                      <option key={country.code} value={country.name}>
+                        {country.name}
+                      </option>
                     ))}
                   </select>
                 </div>
 
-                <div className="text-gray-900 mb-4">
+                <div className="mb-4">
                   <label className="block text-gray-600">Organisation</label>
                   <input
                     type="text"
@@ -137,7 +191,7 @@ export default function AuthForm() {
               />
             </div>
 
-            <div className="text-gray-900 mb-4">
+            <div className="mb-4">
               <label className="block text-gray-600">Password</label>
               <input
                 type="password"
@@ -160,16 +214,6 @@ export default function AuthForm() {
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Login"}
             </button>
           </form>
-
-          <p className="text-center text-gray-600 mt-6">
-            {isSignUp ? "Already have an account?" : "Don't have an account?"} {" "}
-            <button
-              className="text-[#004F9F] font-semibold"
-              onClick={() => setIsSignUp(!isSignUp)}
-            >
-              {isSignUp ? "Login" : "Sign Up"}
-            </button>
-          </p>
         </div>
       </div>
     </div>

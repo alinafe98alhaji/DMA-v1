@@ -9,12 +9,20 @@ import DataOpennessAndFlow from "@/app/national-level/dataopenessandflow/page";
 import DataQuality from "@/app/national-level/dataquality/page";
 import DataUse from "@/app/national-level/datause/page";
 
+const sections = [
+  { id: "datacollection", label: "Data Collection" },
+  { id: "dataownershipandmanagement", label: "Data Ownership & Management" },
+  { id: "dataopenessandflow", label: "Data Openness & Flow" },
+  { id: "dataquality", label: "Data Quality" },
+  { id: "datause", label: "Data Use" }
+];
+
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<{ email: string; name: string } | null>(
     null
   );
-  const [currentPage, setCurrentPage] = useState("datacollection");
+  const [currentPage, setCurrentPage] = useState(sections[0].id);
 
   useEffect(() => {
     async function fetchUser() {
@@ -30,6 +38,9 @@ export default function Dashboard() {
     }
     fetchUser();
   }, []);
+
+  const progress =
+    (sections.findIndex(s => s.id === currentPage) + 1) / sections.length * 100;
 
   const renderPage = () => {
     switch (currentPage) {
@@ -55,51 +66,18 @@ export default function Dashboard() {
         <div>
           <h1 className="text-3xl font-semibold mb-8 text-center">Dashboard</h1>
           <nav className="space-y-4">
-            <button
-              onClick={() => setCurrentPage("datacollection")}
-              className={`block w-full py-3 px-6 rounded-lg text-lg text-center transition ${currentPage ===
-              "datacollection"
-                ? "bg-white text-blue-900 font-semibold"
-                : "bg-white bg-opacity-20 hover:bg-opacity-30"}`}
-            >
-              Data Collection
-            </button>
-            <button
-              onClick={() => setCurrentPage("dataownershipandmanagement")}
-              className={`block w-full py-3 px-6 rounded-lg text-lg text-center transition ${currentPage ===
-              "dataownershipandmanagement"
-                ? "bg-white text-blue-900 font-semibold"
-                : "bg-white bg-opacity-20 hover:bg-opacity-30"}`}
-            >
-              Data Ownership & Management
-            </button>
-            <button
-              onClick={() => setCurrentPage("dataopenessandflow")}
-              className={`block w-full py-3 px-6 rounded-lg text-lg text-center transition ${currentPage ===
-              "dataopenessandflow"
-                ? "bg-white text-blue-900 font-semibold"
-                : "bg-white bg-opacity-20 hover:bg-opacity-30"}`}
-            >
-              Data Openness & Flow
-            </button>
-            <button
-              onClick={() => setCurrentPage("dataquality")}
-              className={`block w-full py-3 px-6 rounded-lg text-lg text-center transition ${currentPage ===
-              "dataquality"
-                ? "bg-white text-blue-900 font-semibold"
-                : "bg-white bg-opacity-20 hover:bg-opacity-30"}`}
-            >
-              Data Quality
-            </button>
-            <button
-              onClick={() => setCurrentPage("datause")}
-              className={`block w-full py-3 px-6 rounded-lg text-lg text-center transition ${currentPage ===
-              "datause"
-                ? "bg-white text-blue-900 font-semibold"
-                : "bg-white bg-opacity-20 hover:bg-opacity-30"}`}
-            >
-              Data Use
-            </button>
+            {sections.map(section =>
+              <button
+                key={section.id}
+                onClick={() => setCurrentPage(section.id)}
+                className={`block w-full py-3 px-6 rounded-lg text-lg text-center transition ${currentPage ===
+                section.id
+                  ? "bg-white text-blue-900 font-semibold"
+                  : "bg-white bg-opacity-20 hover:bg-opacity-30"}`}
+              >
+                {section.label}
+              </button>
+            )}
           </nav>
         </div>
       </aside>
@@ -119,13 +97,23 @@ export default function Dashboard() {
               ⚙️
             </button>
             <button
-              onClick={() => router.push("/logout")}
+              onClick={() => router.push("/national-level/login")}
               className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition text-lg"
             >
               Log Out
             </button>
           </div>
         </header>
+
+        {/* Progress Bar */}
+        <div className="w-full bg-gray-200 h-2 mt-2">
+          <motion.div
+            className="h-2 bg-blue-600"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5 }}
+          />
+        </div>
 
         {/* Content Section */}
         <main className="flex-1 p-6 overflow-hidden flex justify-center items-center">
@@ -136,7 +124,7 @@ export default function Dashboard() {
             className="w-full h-full bg-white shadow-xl rounded-xl p-6 flex flex-col items-center justify-center overflow-hidden"
           >
             <div className="w-full h-full overflow-auto p-4">
-              {renderPage()} {/* Render the current page */}
+              {renderPage()}
             </div>
           </motion.div>
         </main>

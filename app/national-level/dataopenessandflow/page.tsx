@@ -93,15 +93,15 @@ export default function Survey() {
   };
 
   // Handle next button click with validation
-  const handleNext = () => {
+  const handleNext = async () => {
     const responsesForCurrentQuestion = responses[currentQuestion.id] || {};
     const allAreasResponded = currentQuestion.areas.every((area) => responsesForCurrentQuestion[area]);
-
+  
     if (!allAreasResponded) {
       setError("Please respond to all areas before proceeding.");
       return;
     }
-
+  
     if (currentQuestion.hasSubQuestion) {
       const allSubResponsesFilled = currentQuestion.areas.every((area) => {
         const response = responsesForCurrentQuestion[area];
@@ -110,21 +110,39 @@ export default function Survey() {
         }
         return true;
       });
-
+  
       if (!allSubResponsesFilled) {
         setError("Please provide details for all required sub-questions.");
         return;
       }
     }
-
+  
     setError(null);
+  
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      alert("Survey complete!");
-      console.log("Responses:", responses);
-      console.log("Sub-Responses:", subResponses);
-      router.push("/national-level/dataquality")
+      try {
+        const res = await fetch("/api/saveDoaf", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: "someUserId", // Replace with actual user ID if available
+            responses,
+            subResponses,
+          }),
+        });
+  
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to save responses");
+  
+        console.log("Responses saved successfully:", data);
+  
+        //router.push("/national-level/dataownershipandmanagement");
+      } catch (error) {
+        console.error("Error saving responses:", error);
+        setError("Failed to save responses. Please try again.");
+      }
     }
   };
 
