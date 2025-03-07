@@ -103,10 +103,10 @@ export default function Dashboard() {
               ⚙️
             </button>
             <button
-              onClick={() => router.push("/national-level/login")}
+              onClick={() => router.push("/national-level/signup")}
               className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition text-lg"
             >
-              Log Out
+              Home
             </button>
           </div>
         </header>
