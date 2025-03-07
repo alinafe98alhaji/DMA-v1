@@ -35,7 +35,7 @@ export default function Dashboard() {
           setUser({
             email: data.email,
             name: data.name,
-            avatar: data.avatar || "/images/default-avatar.png",
+            avatar: data.avatar || "/images/afriq.png",
           });
         }
       } catch (error) {
@@ -95,7 +95,7 @@ export default function Dashboard() {
         </div>
         <div className="mt-8">
           <p className="text-sm text-white opacity-75">
-            © 2023 ESAWAS. All rights reserved.
+            © 2025 ESAWAS. All rights reserved.
           </p>
         </div>
       </aside>
