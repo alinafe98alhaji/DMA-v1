@@ -3,15 +3,15 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ChevronRightIcon, MinusIcon } from "@heroicons/react/20/solid"; // Example icons
-import Image from "next/image"; // For logo
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 
 const UserLandingPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState<{ email: string; name: string } | null>(
     null
   );
-  const userName = "John Doe"; // Replace with dynamic user data
+
   useEffect(() => {
     async function fetchUser() {
       try {
@@ -28,25 +28,32 @@ const UserLandingPage = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 relative">
+      {/* Overlay for sidebar */}
+      {sidebarOpen &&
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setSidebarOpen(false)}
+        />}
+
       {/* Sidebar */}
       <div
-        className={`${sidebarOpen
+        className={`fixed inset-y-0 left-0 w-64 bg-esa-darkblue text-white transform transition-transform duration-300 ease-in-out z-50 ${sidebarOpen
           ? "translate-x-0"
-          : "-translate-x-full"} fixed z-10 inset-0 bg-esa-darkblue text-white transform transition-transform duration-300 md:translate-x-0 md:relative md:w-64`}
+          : "-translate-x-full"}`}
       >
         <div className="p-6 flex items-center justify-between border-b border-white">
           <Image
             src="/images/logo.svg"
             alt="ESAWAS Logo"
-            width={400}
-            height={400}
+            width={150}
+            height={150}
           />
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden text-white hover:text-esa-lightblue"
+            className="text-white hover:text-esa-lightblue"
           >
-            <MinusIcon className="w-6 h-6" />
+            <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
         <nav className="space-y-4 mt-8">
@@ -81,10 +88,10 @@ const UserLandingPage = () => {
       <div className="flex-1 p-8">
         <div className="flex items-center justify-between mb-8">
           <button
-            onClick={() => setSidebarOpen(true)}
-            className="md:hidden text-esa-darkblue hover:text-esa-blue"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="text-esa-darkblue hover:text-esa-blue"
           >
-            <MinusIcon className="w-6 h-6" />
+            <Bars3Icon className="w-8 h-8" />
           </button>
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12">
