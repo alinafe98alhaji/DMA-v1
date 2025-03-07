@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid"; // Import icons
 
 interface Response {
   _id: string;
@@ -16,8 +17,41 @@ const ResponsesPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [expandedSections, setExpandedSections] = useState<{
+    [key: string]: boolean;
+  }>({});
 
-  // Toggle dark mode
+  // Detect system preference and set initial dark mode state
+  useEffect(() => {
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches;
+    const savedDarkMode = localStorage.getItem("darkMode");
+
+    // Use saved preference if available, otherwise use system preference
+    setIsDarkMode(savedDarkMode ? savedDarkMode === "true" : systemPrefersDark);
+  }, []);
+
+  // Listen for system preference changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleSystemPreferenceChange = (e: MediaQueryListEvent) => {
+      // Only update if the user hasn't manually toggled dark mode
+      const savedDarkMode = localStorage.getItem("darkMode");
+      if (savedDarkMode === null) {
+        setIsDarkMode(e.matches);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleSystemPreferenceChange);
+
+    // Cleanup listener on unmount
+    return () => {
+      mediaQuery.removeEventListener("change", handleSystemPreferenceChange);
+    };
+  }, []);
+
+  // Apply dark mode class to <html> element
   useEffect(
     () => {
       if (isDarkMode) {
@@ -25,6 +59,9 @@ const ResponsesPage: NextPage = () => {
       } else {
         document.documentElement.classList.remove("dark");
       }
+
+      // Save preference to localStorage
+      localStorage.setItem("darkMode", isDarkMode.toString());
     },
     [isDarkMode]
   );
@@ -55,6 +92,93 @@ const ResponsesPage: NextPage = () => {
     fetchResponses();
   }, []);
 
+  // Toggle collapsible sections
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
+
+  // Helper function to render responses in a structured way
+  const renderResponses = (responses: {
+    [key: string]: { [area: string]: string };
+  }) => {
+    return (
+      <div className="space-y-4">
+        {Object.entries(responses).map(([questionId, areas]) =>
+          <div
+            key={questionId}
+            className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
+          >
+            <button
+              onClick={() => toggleSection(`responses-${questionId}`)}
+              className="w-full flex justify-between items-center text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2"
+            >
+              <span>
+                Question {questionId}
+              </span>
+              {expandedSections[`responses-${questionId}`]
+                ? <ChevronUpIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                : <ChevronDownIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            </button>
+            {expandedSections[`responses-${questionId}`] &&
+              <table className="w-full text-sm text-gray-700 dark:text-gray-200">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2 text-left">Area</th>
+                    <th className="px-4 py-2 text-left">Answer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(areas).map(([area, answer]) =>
+                    <tr
+                      key={area}
+                      className="border-t border-gray-200 dark:border-gray-600"
+                    >
+                      <td className="px-4 py-2">
+                        {area}
+                      </td>
+                      <td className="px-4 py-2">
+                        {answer}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Helper function to render sub-responses in a structured way
+  const renderSubResponses = (subResponses: { [key: string]: string }) => {
+    return (
+      <div className="space-y-4">
+        {Object.entries(subResponses).map(([key, value]) =>
+          <div key={key} className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+            <button
+              onClick={() => toggleSection(`subResponses-${key}`)}
+              className="w-full flex justify-between items-center text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2"
+            >
+              <span>
+                Sub-Response for {key}
+              </span>
+              {expandedSections[`subResponses-${key}`]
+                ? <ChevronUpIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                : <ChevronDownIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />}
+            </button>
+            {expandedSections[`subResponses-${key}`] &&
+              <p className="text-sm text-gray-700 dark:text-gray-200">
+                {value}
+              </p>}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -79,6 +203,7 @@ const ResponsesPage: NextPage = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       {/* Dark Mode Toggle Button */}
       <button
+        aria-label="Toggle dark mode"
         onClick={() => setIsDarkMode(!isDarkMode)}
         className="fixed bottom-4 right-4 p-3 bg-blue-600 dark:bg-blue-400 text-white rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
       >
@@ -120,22 +245,14 @@ const ResponsesPage: NextPage = () => {
                       <h4 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
                         Responses
                       </h4>
-                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                        <pre className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
-                          {JSON.stringify(response.responses, null, 2)}
-                        </pre>
-                      </div>
+                      {renderResponses(response.responses)}
                     </div>
 
                     <div>
                       <h4 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
                         Sub-Responses
                       </h4>
-                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                        <pre className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
-                          {JSON.stringify(response.subResponses, null, 2)}
-                        </pre>
-                      </div>
+                      {renderSubResponses(response.subResponses)}
                     </div>
                   </div>
                 </div>
