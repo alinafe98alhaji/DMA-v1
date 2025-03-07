@@ -9,7 +9,7 @@ import DataOpennessAndFlow from "@/app/national-level/dataopenessandflow/page";
 import DataQuality from "@/app/national-level/dataquality/page";
 import DataUse from "@/app/national-level/datause/page";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MagnifyingGlassIcon, BellIcon, CogIcon, HomeIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, BellIcon, CogIcon, HomeIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
 const sections = [
   { id: "datacollection", label: "Data Collection", icon: "📊" },
@@ -23,6 +23,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<{ email: string; name: string; avatar: string } | null>(null);
   const [currentPage, setCurrentPage] = useState(sections[0].id);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // State to control sidebar visibility on mobile
 
   useEffect(() => {
     async function fetchUser() {
@@ -68,20 +69,33 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen w-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-blue-600 to-teal-600 text-white p-6 flex flex-col justify-between shadow-2xl rounded-r-xl">
+      <aside
+        className={`fixed inset-y-0 left-0 w-72 bg-gradient-to-b from-blue-600 to-teal-600 text-white p-6 flex flex-col justify-between shadow-2xl rounded-r-xl transform transition-transform duration-300 ease-in-out z-50 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 lg:relative`}
+      >
         <div>
-          <div className="mb-8">
+          <div className="mb-8 flex justify-between items-center">
             <img
               src="/images/logo.svg"
               alt="ESAWAS"
               style={{ width: "200px" }}
             />
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="text-white hover:text-blue-200 lg:hidden"
+            >
+              <XMarkIcon className="w-6 h-6" />
+            </button>
           </div>
           <nav className="space-y-2">
             {sections.map(section =>
               <button
                 key={section.id}
-                onClick={() => setCurrentPage(section.id)}
+                onClick={() => {
+                  setCurrentPage(section.id);
+                  setSidebarOpen(false); // Close sidebar on mobile after selection
+                }}
                 className={`flex items-center w-full py-3 px-6 rounded-lg text-lg text-left transition-all duration-300 ${currentPage ===
                 section.id
                   ? "bg-white text-blue-900 font-semibold shadow-md"
@@ -101,16 +115,22 @@ export default function Dashboard() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Bar */}
-        <header className="flex justify-between items-center bg-white shadow-md px-8 py-4 rounded-bl-xl">
+        <header className="flex justify-between items-center bg-white shadow-md px-4 lg:px-8 py-4 rounded-bl-xl">
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="text-gray-700 hover:text-gray-900 lg:hidden"
+            >
+              <Bars3Icon className="w-6 h-6" />
+            </button>
             <span className="text-xl font-medium">
               Welcome, {user ? user.name : "Loading..."}
             </span>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="relative">
+          <div className="flex items-center gap-4 lg:gap-6">
+            <div className="relative hidden lg:block">
               <MagnifyingGlassIcon className="w-6 h-6 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
                 type="text"
@@ -133,10 +153,10 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => router.push("/national-level/signup")}
-              className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2"
+              className="bg-red-500 text-white px-4 lg:px-5 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2"
             >
               <HomeIcon className="w-5 h-5" />
-              <span>Home</span>
+              <span className="hidden lg:inline">Home</span>
             </button>
           </div>
         </header>
@@ -152,16 +172,14 @@ export default function Dashboard() {
         </div>
 
         {/* Content Section */}
-        <main className="flex-1 p-6 overflow-hidden flex justify-center items-center">
+        <main className="flex-1 p-4 lg:p-6 overflow-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="w-full h-full bg-white shadow-xl rounded-xl p-6 flex flex-col items-center justify-center overflow-hidden"
+            className="w-full h-full bg-white shadow-xl rounded-xl p-4 lg:p-6"
           >
-            <div className="w-full h-full overflow-auto p-4">
-              {renderPage()}
-            </div>
+            {renderPage()}
           </motion.div>
         </main>
       </div>

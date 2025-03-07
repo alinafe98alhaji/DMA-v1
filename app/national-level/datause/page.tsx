@@ -112,12 +112,12 @@ export default function Survey() {
   const handleNext = async () => {
     const responsesForCurrentQuestion = responses[currentQuestion.id] || {};
     const allAreasResponded = currentQuestion.areas.every((area) => responsesForCurrentQuestion[area]);
-  
+
     if (!allAreasResponded) {
       setError("Please respond to all areas before proceeding.");
       return;
     }
-  
+
     if (currentQuestion.hasSubQuestion) {
       const allSubResponsesFilled = currentQuestion.areas.every((area) => {
         const response = responsesForCurrentQuestion[area];
@@ -126,15 +126,15 @@ export default function Survey() {
         }
         return true;
       });
-  
+
       if (!allSubResponsesFilled) {
         setError("Please provide details for all required sub-questions.");
         return;
       }
     }
-  
+
     setError(null);
-  
+
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
@@ -148,12 +148,12 @@ export default function Survey() {
             subResponses,
           }),
         });
-  
+
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to save responses");
-  
+
         console.log("Responses saved successfully:", data);
-  
+
         //router.push("/national-level/dataownershipandmanagement");
       } catch (error) {
         console.error("Error saving responses:", error);
@@ -163,60 +163,67 @@ export default function Survey() {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white shadow-md rounded-lg">
-      <h1 className="text-gray-900 text-2xl font-bold mb-4">Data Use</h1>
+    <div className="h-full flex flex-col">
+      {/* Header */}
+      <h1 className="text-2xl text-gray-900 font-bold mb-4 p-6 bg-white shadow-md">
+        Data Use
+      </h1>
 
       {/* Error Message */}
-      {error && <p className="text-red-600 font-semibold mb-3">{error}</p>}
+      {error && <p className="text-red-600 font-semibold mb-3 px-6">{error}</p>}
 
       {/* Current Question */}
-      <div className="border p-4 rounded-md shadow-sm bg-gray-50">
-        <h3 className="text-gray-900 text-lg font-semibold mb-3">{currentQuestion.title}</h3>
+      <div className="flex-1 overflow-y-auto p-6">
+        <div className="border p-4 rounded-md shadow-sm bg-gray-50">
+          <h3 className="text-lg text-gray-900 font-semibold mb-3">{currentQuestion.title}</h3>
 
-        {/* Render areas */}
-        {currentQuestion.areas.map((area) => (
-          <div key={area} className="mb-4">
-            <h4 className="text-gray-900 font-medium">{area}</h4>
-            <div className="text-gray-900 flex gap-4 mt-2">
-              {["Yes", "Partially", "No"].map((option) => (
-                <label key={option} className="flex items-center gap-1">
-                  <input
-                    type="radio"
-                    name={`${currentQuestion.id}-${area}`}
-                    value={option}
-                    checked={responses[currentQuestion.id]?.[area] === option}
-                    onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
-                  />
-                  {option}
-                </label>
-              ))}
+          {/* Render areas */}
+          {currentQuestion.areas.map((area) => (
+            <div key={area} className="mb-4">
+              <h4 className="font-medium text-gray-900">{area}</h4>
+              <div className="flex text-gray-900 gap-4 mt-2">
+                {["Yes", "Partially", "No"].map((option) => (
+                  <label key={option} className="flex items-center gap-1">
+                    <input
+                      type="radio"
+                      name={`${currentQuestion.id}-${area}`}
+                      value={option}
+                      checked={responses[currentQuestion.id]?.[area] === option}
+                      onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
+                    />
+                    {option}
+                  </label>
+                ))}
+              </div>
+
+              {/* Sub-Question for specific area */}
+              {currentQuestion.hasSubQuestion &&
+                (responses[currentQuestion.id]?.[area] === "Yes" ||
+                  responses[currentQuestion.id]?.[area] === "Partially") && (
+                  <div className="mt-2 ml-4">
+                    <h5 className="text-sm text-gray-900 font-semibold">{currentQuestion.subQuestion}</h5>
+                    <textarea
+                      className="text-gray-900 border rounded w-full p-2 mt-1"
+                      placeholder={`Provide details for ${area}...`}
+                      value={subResponses[`${currentQuestion.id}-${area}`] || ""}
+                      onChange={(e) => handleSubResponseChange(area, e.target.value)}
+                    />
+                  </div>
+                )}
             </div>
-
-            {/* Sub-Question for specific area */}
-            {currentQuestion.hasSubQuestion &&
-              (responses[currentQuestion.id]?.[area] === "Yes" ||
-                responses[currentQuestion.id]?.[area] === "Partially") && (
-                <div className="mt-2 ml-4">
-                  <h5 className="text-gray-900 text-sm font-semibold">{currentQuestion.subQuestion}</h5>
-                  <textarea
-                    className="text-gray-900 border rounded w-full p-2 mt-1"
-                    placeholder={`Provide details for ${area}...`}
-                    value={subResponses[`${currentQuestion.id}-${area}`] || ""}
-                    onChange={(e) => handleSubResponseChange(area, e.target.value)}
-                  />
-                </div>
-              )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Navigation */}
-      <button
-        className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
-        onClick={handleNext}
-      >
-        {currentQuestionIndex < questions.length - 1 ? "Next" : "Submit"}
-      </button>
+      <div className="p-6 bg-white shadow-md flex justify-center">
+        <button
+          className="px-8 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-cyan-600 transition text-lg"
+          onClick={handleNext}
+        >
+          {currentQuestionIndex < questions.length - 1 ? "Next" : "Submit"}
+        </button>
+      </div>
     </div>
   );
 }
