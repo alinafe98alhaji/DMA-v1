@@ -90,7 +90,7 @@ const UserLandingPage = () => {
             <span className="ml-3">Start Assessment</span>
           </Link>
           <Link
-            href="#"
+            href="/national-level/responses"
             className="flex items-center px-6 py-3 text-lg font-medium hover:bg-esa-lightblue transition duration-300"
           >
             <span>📊</span>
