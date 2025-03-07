@@ -1,170 +1,3 @@
-// "use client";
-// import { useState } from 'react';
-
-// // Define types for responses
-// type ResponseValue = 'Yes' | 'Partially' | 'No';
-// type Responses = {
-//   [questionId: string]: {
-//     [area: string]: ResponseValue;
-//   };
-// };
-
-// // Questions data
-// const questions = [
-//   {
-//     id: '1a',
-//     title: '1.a. Are there national guidelines that specify how data should be collected across the sector?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: true,
-//     subQuestion: '1.a.i. Which organisation is mandated to develop and enforce these guidelines for data collection?',
-//   },
-//   {
-//     id: '1b',
-//     title: '1.b. Is there a process/procedure for ensuring that data is collected universally/inclusively across the country?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: false,
-//   },
-//   {
-//     id: '1c',
-//     title: '1.c. Are there financial and technical resources allocated to ensure data collection continues smoothly over time across the country?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: false,
-//   },
-//   {
-//     id: '1d',
-//     title: '1.d. Are there centrally developed standardized digital tools for collecting data?',
-//     areas: [
-//       'Urban Water Supply Sector Monitoring',
-//       'Urban Sanitation Sector Monitoring',
-//       'Rural Water Supply Sector Monitoring',
-//       'Rural Sanitation Sector Monitoring',
-//       'Finance',
-//       'Regulation',
-//       'Utility Operations',
-//     ],
-//     hasSubQuestion: true,
-//     subQuestion: '1.d.i. Which organisation is mandated to develop and maintain digital tools for data collection?',
-//   },
-// ];
-
-// export default function Survey() {
-//   const [responses, setResponses] = useState<Responses>({});
-//   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-//   const currentQuestion = questions[currentQuestionIndex];
-
-//   const handleResponseChange = (area: string, value: ResponseValue) => {
-//     setResponses((prev) => ({
-//       ...prev,
-//       [currentQuestion.id]: {
-//         ...prev[currentQuestion.id],
-//         [area]: value,
-//       },
-//     }));
-//   };
-
-//   const handleNext = () => {
-//     if (currentQuestionIndex < questions.length - 1) {
-//       setCurrentQuestionIndex(currentQuestionIndex + 1);
-//     } else {
-//       alert('Survey complete!');
-//       console.log('Responses:', responses);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Survey Tool</h1>
-
-//       {/* Current Question */}
-//       <div className="card">
-//         <h3>{currentQuestion.title}</h3>
-
-//         {/* Render areas */}
-//         {currentQuestion.areas.map((area) => (
-//           <div key={area}>
-//             <h4>{area}</h4>
-//             <label>
-//               <input
-//                 type="radio"
-//                 name={`${currentQuestion.id}-${area}`}
-//                 value="Yes"
-//                 checked={responses[currentQuestion.id]?.[area] === 'Yes'}
-//                 onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
-//               />
-//               Yes
-//             </label>
-//             <label>
-//               <input
-//                 type="radio"
-//                 name={`${currentQuestion.id}-${area}`}
-//                 value="Partially"
-//                 checked={responses[currentQuestion.id]?.[area] === 'Partially'}
-//                 onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
-//               />
-//               Partially
-//             </label>
-//             <label>
-//               <input
-//                 type="radio"
-//                 name={`${currentQuestion.id}-${area}`}
-//                 value="No"
-//                 checked={responses[currentQuestion.id]?.[area] === 'No'}
-//                 onChange={(e) => handleResponseChange(area, e.target.value as ResponseValue)}
-//               />
-//               No
-//             </label>
-
-//             {/* Sub-Question for specific area */}
-//             {currentQuestion.hasSubQuestion &&
-//               (responses[currentQuestion.id]?.[area] === 'Yes' ||
-//                 responses[currentQuestion.id]?.[area] === 'Partially') && (
-//                 <div style={{ marginLeft: '20px', marginTop: '10px' }}>
-//                   <h5>{currentQuestion.subQuestion}</h5>
-//                   <textarea
-//                     placeholder={`Provide details for ${area}...`}
-//                     style={{ width: '100%', height: '50px' }}
-//                   />
-//                 </div>
-//               )}
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Navigation */}
-//       <button onClick={handleNext}>Next</button>
-//     </div>
-//   );
-// }
-
-//-------------
-//----------------
-//---------------
-
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -249,6 +82,7 @@ export default function Survey() {
   const [subResponses, setSubResponses] = useState<Record<string, string>>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
   const currentQuestion = questions[currentQuestionIndex];
   const router = useRouter();
@@ -318,12 +152,21 @@ export default function Survey() {
 
         console.log("Responses saved successfully:", data);
 
-        //router.push("/national-level/dataownershipandmanagement");
+        // Show the success modal
+        setIsModalOpen(true);
+
       } catch (error) {
         console.error("Error saving responses:", error);
         setError("Failed to save responses. Please try again.");
       }
     }
+  };
+
+  // Close the modal and optionally redirect
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // Optionally, redirect the user to another page
+    //router.push("/national-level/datacollection");
   };
 
   return (
@@ -382,12 +225,28 @@ export default function Survey() {
       {/* Navigation */}
       <div className="flex justify-center p-6 bg-white shadow-md">
         <button
-          className=" px-8 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-cyan-600 transition text-lg"
+          className="px-8 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-cyan-600 transition text-lg"
           onClick={handleNext}
         >
           {currentQuestionIndex < questions.length - 1 ? "Next" : "Submit"}
         </button>
       </div>
+
+      {/* Success Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Success!</h2>
+            <p>Your responses have been saved successfully.</p>
+            <button
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -85,6 +85,7 @@ export default function Survey() {
   const [subResponses, setSubResponses] = useState<Record<string, string>>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // State for pop-up visibility
 
   const currentQuestion = questions[currentQuestionIndex];
   const router = useRouter();
@@ -153,6 +154,14 @@ export default function Survey() {
         if (!res.ok) throw new Error(data.error || "Failed to save responses");
 
         console.log("Responses saved successfully:", data);
+
+        // Show success pop-up
+        setShowSuccessPopup(true);
+
+        // Optionally, hide the pop-up after a few seconds
+        setTimeout(() => {
+          setShowSuccessPopup(false);
+        }, 3000); // Hide after 3 seconds
 
         //router.push("/national-level/dataownershipandmanagement");
       } catch (error) {
@@ -224,6 +233,22 @@ export default function Survey() {
           {currentQuestionIndex < questions.length - 1 ? "Next" : "Submit"}
         </button>
       </div>
+
+      {/* Success Pop-Up */}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Success!</h2>
+            <p className="text-gray-700">Your responses have been saved successfully.</p>
+            <button
+              className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
+              onClick={() => setShowSuccessPopup(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

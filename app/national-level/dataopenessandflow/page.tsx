@@ -69,6 +69,7 @@ export default function Survey() {
   const [subResponses, setSubResponses] = useState<Record<string, string>>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
   const currentQuestion = questions[currentQuestionIndex];
   const router = useRouter();
@@ -138,12 +139,21 @@ export default function Survey() {
 
         console.log("Responses saved successfully:", data);
 
-        //router.push("/national-level/dataownershipandmanagement");
+        // Show the success modal
+        setIsModalOpen(true);
+
       } catch (error) {
         console.error("Error saving responses:", error);
         setError("Failed to save responses. Please try again.");
       }
     }
+  };
+
+  // Close the modal and optionally redirect
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // Optionally, redirect the user to another page
+    //router.push("/national-level/dataopennessandflow");
   };
 
   return (
@@ -202,12 +212,28 @@ export default function Survey() {
       {/* Navigation */}
       <div className="flex justify-center p-6 bg-white shadow-md">
         <button
-          className=" px-8 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-cyan-600 transition text-lg"
+          className="px-8 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-cyan-600 transition text-lg"
           onClick={handleNext}
         >
           {currentQuestionIndex < questions.length - 1 ? "Next" : "Submit"}
         </button>
       </div>
+
+      {/* Success Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Success!</h2>
+            <p>Your responses have been saved successfully.</p>
+            <button
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
