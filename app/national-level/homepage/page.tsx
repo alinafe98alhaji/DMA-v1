@@ -8,30 +8,36 @@ import DataOwnershipAndManagement from "@/app/national-level/dataownershipandman
 import DataOpennessAndFlow from "@/app/national-level/dataopenessandflow/page";
 import DataQuality from "@/app/national-level/dataquality/page";
 import DataUse from "@/app/national-level/datause/page";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MagnifyingGlassIcon, BellIcon, CogIcon, HomeIcon } from "@heroicons/react/24/solid";
 
 const sections = [
-  { id: "datacollection", label: "Data Collection" },
-  { id: "dataownershipandmanagement", label: "Data Ownership & Management" },
-  { id: "dataopenessandflow", label: "Data Openness & Flow" },
-  { id: "dataquality", label: "Data Quality" },
-  { id: "datause", label: "Data Use" }
+  { id: "datacollection", label: "Data Collection", icon: "📊" },
+  { id: "dataownershipandmanagement", label: "Data Ownership & Management", icon: "🔐" },
+  { id: "dataopenessandflow", label: "Data Openness & Flow", icon: "🌐" },
+  { id: "dataquality", label: "Data Quality", icon: "✅" },
+  { id: "datause", label: "Data Use", icon: "📈" }
 ];
 
 export default function Dashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<{ email: string; name: string } | null>(
-    null
-  );
+  const [user, setUser] = useState<{ email: string; name: string; avatar: string } | null>(null);
   const [currentPage, setCurrentPage] = useState(sections[0].id);
 
   useEffect(() => {
     async function fetchUser() {
       try {
         const res = await fetch("/api/auth/getUser", {
-          credentials: "include"
+          credentials: "include",
         });
         const data = await res.json();
-        if (data.email) setUser({ email: data.email, name: data.name });
+        if (data.email) {
+          setUser({
+            email: data.email,
+            name: data.name,
+            avatar: data.avatar || "/images/default-avatar.png",
+          });
+        }
       } catch (error) {
         console.error("Failed to fetch user", error);
       }
@@ -40,7 +46,7 @@ export default function Dashboard() {
   }, []);
 
   const progress =
-    (sections.findIndex(s => s.id === currentPage) + 1) / sections.length * 100;
+    ((sections.findIndex(s => s.id === currentPage) + 1) / sections.length) * 100;
 
   const renderPage = () => {
     switch (currentPage) {
@@ -60,31 +66,37 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-gray-50 text-gray-900 overflow-hidden">
+    <div className="flex h-screen w-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-blue-400 to-teal-600 text-white p-6 flex flex-col justify-between shadow-2xl rounded-r-xl">
+      <aside className="w-72 bg-gradient-to-b from-blue-600 to-teal-600 text-white p-6 flex flex-col justify-between shadow-2xl rounded-r-xl">
         <div>
-          <div className="mb-4">
+          <div className="mb-8">
             <img
               src="/images/logo.svg"
               alt="ESAWAS"
               style={{ width: "200px" }}
             />
           </div>
-          <nav className="space-y-4">
+          <nav className="space-y-2">
             {sections.map(section =>
               <button
                 key={section.id}
                 onClick={() => setCurrentPage(section.id)}
-                className={`block w-full py-3 px-6 rounded-lg text-lg text-center transition ${currentPage ===
+                className={`flex items-center w-full py-3 px-6 rounded-lg text-lg text-left transition-all duration-300 ${currentPage ===
                 section.id
-                  ? "bg-white text-blue-900 font-semibold"
-                  : "bg-white bg-opacity-20 hover:bg-opacity-30"}`}
+                  ? "bg-white text-blue-900 font-semibold shadow-md"
+                  : "bg-white bg-opacity-0 hover:bg-opacity-10 text-white"}`}
               >
+                <span className="mr-4 text-xl">{section.icon}</span>
                 {section.label}
               </button>
             )}
           </nav>
+        </div>
+        <div className="mt-8">
+          <p className="text-sm text-white opacity-75">
+            © 2023 ESAWAS. All rights reserved.
+          </p>
         </div>
       </aside>
 
@@ -92,29 +104,47 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col">
         {/* Top Bar */}
         <header className="flex justify-between items-center bg-white shadow-md px-8 py-4 rounded-bl-xl">
-          <span className="text-xl font-medium">
-            Welcome, {user ? user.name : "Loading..."}
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="text-xl font-medium">
+              Welcome, {user ? user.name : "Loading..."}
+            </span>
+          </div>
           <div className="flex items-center gap-6">
+            <div className="relative">
+              <MagnifyingGlassIcon className="w-6 h-6 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Search..."
+                className="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <button className="text-gray-700 hover:text-gray-900 transition">
+              <BellIcon className="w-6 h-6" />
+            </button>
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={user?.avatar} alt={user?.name} />
+              <AvatarFallback>{user?.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            </Avatar>
             <button
               onClick={() => router.push("/settings")}
-              className="text-gray-700 hover:text-gray-900 transition text-lg"
+              className="text-gray-700 hover:text-gray-900 transition"
             >
-              ⚙️
+              <CogIcon className="w-6 h-6" />
             </button>
             <button
               onClick={() => router.push("/national-level/signup")}
-              className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition text-lg"
+              className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2"
             >
-              Home
+              <HomeIcon className="w-5 h-5" />
+              <span>Home</span>
             </button>
           </div>
         </header>
 
         {/* Progress Bar */}
-        <div className="w-full bg-gray-200 h-2 mt-2">
+        <div className="w-full bg-gray-200 h-2 mt-2 rounded-full">
           <motion.div
-            className="h-2 bg-blue-600"
+            className="h-2 bg-gradient-to-r from-blue-500 to-teal-500 rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5 }}
