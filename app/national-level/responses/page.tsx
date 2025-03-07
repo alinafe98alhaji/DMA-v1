@@ -2,7 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid"; // Import icons
+import {
+  BellIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CogIcon,
+  HomeIcon,
+  MagnifyingGlassIcon,
+  MoonIcon,
+  SunIcon
+} from "@heroicons/react/24/solid"; // Import icons
+import { useRouter } from "next/navigation"; // Use the correct import
 
 interface Response {
   _id: string;
@@ -20,6 +30,8 @@ const ResponsesPage: NextPage = () => {
   const [expandedSections, setExpandedSections] = useState<{
     [key: string]: boolean;
   }>({});
+
+  const router = useRouter(); // Use the useRouter hook
 
   // Detect system preference and set initial dark mode state
   useEffect(() => {
@@ -201,14 +213,48 @@ const ResponsesPage: NextPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      {/* Dark Mode Toggle Button */}
-      <button
-        aria-label="Toggle dark mode"
-        onClick={() => setIsDarkMode(!isDarkMode)}
-        className="fixed bottom-4 right-4 p-3 bg-blue-600 dark:bg-blue-400 text-white rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition-colors"
-      >
-        {isDarkMode ? "🌙" : "☀️"}
-      </button>
+      {/* Top Bar */}
+      <header className="flex justify-between items-center bg-white dark:bg-gray-800 shadow-md px-4 lg:px-8 py-4 rounded-bl-xl">
+        <div className="flex items-center gap-4" />
+        <div className="flex items-center gap-4 lg:gap-6">
+          {/* Dark Mode Toggle Button */}
+          <button
+            aria-label="Toggle dark mode"
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 transition"
+          >
+            {isDarkMode
+              ? <SunIcon className="w-6 h-6" />
+              : <MoonIcon className="w-6 h-6" />}
+          </button>
+
+          <div className="relative hidden lg:block">
+            <MagnifyingGlassIcon className="w-6 h-6 text-gray-500 dark:text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700 dark:text-gray-200"
+            />
+          </div>
+          <button className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 transition">
+            <BellIcon className="w-6 h-6" />
+          </button>
+
+          <button
+            onClick={() => router.push("/settings")}
+            className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 transition"
+          >
+            <CogIcon className="w-6 h-6" />
+          </button>
+          <button
+            onClick={() => router.push("/national-level/signup")}
+            className="bg-red-500 text-white px-4 lg:px-5 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2"
+          >
+            <HomeIcon className="w-5 h-5" />
+            <span className="hidden lg:inline">Home</span>
+          </button>
+        </div>
+      </header>
 
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center">
