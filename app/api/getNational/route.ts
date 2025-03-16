@@ -7,7 +7,7 @@ const client = new MongoClient(process.env.MONGODB_URI!);
 
 export async function GET(req: Request) {
   const cookieHeader = req.headers.get("cookie");
-  
+
   // Parse cookies to get the token
   const token = cookieHeader
     ? cookieHeader.split(";").find(c => c.trim().startsWith("token="))?.split("=")[1]
@@ -37,7 +37,9 @@ export async function GET(req: Request) {
     const responses = await Promise.all(
       collections.map(async (collectionName) => {
         const collection = db.collection(collectionName);
-        return collection.find({ userId: decoded.userId }).toArray();
+        const docs = await collection.find({ userId: decoded.userId }).toArray();
+        // Add the collection name to each response
+        return docs.map(doc => ({ ...doc, collection: collectionName }));
       })
     );
 
@@ -48,8 +50,8 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "No responses found" }, { status: 404 });
     }
 
-    // Return the responses to the user
-    return NextResponse.json({ responses: allResponses });
+    // Return the responses to the user, including the user's name
+    return NextResponse.json({ responses: allResponses, userName: decoded.name });
 
   } catch (error) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });

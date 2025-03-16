@@ -29,9 +29,7 @@
 }
 
 /* Add this to your global CSS */
-html {
-  transition: background-color 0.3s, color 0.3s;
-}
+/* transition: background-color 0.3s, color 0.3s; */
 
 body {
   color: var(--text-color);
