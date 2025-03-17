@@ -455,8 +455,8 @@ const ResponsesPage: NextPage = () => {
               <table className="w-full text-sm text-gray-700 dark:text-gray-200">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2 text-left">Area</th>
-                    <th className="px-4 py-2 text-left">Answer</th>
+                    <th className="px-4 py-2 text-left">Sector Areas</th>
+                    <th className="px-4 py-2 text-left">Responses</th>
                   </tr>
                 </thead>
                 <tbody>
